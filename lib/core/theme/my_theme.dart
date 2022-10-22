@@ -15,7 +15,6 @@ class MyTheme extends IMyTheme {
 
   MyTheme.init();
 
-  bool isDark = false;
   final ThemeData _themeData = ThemeData(
     textTheme: MyTexts.instance.textTheme,
   );

@@ -1,5 +1,6 @@
 import 'package:stack_overflow_clone/core/extensions/ui_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:stack_overflow_clone/core/theme/color/my_colors.dart';
 
 class SpecialTextFormField extends Theme {
   SpecialTextFormField({
@@ -9,7 +10,7 @@ class SpecialTextFormField extends Theme {
     Widget? prefixIcon,
     IconData? suffixIcon,
     String? hintText,
-    bool obsureText = false,
+    bool obscureText = false,
     Color? color,
     VoidCallback? onTap,
     TextEditingController? controller,
@@ -25,7 +26,7 @@ class SpecialTextFormField extends Theme {
           key: key,
           data: Theme.of(context).copyWith(
             colorScheme: ThemeData().colorScheme.copyWith(
-                  primary: color,
+                  primary: color ?? MyColors.instance.black,
                 ),
           ),
           child: TextFormField(
@@ -34,14 +35,19 @@ class SpecialTextFormField extends Theme {
             validator: validator,
             initialValue: initialValue,
             onTap: onTap,
+            cursorColor: color ?? MyColors.instance.black,
+            obscureText: obscureText,
             decoration: InputDecoration(
               prefixIcon: prefixIcon,
               suffixIcon: Icon(suffixIcon),
               labelText: labelText,
               labelStyle: labelStyle ??
                   context.textTheme.subtitle1!.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+                      fontWeight: FontWeight.w700,
+                      color: MyColors.instance.grey),
+              floatingLabelStyle: context.textTheme.subtitle1!.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
               hintText: hintText,
               hintStyle: hintStyle ??
                   context.textTheme.subtitle1!.copyWith(

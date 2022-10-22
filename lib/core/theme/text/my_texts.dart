@@ -80,6 +80,7 @@ class MyTexts {
           fontWeight: FontWeight.w400,
           fontFamily: _fontFamily,
           fontStyle: FontStyle.normal,
+          letterSpacing: -0.5
         ),
         bodyText1: TextStyle(
           color: _textColor,
