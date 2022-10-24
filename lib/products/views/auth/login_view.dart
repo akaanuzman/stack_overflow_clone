@@ -2,18 +2,20 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:stack_overflow_clone/core/base/base_singleton.dart';
-import 'package:stack_overflow_clone/core/extensions/ui_extensions.dart';
-import 'package:stack_overflow_clone/products/components/textformfield/default_text_form_field.dart';
-import 'package:stack_overflow_clone/uikit/button/special_button.dart';
-import 'package:stack_overflow_clone/uikit/decoration/special_container_decoration.dart';
+import '../../../core/base/base_singleton.dart';
+import '../../../core/extensions/ui_extensions.dart';
+import '../../components/textformfield/default_text_form_field.dart';
+import 'register_view.dart';
+import '../../../uikit/button/special_button.dart';
+import '../../../uikit/decoration/special_container_decoration.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../viewmodels/login_view_model.dart';
 
 class LoginView extends StatelessWidget with BaseSingleton {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
   LoginView({super.key});
 
   void _login(LoginViewModel pv, BuildContext context) async {
@@ -21,6 +23,15 @@ class LoginView extends StatelessWidget with BaseSingleton {
       email: _emailController.text,
       password: _passwordController.text,
       context: context,
+    );
+  }
+
+  void _signUp(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RegisterView(),
+      ),
     );
   }
 
@@ -97,10 +108,9 @@ class LoginView extends StatelessWidget with BaseSingleton {
     return SizedBox(
       width: double.maxFinite,
       child: SpecialButton(
-        buttonLabel: AppLocalizations.of(context)!.loginButton,
-        borderRadius: context.borderRadius2x,
-        onTap: () => _login(pv, context)
-      ),
+          buttonLabel: AppLocalizations.of(context)!.loginButton,
+          borderRadius: context.borderRadius2x,
+          onTap: () => _login(pv, context)),
     );
   }
 
@@ -139,7 +149,7 @@ class LoginView extends StatelessWidget with BaseSingleton {
 
   TextButton _signUpButton(BuildContext context) {
     return TextButton(
-      onPressed: () {},
+      onPressed: () => _signUp(context),
       child: Text(
         AppLocalizations.of(context)!.signUp,
         style: context.textTheme.subtitle2!.copyWith(

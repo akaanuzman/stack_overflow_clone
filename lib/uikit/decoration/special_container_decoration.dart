@@ -1,5 +1,5 @@
-import 'package:stack_overflow_clone/core/extensions/ui_extensions.dart';
-import 'package:stack_overflow_clone/core/theme/color/my_colors.dart';
+import '../../core/extensions/ui_extensions.dart';
+import '../../core/theme/color/my_colors.dart';
 import 'package:flutter/material.dart';
 
 import 'special_box_shadow.dart';

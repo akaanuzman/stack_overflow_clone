@@ -1,6 +1,6 @@
-import 'package:stack_overflow_clone/core/enums/alert_enum.dart';
+import '../enums/alert_enum.dart';
 import 'package:flutter/material.dart';
-import 'package:stack_overflow_clone/core/extensions/alert_extension.dart';
+import '../extensions/alert_extension.dart';
 import '../../uikit/snackbar/special_snackbar.dart';
 
 class UIGlobals {

@@ -1,4 +1,4 @@
-import 'package:stack_overflow_clone/core/base/base_singleton.dart';
+import '../../base/base_singleton.dart';
 import 'package:flutter/material.dart';
 
 

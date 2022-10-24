@@ -1,24 +1,29 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stack_overflow_clone/core/base/base_singleton.dart';
 import 'package:stack_overflow_clone/core/enums/alert_enum.dart';
+import 'package:stack_overflow_clone/core/helpers/api.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../core/helpers/api.dart';
+import '../views/auth/login_view.dart';
 
-class LoginViewModel extends ChangeNotifier with BaseSingleton {
+class RegisterViewModel extends ChangeNotifier with BaseSingleton {
   final _api = Api();
 
-  Future<void> login({
+  Future<void> register({
+    required String name,
+    required String lastname,
     required String email,
     required String password,
     required BuildContext context,
   }) async {
-    String url = "/auth/login";
+    String url = "/auth/register";
     final result = await _api.dioPost(
       url: url,
       obj: {
+        "name": name,
+        "lastname": lastname,
         "email": email,
         "password": password,
       },
@@ -30,13 +35,13 @@ class LoginViewModel extends ChangeNotifier with BaseSingleton {
       uiGlobals.showAlertDialog(
         context: context,
         alertEnum: AlertEnum.SUCCESS,
-        contentTitle: AppLocalizations.of(context)!.loginSuccess,
-        contentSubtitle: result?.data['message'],
+        contentTitle: AppLocalizations.of(context)!.registerSuccess,
+        contentSubtitle: result?.data["message"],
         buttonLabel: AppLocalizations.of(context)!.okButton,
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const Scaffold(),
+            builder: (context) => LoginView(),
           ),
         ),
       );
@@ -44,15 +49,15 @@ class LoginViewModel extends ChangeNotifier with BaseSingleton {
       uiGlobals.showAlertDialog(
         context: context,
         alertEnum: AlertEnum.ERROR,
-        contentTitle: AppLocalizations.of(context)!.loginFail,
-        contentSubtitle: result?.data['message'],
+        contentTitle: AppLocalizations.of(context)!.registerFail,
+        contentSubtitle: result?.data["message"],
         buttonLabel: AppLocalizations.of(context)!.okButton,
       );
     } else {
       uiGlobals.showAlertDialog(
         context: context,
         alertEnum: AlertEnum.ERROR,
-        contentTitle: AppLocalizations.of(context)!.loginFail,
+        contentTitle: AppLocalizations.of(context)!.registerFail,
         contentSubtitle: AppLocalizations.of(context)!.failContent,
         buttonLabel: AppLocalizations.of(context)!.okButton,
       );

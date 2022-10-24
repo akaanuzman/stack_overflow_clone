@@ -2,11 +2,19 @@
     "logoSvg": "assets/images/logo.svg",
     "emailLabel": "Email",
     "passwordLabel": "Password",
+    "passwordLabelV2": "Again password",
     "loginButton": "Log in",
     "forgotPassword": "Forgot password?",
     "signUp": "Sign up",
     "signUpDesc": "Don't have an account",
     "loginFail": "Login Failed",
     "loginSuccess": "Login Success",
-    "okButton": "OK"
+    "failContent": "Please check your internet\nand try again.",
+    "okButton": "OK",
+    "registerAppbarTitle": "Register",
+    "registerTitle": "Join the Stack Overflow community",
+    "nameLabel": "Name",
+    "lastnameLabel": "Lastname",
+    "registerFail": "Register Failed",
+    "registerSuccess": "Register Success"
 }

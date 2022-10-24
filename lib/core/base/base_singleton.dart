@@ -1,9 +1,11 @@
 
-import 'package:stack_overflow_clone/core/helpers/globals.dart';
-import 'package:stack_overflow_clone/core/helpers/ui_globals.dart';
-import 'package:stack_overflow_clone/core/theme/color/my_colors.dart';
-import 'package:stack_overflow_clone/core/theme/my_theme.dart';
-import 'package:stack_overflow_clone/core/theme/text/my_texts.dart';
+import 'package:stack_overflow_clone/core/utils/app_validators.dart';
+
+import '../helpers/globals.dart';
+import '../helpers/ui_globals.dart';
+import '../theme/color/my_colors.dart';
+import '../theme/my_theme.dart';
+import '../theme/text/my_texts.dart';
 
 abstract class BaseSingleton {
   MyColors get colors => MyColors.instance;
@@ -11,4 +13,5 @@ abstract class BaseSingleton {
   MyTheme get theme => MyTheme.instance;
   Globals get globals => Globals.instance;
   UIGlobals get uiGlobals => UIGlobals.instance;
+  AppValidators get validators => AppValidators.instance;
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stack_overflow_clone/core/base/base_singleton.dart';
-import 'package:stack_overflow_clone/products/viewmodels/login_view_model.dart';
-import 'package:stack_overflow_clone/products/views/auth/login_view.dart';
+import 'core/base/base_singleton.dart';
+import 'products/viewmodels/login_view_model.dart';
+import 'products/viewmodels/register_view_model.dart';
+import 'products/views/auth/login_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() => runApp(
@@ -10,7 +11,10 @@ void main() => runApp(
         providers: [
           ChangeNotifierProvider(
             create: (_) => LoginViewModel(),
-          )
+          ),
+          ChangeNotifierProvider(
+            create: (_) => RegisterViewModel(),
+          ),
         ],
         child: const MyApp(),
       ),
