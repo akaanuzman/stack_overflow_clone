@@ -26,6 +26,10 @@ dependencies:
   # Network
   dio: ^4.0.6
 
+  # Localizations
+  flutter_localizations:
+    sdk: flutter
+
   # Format
   intl: ^0.17.0
 
@@ -36,6 +40,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter:
+  generate: true
   uses-material-design: true
 
   assets:

@@ -5,13 +5,12 @@ import 'package:stack_overflow_clone/core/helpers/token.dart';
 import 'package:dio/dio.dart';
 
 class Api {
-  String baseUrl = "";
+  String baseUrl = "http://localhost:3030/api";
   var dio = Dio();
   String? token;
   setHeaderWithOutToken() {
     Map<String, String> q = {
       HttpHeaders.contentTypeHeader: 'application/json',
-      'mobileHeader': 'nAvn4gsYD=;2:.4"'
     };
     return q;
   }
@@ -24,7 +23,6 @@ class Api {
     Map<String, String> q = {
       HttpHeaders.contentTypeHeader: 'application/json',
       HttpHeaders.authorizationHeader: 'Bearer ${token ?? ''}',
-      'mobileHeader': 'nAvn4gsYD=;2:.4"'
     };
     return q;
   }
@@ -36,7 +34,7 @@ class Api {
       Map<String, dynamic>? obj,
       bool post = true}) async {
     Map<String, String> headers;
-    print("dio post: $url");
+    print("dio post: $baseUrl$url");
     if (useToken) {
       headers = await setHeaderWithToken();
     } else {
@@ -62,6 +60,7 @@ class Api {
       print(response.data);
       return response;
     } on DioError catch (e) {
+      print(e.message);
       print(e.response?.statusCode);
       return e.response;
     }

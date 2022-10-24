@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:stack_overflow_clone/core/base/base_singleton.dart';
 import 'package:stack_overflow_clone/core/extensions/ui_extensions.dart';
 import 'package:flutter/material.dart';
@@ -71,16 +72,18 @@ class SpecialAlert extends StatelessWidget with BaseSingleton {
     );
   }
 
-  Container _title(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      padding: context.padding4x,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-            topLeft: context.radius10x, topRight: context.radius10x),
-        color: titleBgColor,
+  Widget _title(BuildContext context) {
+    return FadeInDown(
+      child: Container(
+        alignment: Alignment.center,
+        padding: context.padding4x,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+              topLeft: context.radius10x, topRight: context.radius10x),
+          color: titleBgColor,
+        ),
+        child: _circleAatarInIcon(),
       ),
-      child: _circleAatarInIcon(),
     );
   }
 
@@ -102,19 +105,21 @@ class SpecialAlert extends StatelessWidget with BaseSingleton {
   Padding _content(BuildContext context) {
     return Padding(
       padding: context.paddingHorizontal2x,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _contentTile(context),
-          context.emptySizedHeightBox1x,
-          _contentSubtitle(context),
-          context.emptySizedHeightBox1x,
-        ],
+      child: FadeInUp(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _contentTile(context),
+            context.emptySizedHeightBox1x,
+            _contentSubtitle(context),
+            context.emptySizedHeightBox1x,
+          ],
+        ),
       ),
     );
   }
 
-  Text _contentTile(BuildContext context) {
+  Widget _contentTile(BuildContext context) {
     return Text(
       contentTitle,
       style: context.textTheme.subtitle1!.copyWith(
@@ -123,7 +128,7 @@ class SpecialAlert extends StatelessWidget with BaseSingleton {
     );
   }
 
-  Text _contentSubtitle(BuildContext context) {
+  Widget _contentSubtitle(BuildContext context) {
     return Text(
       contentSubtitle,
       style: context.textTheme.subtitle2,
@@ -131,16 +136,18 @@ class SpecialAlert extends StatelessWidget with BaseSingleton {
     );
   }
 
-  ElevatedButton _onlyOneAction(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onTap ??
-          () {
-            Navigator.pop(context);
-          },
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(borderRadius: context.borderRadius10x),
+  Widget _onlyOneAction(BuildContext context) {
+    return FadeInUp(
+      child: ElevatedButton(
+        onPressed: onTap ??
+            () {
+              Navigator.pop(context);
+            },
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(borderRadius: context.borderRadius10x),
+        ),
+        child: Text(buttonLabel),
       ),
-      child: Text(buttonLabel),
     );
   }
 }

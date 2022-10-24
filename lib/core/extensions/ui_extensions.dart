@@ -250,6 +250,11 @@ extension AlignmentExtension on BuildContext {
   CrossAxisAlignment get crossAxisAEnd => CrossAxisAlignment.end;
   CrossAxisAlignment get crossAxisAStretch => CrossAxisAlignment.stretch;
   CrossAxisAlignment get crossAxisABaseline => CrossAxisAlignment.baseline;
+
+  // Wrap
+  WrapCrossAlignment get wrapCrossAStart => WrapCrossAlignment.start;
+  WrapCrossAlignment get wrapCrossACenter => WrapCrossAlignment.center;
+  WrapCrossAlignment get wrapCrossAEnd => WrapCrossAlignment.end;
 }
 
 // Sized Boxes

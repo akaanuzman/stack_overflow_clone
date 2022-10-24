@@ -16,6 +16,10 @@ class UIGlobals {
 
   UIGlobals.init();
 
+  Divider get divider => const Divider(
+        thickness: 1.5,
+      );
+
   void showSnackBar({
     required String content,
     required BuildContext context,
@@ -45,6 +49,7 @@ class UIGlobals {
   }) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         return alertEnum.getAlert(
           contentTitle: contentTitle,

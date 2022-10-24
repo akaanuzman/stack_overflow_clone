@@ -1,0 +1,12 @@
+{
+    "logoSvg": "assets/images/logo.svg",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "loginButton": "Log in",
+    "forgotPassword": "Forgot password?",
+    "signUp": "Sign up",
+    "signUpDesc": "Don't have an account",
+    "loginFail": "Login Failed",
+    "loginSuccess": "Login Success",
+    "okButton": "OK"
+}
