@@ -1,5 +1,6 @@
 {
     "logoSvg": "assets/images/logo.svg",
+    "iconSvg": "assets/images/icon.svg",
     "emailLabel": "Email",
     "passwordLabel": "Password",
     "passwordLabelV2": "Again password",

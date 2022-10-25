@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stack_overflow_clone/products/viewmodels/navbar_view_model.dart';
+import 'package:stack_overflow_clone/products/viewmodels/splash_view_model.dart';
+import 'package:stack_overflow_clone/products/views/common/splash_view.dart';
 import 'core/base/base_singleton.dart';
 import 'products/viewmodels/login_view_model.dart';
 import 'products/viewmodels/register_view_model.dart';
-import 'products/views/auth/login_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() => runApp(
@@ -15,10 +17,18 @@ void main() => runApp(
           ChangeNotifierProvider(
             create: (_) => RegisterViewModel(),
           ),
+          ChangeNotifierProvider(
+            create: (_) => SplashViewModel(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => NavbarViewModel(),
+          ),
         ],
         child: const MyApp(),
       ),
     );
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget with BaseSingleton {
   const MyApp({super.key});
@@ -31,7 +41,7 @@ class MyApp extends StatelessWidget with BaseSingleton {
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: LoginView(),
+      home: const SplashView(),
     );
   }
 }

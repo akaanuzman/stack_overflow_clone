@@ -1,13 +1,19 @@
 // ignore_for_file: avoid_print
 
 import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:stack_overflow_clone/core/base/base_singleton.dart';
 import 'package:stack_overflow_clone/core/helpers/token.dart';
 import 'package:dio/dio.dart';
+import 'package:stack_overflow_clone/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../enums/alert_enum.dart';
 
-class Api {
+class Api extends BaseSingleton {
   String baseUrl = "http://localhost:3030/api";
   var dio = Dio();
   String? token;
+  BuildContext context = navigatorKey.currentContext!;
   setHeaderWithOutToken() {
     Map<String, String> q = {
       HttpHeaders.contentTypeHeader: 'application/json',
@@ -95,7 +101,6 @@ class Api {
     }
   }
 
-
   Future<Response?> dioPostMultiPart({
     required String url,
     required FormData obj,
@@ -113,6 +118,48 @@ class Api {
       return response;
     } on DioError catch (e) {
       return e.response;
+    }
+  }
+
+  getAlertDialog({
+    required Response<dynamic>? result,
+    required String successTitle,
+    required String fail400Title,
+    required String fail500Title,
+  }) {
+    final String message = result?.data['message'];
+    if (result?.statusCode == 200) {
+      Token.saveToken(token: result?.data['token'], key: "login");
+      uiGlobals.showAlertDialog(
+        context: context,
+        alertEnum: AlertEnum.SUCCESS,
+        contentTitle: successTitle,
+        contentSubtitle: message,
+        buttonLabel: AppLocalizations.of(context)!.okButton,
+        onTap: () => Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Scaffold(),
+          ),
+          (route) => false,
+        ),
+      );
+    } else if (result?.statusCode == 400) {
+      uiGlobals.showAlertDialog(
+        context: context,
+        alertEnum: AlertEnum.ERROR,
+        contentTitle: fail400Title,
+        contentSubtitle: message,
+        buttonLabel: AppLocalizations.of(context)!.okButton,
+      );
+    } else {
+      uiGlobals.showAlertDialog(
+        context: context,
+        alertEnum: AlertEnum.ERROR,
+        contentTitle: fail500Title,
+        contentSubtitle: AppLocalizations.of(context)!.failContent,
+        buttonLabel: AppLocalizations.of(context)!.okButton,
+      );
     }
   }
 }
