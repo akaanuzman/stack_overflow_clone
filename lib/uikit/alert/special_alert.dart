@@ -1,8 +1,8 @@
 import 'package:animate_do/animate_do.dart';
-import '../../core/base/base_singleton.dart';
-import '../../core/extensions/ui_extensions.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/base/base_singleton.dart';
+import '../../core/extensions/ui_extensions.dart';
 import '../../core/theme/color/my_colors.dart';
 
 class SpecialAlert extends StatelessWidget with BaseSingleton {

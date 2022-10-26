@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:stack_overflow_clone/products/models/navbar_model.dart';
-import 'package:stack_overflow_clone/products/views/home/home_view.dart';
+import '../models/navbar_model.dart';
+import '../views/home/home_view.dart';
 
 class NavbarViewModel extends ChangeNotifier {
   int currentIndex = 0;

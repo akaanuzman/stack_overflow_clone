@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stack_overflow_clone/core/base/base_singleton.dart';
 import 'package:stack_overflow_clone/products/views/common/navbar_view.dart';
+
 import '../../core/helpers/api.dart';
 
 class LoginViewModel extends ChangeNotifier with BaseSingleton {

@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
+
+import '../../uikit/alert/special_alert.dart';
 import '../enums/alert_enum.dart';
 import '../theme/color/my_colors.dart';
-import '../../uikit/alert/special_alert.dart';
-import 'package:flutter/material.dart';
 
 extension AlertExtension on AlertEnum {
   SpecialAlert getAlert({

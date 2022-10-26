@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:stack_overflow_clone/core/base/base_singleton.dart';
-import 'package:stack_overflow_clone/core/helpers/token.dart';
+import '../base/base_singleton.dart';
+import 'token.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../enums/alert_enum.dart';
 

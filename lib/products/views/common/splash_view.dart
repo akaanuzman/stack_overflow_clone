@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:stack_overflow_clone/products/viewmodels/splash_view_model.dart';
-import 'package:stack_overflow_clone/products/views/common/navbar_view.dart';
+import '../../viewmodels/splash_view_model.dart';
+import 'navbar_view.dart';
 
 import '../auth/login_view.dart';
 

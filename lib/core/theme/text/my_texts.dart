@@ -1,5 +1,6 @@
-import '../color/my_colors.dart';
 import 'package:flutter/material.dart';
+
+import '../color/my_colors.dart';
 
 class MyTexts {
   static MyTexts? _instance;

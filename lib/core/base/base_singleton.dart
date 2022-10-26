@@ -1,5 +1,5 @@
 
-import 'package:stack_overflow_clone/core/utils/app_validators.dart';
+import '../utils/app_validators.dart';
 
 import '../helpers/globals.dart';
 import '../helpers/ui_globals.dart';

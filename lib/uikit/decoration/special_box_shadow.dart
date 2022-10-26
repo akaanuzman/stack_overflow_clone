@@ -1,5 +1,6 @@
-import '../../core/theme/color/my_colors.dart';
 import 'package:flutter/material.dart';
+
+import '../../core/theme/color/my_colors.dart';
 
 // Component that provides shadow in the design
 
