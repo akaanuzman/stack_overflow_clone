@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:stack_overflow_clone/core/base/base_singleton.dart';
-import 'package:stack_overflow_clone/core/enums/alert_enum.dart';
 import 'package:stack_overflow_clone/core/helpers/api.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -30,37 +29,17 @@ class RegisterViewModel extends ChangeNotifier with BaseSingleton {
       useToken: false,
     );
 
-    /// TODO: MAKE DYNAMIC FUNCTION
-    if (result?.statusCode == 200) {
-      uiGlobals.showAlertDialog(
-        context: context,
-        alertEnum: AlertEnum.SUCCESS,
-        contentTitle: AppLocalizations.of(context)!.registerSuccess,
-        contentSubtitle: result?.data["message"],
-        buttonLabel: AppLocalizations.of(context)!.okButton,
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LoginView(),
-          ),
-        ),
-      );
-    } else if (result?.statusCode == 400) {
-      uiGlobals.showAlertDialog(
-        context: context,
-        alertEnum: AlertEnum.ERROR,
-        contentTitle: AppLocalizations.of(context)!.registerFail,
-        contentSubtitle: result?.data["message"],
-        buttonLabel: AppLocalizations.of(context)!.okButton,
-      );
-    } else {
-      uiGlobals.showAlertDialog(
-        context: context,
-        alertEnum: AlertEnum.ERROR,
-        contentTitle: AppLocalizations.of(context)!.registerFail,
-        contentSubtitle: AppLocalizations.of(context)!.failContent,
-        buttonLabel: AppLocalizations.of(context)!.okButton,
-      );
-    }
+    globals.getAlertDialog(
+      context: context,
+      result: result,
+      successTitle: AppLocalizations.of(context)!.registerSuccess,
+      fail400Title: AppLocalizations.of(context)!.registerFail,
+      fail500Title: AppLocalizations.of(context)!.registerFail,
+      successOnTap: () => Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => LoginView()),
+        (route) => false,
+      ),
+    );
   }
 }

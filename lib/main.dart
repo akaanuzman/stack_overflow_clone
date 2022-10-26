@@ -28,7 +28,6 @@ void main() => runApp(
       ),
     );
 
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget with BaseSingleton {
   const MyApp({super.key});

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stack_overflow_clone/products/models/navbar_model.dart';
+import 'package:stack_overflow_clone/products/views/home/home_view.dart';
 
 class NavbarViewModel extends ChangeNotifier {
   int currentIndex = 0;
@@ -18,8 +19,8 @@ class NavbarViewModel extends ChangeNotifier {
   List<NavbarModel> get items => _items;
 
   final List<Widget> _views = [
-    Scaffold(),
-    Scaffold(),
+    const HomeView(),
+    const Scaffold(),
   ];
 
   List<Widget> get views => _views;
