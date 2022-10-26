@@ -18,5 +18,6 @@
     "lastnameLabel": "Lastname",
     "registerFail": "Register Failed",
     "registerSuccess": "Register Success",
-    "questionsTitle": "Questions"
+    "questionsTitle": "Questions",
+    "askQuestion": "Ask Question"
 }

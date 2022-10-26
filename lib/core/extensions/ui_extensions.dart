@@ -236,6 +236,18 @@ extension FontExtension on BuildContext {
 }
 
 extension AlignmentExtension on BuildContext {
+
+  // Alignment
+  Alignment get alignmentBottomCenter => Alignment.bottomCenter;
+  Alignment get alignmentBottomLeft => Alignment.bottomLeft;
+  Alignment get alignmentBottomRight => Alignment.bottomRight;
+  Alignment get alignmentcenter => Alignment.center;
+  Alignment get alignmentCenterLeft => Alignment.centerLeft;
+  Alignment get alignmentCenterRight => Alignment.centerRight;
+  Alignment get alignmentTopCenter => Alignment.topCenter;
+  Alignment get alignmentTopLeft => Alignment.topLeft;
+  Alignment get alignmentTopRight => Alignment.topRight;
+
   // Main Axis
   MainAxisAlignment get mainAxisAStart => MainAxisAlignment.start;
   MainAxisAlignment get mainAxisACenter => MainAxisAlignment.center;
