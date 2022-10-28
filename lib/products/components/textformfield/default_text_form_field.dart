@@ -16,6 +16,7 @@ class DefaultTextFormField extends SpecialTextFormField {
     VoidCallback? onTap,
     TextEditingController? controller,
     String? Function(String?)? validator,
+    Function(String)? onChanged,
     TextStyle? labelStyle,
     TextStyle? hintStyle,
     String? initialValue,
@@ -25,9 +26,12 @@ class DefaultTextFormField extends SpecialTextFormField {
     OutlineInputBorder? focusedBorder,
     bool filled = false,
     Color? fillColor,
+    int? minLines,
+    int? maxLines,
   }) : super(
           context: context,
           labelText: labelText,
+          hintText: hintText,
           prefixIcon: prefixIcon,
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: MyColors.instance.grey),
@@ -45,7 +49,10 @@ class DefaultTextFormField extends SpecialTextFormField {
           obscureText: obscureText,
           keyboardType: keyboardType,
           validator: validator,
+          onChanged: onChanged,
           filled: filled,
           fillColor: fillColor,
+          minLines: minLines,
+          maxLines: maxLines,
         );
 }

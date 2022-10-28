@@ -15,6 +15,7 @@ class SpecialTextFormField extends Theme {
     VoidCallback? onTap,
     TextEditingController? controller,
     String? Function(String?)? validator,
+    Function(String)? onChanged,
     TextStyle? labelStyle,
     TextStyle? hintStyle,
     String? initialValue,
@@ -26,6 +27,8 @@ class SpecialTextFormField extends Theme {
     OutlineInputBorder? focusedErrorBorder,
     bool filled = false,
     Color? fillColor,
+    int? minLines,
+    int? maxLines,
   }) : super(
           key: key,
           data: Theme.of(context).copyWith(
@@ -37,6 +40,7 @@ class SpecialTextFormField extends Theme {
             readOnly: readOnly,
             controller: controller,
             validator: validator,
+            onChanged: onChanged,
             initialValue: initialValue,
             onTap: onTap,
             cursorColor: color ?? MyColors.instance.black,
@@ -54,8 +58,9 @@ class SpecialTextFormField extends Theme {
               ),
               hintText: hintText,
               hintStyle: hintStyle ??
-                  context.textTheme.subtitle1!.copyWith(
+                  context.textTheme.subtitle2!.copyWith(
                     fontWeight: FontWeight.w700,
+                    color: MyColors.instance.grey6
                   ),
               enabledBorder: enabledBorder,
               focusedBorder: focusedBorder,
@@ -68,6 +73,8 @@ class SpecialTextFormField extends Theme {
               fontWeight: FontWeight.w800,
             ),
             keyboardType: keyboardType,
+            minLines: minLines,
+            maxLines: maxLines,
           ),
         );
 }

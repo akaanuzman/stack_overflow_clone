@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stack_overflow_clone/core/base/base_singleton.dart';
 import 'package:stack_overflow_clone/products/components/textformfield/default_text_form_field.dart';
-import 'package:stack_overflow_clone/uikit/textformfield/special_text_form_field.dart';
 import '../../../core/extensions/ui_extensions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../../core/helpers/token.dart';
+import '../../../uikit/button/special_button.dart';
 import '../../models/question_model.dart';
 import '../../viewmodels/question_view_model.dart';
+import 'ask_question_view.dart';
 import 'question_detail_view.dart';
 
 class HomeView extends StatelessWidget with BaseSingleton {
-  const HomeView({super.key});
+  final _questionController = TextEditingController();
+  HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,55 +44,69 @@ class HomeView extends StatelessWidget with BaseSingleton {
     );
   }
 
-  ElevatedButton _askQuestionButton(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        Token.deleteAll();
+  Widget _askQuestionButton(BuildContext context) {
+    return SpecialButton(
+      buttonLabel: AppLocalizations.of(context)!.askQuestion,
+      borderRadius: context.borderRadius2x,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AskQuestionView(),
+          ),
+        );
       },
-      child: Text(AppLocalizations.of(context)!.askQuestion),
     );
   }
 
   FadeInUp _body(BuildContext context) {
     return FadeInUp(
-      child: ListView(
-        children: [
-          Padding(
-            padding: context.padding2x,
-            child: DefaultTextFormField(
-              context: context,
-              labelText: AppLocalizations.of(context)!.searchLabel,
-              prefixIcon: const Icon(Icons.search),
-              filled: true,
-              fillColor: colors.white,
-            ),
-          ),
-          Container(
-            padding: context.padding1x,
-            color: colors.yellow1.withOpacity(0.65),
-            child: _questionList(),
-          ),
-        ],
+      child: Consumer<QuestionViewModel>(
+        builder: (BuildContext context, QuestionViewModel pv, _) {
+          return ListView(
+            children: [
+              Padding(
+                padding: context.padding2x,
+                child: DefaultTextFormField(
+                  context: context,
+                  labelText: AppLocalizations.of(context)!.searchLabel,
+                  prefixIcon: const Icon(Icons.search),
+                  filled: true,
+                  fillColor: colors.white,
+                  controller: _questionController,
+                  onChanged: pv.searchQuestion,
+                ),
+              ),
+              Container(
+                padding: context.padding1x,
+                color: colors.yellow1.withOpacity(0.65),
+                child: _questionList(pv),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
 
-  Widget _questionList() {
-    return Consumer<QuestionViewModel>(
-      builder: (BuildContext context, QuestionViewModel pv, Widget? child) {
-        return ListView.separated(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: pv.questions.length,
-          separatorBuilder: (BuildContext context, int index) {
-            return uiGlobals.divider;
-          },
-          itemBuilder: (BuildContext context, int index) {
-            var item = pv.questions[index];
-
-            return _question(context, item);
-          },
-        );
+  Widget _questionList(QuestionViewModel pv) {
+    int count = pv.questions.length;
+    if (_questionController.text.isNotEmpty) {
+      count = pv.searchList.length;
+    }
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: count,
+      separatorBuilder: (BuildContext context, int index) {
+        return uiGlobals.divider;
+      },
+      itemBuilder: (BuildContext context, int index) {
+        var item = pv.questions[index];
+        if (_questionController.text.isNotEmpty) {
+          item = pv.searchList[index];
+        }
+        return _question(context, item);
       },
     );
   }

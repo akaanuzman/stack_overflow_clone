@@ -24,5 +24,15 @@
     "asked": "Asked",
     "modified": "Modified",
     "addAnswer": "Add Answer",
-    "searchLabel": "Search"
+    "searchLabel": "Search",
+    "askAPublicQuestion": "Ask a public question",
+    "titleLabel": "Title",
+    "titleDesc": "Be specific and imagine you’re asking a question to another person.",
+    "titleHint": "e.g. Is there an R function for finding the index of an element in vector",
+    "contentLabel": "Content",
+    "contentTitle": "What are the details of your problem?",
+    "contentDesc": "Introduce the problem and expand on what you put in the title. Minimum 20 characters.",
+    "reviewYourQuestion": "Review your question",
+    "success": "Successful!",
+    "fail": "Error!"
 }

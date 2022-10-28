@@ -20,7 +20,7 @@ class NavbarViewModel extends ChangeNotifier {
   List<NavbarModel> get items => _items;
 
   final List<Widget> _views = [
-    const HomeView(),
+    HomeView(),
     const ProfileView(),
   ];
 
