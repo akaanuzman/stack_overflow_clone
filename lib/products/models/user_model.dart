@@ -4,7 +4,6 @@ class UserModel {
   String? lastname;
   String? email;
   String? role;
-  String? password;
   String? img;
   bool? isBlocked;
   bool? isActive;
@@ -14,6 +13,7 @@ class UserModel {
   String? place;
   String? title;
   String? website;
+  List<Question>? question;
 
   UserModel(
       {this.sId,
@@ -21,7 +21,6 @@ class UserModel {
       this.lastname,
       this.email,
       this.role,
-      this.password,
       this.img,
       this.isBlocked,
       this.isActive,
@@ -30,7 +29,8 @@ class UserModel {
       this.about,
       this.place,
       this.title,
-      this.website});
+      this.website,
+      this.question});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -38,7 +38,6 @@ class UserModel {
     lastname = json['lastname'];
     email = json['email'];
     role = json['role'];
-    password = json['password'];
     img = json['img'];
     isBlocked = json['isBlocked'];
     isActive = json['isActive'];
@@ -48,6 +47,12 @@ class UserModel {
     place = json['place'];
     title = json['title'];
     website = json['website'];
+    if (json['question'] != null) {
+      question = <Question>[];
+      json['question'].forEach((v) {
+        question!.add(Question.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -57,7 +62,6 @@ class UserModel {
     data['lastname'] = lastname;
     data['email'] = email;
     data['role'] = role;
-    data['password'] = password;
     data['img'] = img;
     data['isBlocked'] = isBlocked;
     data['isActive'] = isActive;
@@ -67,6 +71,62 @@ class UserModel {
     data['place'] = place;
     data['title'] = title;
     data['website'] = website;
+    if (question != null) {
+      data['question'] = question!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Question {
+  String? sId;
+  String? title;
+  String? subtitle;
+  String? createdAt;
+  bool? isActive;
+  String? user;
+  List<String>? fav;
+  List<String>? answer;
+  String? slug;
+  int? iV;
+
+  Question(
+      {this.sId,
+      this.title,
+      this.subtitle,
+      this.createdAt,
+      this.isActive,
+      this.user,
+      this.fav,
+      this.answer,
+      this.slug,
+      this.iV});
+
+  Question.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    title = json['title'];
+    subtitle = json['subtitle'];
+    createdAt = json['createdAt'];
+    isActive = json['isActive'];
+    user = json['user'];
+    fav = json['fav'].cast<String>();
+    answer = json['answer'].cast<String>();
+    slug = json['slug'];
+    iV = json['__v'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['title'] = title;
+    data['subtitle'] = subtitle;
+    data['createdAt'] = createdAt;
+    data['isActive'] = isActive;
+    data['user'] = user;
+    data['fav'] = fav;
+    data['answer'] = answer;
+    data['slug'] = slug;
+    data['__v'] = iV;
     return data;
   }
 }

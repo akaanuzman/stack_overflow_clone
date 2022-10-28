@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -25,7 +25,6 @@ class LoginViewModel extends ChangeNotifier with BaseSingleton {
       },
       useToken: false,
     );
-    await Token.saveToken(token: result?.data['token'], key: "login");
 
     globals.getAlertDialog(
       context: context,
@@ -33,13 +32,16 @@ class LoginViewModel extends ChangeNotifier with BaseSingleton {
       successTitle: AppLocalizations.of(context)!.loginSuccess,
       fail400Title: AppLocalizations.of(context)!.loginFail,
       fail500Title: AppLocalizations.of(context)!.loginFail,
-      successOnTap: () => Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const NavbarView(),
-        ),
-        (route) => false,
-      ),
+      successOnTap: () {
+        Token.saveToken(token: result?.data['token'], key: "login");
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const NavbarView(),
+          ),
+          (route) => false,
+        );
+      },
     );
   }
 }

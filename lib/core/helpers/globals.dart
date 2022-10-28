@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import '../base/base_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
+
+import '../base/base_singleton.dart';
 import '../enums/alert_enum.dart';
 
 class Globals with BaseSingleton {

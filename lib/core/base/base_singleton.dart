@@ -1,11 +1,10 @@
 
-import '../utils/app_validators.dart';
-
 import '../helpers/globals.dart';
 import '../helpers/ui_globals.dart';
 import '../theme/color/my_colors.dart';
 import '../theme/my_theme.dart';
 import '../theme/text/my_texts.dart';
+import '../utils/app_validators.dart';
 
 abstract class BaseSingleton {
   MyColors get colors => MyColors.instance;

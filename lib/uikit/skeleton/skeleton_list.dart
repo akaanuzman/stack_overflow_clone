@@ -1,12 +1,12 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter/material.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:stack_overflow_clone/core/base/base_singleton.dart';
 import 'package:stack_overflow_clone/core/extensions/ui_extensions.dart';
 import 'package:stack_overflow_clone/uikit/decoration/special_container_decoration.dart';
 import 'package:stack_overflow_clone/uikit/skeleton/skeleton_item.dart';
-import 'package:flutter/material.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
 
 class SkeletonList extends StatelessWidget with BaseSingleton {
   int itemCount;

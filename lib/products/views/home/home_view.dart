@@ -1,8 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stack_overflow_clone/core/base/base_singleton.dart';
-import 'package:stack_overflow_clone/products/components/textformfield/default_text_form_field.dart';
+import '../../../core/base/base_singleton.dart';
+import '../../components/textformfield/default_text_form_field.dart';
 import '../../../core/extensions/ui_extensions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../uikit/button/special_button.dart';

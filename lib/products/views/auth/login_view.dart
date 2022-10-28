@@ -1,16 +1,16 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+
 import '../../../core/base/base_singleton.dart';
 import '../../../core/extensions/ui_extensions.dart';
-import '../../components/textformfield/default_text_form_field.dart';
-import 'register_view.dart';
 import '../../../uikit/button/special_button.dart';
 import '../../../uikit/decoration/special_container_decoration.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import '../../components/textformfield/default_text_form_field.dart';
 import '../../viewmodels/login_view_model.dart';
+import 'register_view.dart';
 
 class LoginView extends StatelessWidget with BaseSingleton {
   final _emailController = TextEditingController();

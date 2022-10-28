@@ -74,7 +74,7 @@ class SpecialTextFormField extends Theme {
             ),
             keyboardType: keyboardType,
             minLines: minLines,
-            maxLines: maxLines,
+            maxLines: maxLines ?? 1,
           ),
         );
 }

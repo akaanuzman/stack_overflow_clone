@@ -1,9 +1,10 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stack_overflow_clone/core/base/base_singleton.dart';
 import 'package:stack_overflow_clone/products/models/question_model.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import '../../core/helpers/api.dart';
 
 class QuestionViewModel extends ChangeNotifier with BaseSingleton {
@@ -71,9 +72,6 @@ class QuestionViewModel extends ChangeNotifier with BaseSingleton {
         return questionTitle?.contains(input) ?? false;
       }).toList();
       _searchList = suggestions;
-    }
-    for (var e in _searchList) {
-      print("${e.title} ******");
     }
     notifyListeners();
   }

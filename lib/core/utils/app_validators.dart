@@ -54,6 +54,8 @@ class AppValidators {
   String? titleCheck(String? content) {
     if (content == null || content.isEmpty) {
       return 'Please enter a title!';
+    } else if(content.length < 10 ){
+      return 'Your title must be longer than 10 char.';
     }
     return null;
   }
@@ -62,7 +64,7 @@ class AppValidators {
     if (content == null || content.isEmpty) {
       return 'Please enter a content!';
     } else if (content.length < 20) {
-      return 'Your password must be longer than 20 char.';
+      return 'Your content must be longer than 20 char.';
     }
     return null;
   }
