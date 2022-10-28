@@ -19,5 +19,10 @@
     "registerFail": "Register Failed",
     "registerSuccess": "Register Success",
     "questionsTitle": "Questions",
-    "askQuestion": "Ask Question"
+    "askQuestion": "Ask Question",
+    "questionDetail": "Question Detail",
+    "asked": "Asked",
+    "modified": "Modified",
+    "addAnswer": "Add Answer",
+    "searchLabel": "Search"
 }

@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../base/base_singleton.dart';
-import 'token.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../enums/alert_enum.dart';
 
@@ -47,14 +46,12 @@ class Globals with BaseSingleton {
     required String fail500Title,
     VoidCallback? successOnTap,
   }) {
-    final String message = result?.data['message'];
     if (result?.statusCode == 200) {
-      Token.saveToken(token: result?.data['token'], key: "login");
       uiGlobals.showAlertDialog(
         context: context,
         alertEnum: AlertEnum.SUCCESS,
         contentTitle: successTitle,
-        contentSubtitle: message,
+        contentSubtitle: result?.data['message'],
         buttonLabel: AppLocalizations.of(context)!.okButton,
         onTap: successOnTap,
       );
@@ -63,10 +60,10 @@ class Globals with BaseSingleton {
         context: context,
         alertEnum: AlertEnum.ERROR,
         contentTitle: fail400Title,
-        contentSubtitle: message,
+        contentSubtitle: result?.data['message'],
         buttonLabel: AppLocalizations.of(context)!.okButton,
       );
-    } else {
+    } else if (result == null || result.statusCode == 500) {
       uiGlobals.showAlertDialog(
         context: context,
         alertEnum: AlertEnum.ERROR,

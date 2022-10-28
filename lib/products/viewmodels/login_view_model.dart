@@ -6,6 +6,7 @@ import 'package:stack_overflow_clone/core/base/base_singleton.dart';
 import 'package:stack_overflow_clone/products/views/common/navbar_view.dart';
 
 import '../../core/helpers/api.dart';
+import '../../core/helpers/token.dart';
 
 class LoginViewModel extends ChangeNotifier with BaseSingleton {
   final _api = Api();
@@ -24,6 +25,7 @@ class LoginViewModel extends ChangeNotifier with BaseSingleton {
       },
       useToken: false,
     );
+    await Token.saveToken(token: result?.data['token'], key: "login");
 
     globals.getAlertDialog(
       context: context,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stack_overflow_clone/products/viewmodels/question_view_model.dart';
+import 'core/utils/navigation_service.dart';
 import 'products/viewmodels/navbar_view_model.dart';
 import 'products/viewmodels/splash_view_model.dart';
 import 'products/views/common/splash_view.dart';
@@ -23,6 +25,9 @@ void main() => runApp(
           ChangeNotifierProvider(
             create: (_) => NavbarViewModel(),
           ),
+          ChangeNotifierProvider(
+            create: (_) => QuestionViewModel(),
+          ),
         ],
         child: const MyApp(),
       ),
@@ -41,6 +46,7 @@ class MyApp extends StatelessWidget with BaseSingleton {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       home: const SplashView(),
+      navigatorKey: NavigationService.navigatorKey,
     );
   }
 }

@@ -23,6 +23,8 @@ class DefaultTextFormField extends SpecialTextFormField {
     TextInputType? keyboardType,
     OutlineInputBorder? enabledBorder,
     OutlineInputBorder? focusedBorder,
+    bool filled = false,
+    Color? fillColor,
   }) : super(
           context: context,
           labelText: labelText,
@@ -43,5 +45,7 @@ class DefaultTextFormField extends SpecialTextFormField {
           obscureText: obscureText,
           keyboardType: keyboardType,
           validator: validator,
+          filled: filled,
+          fillColor: fillColor,
         );
 }

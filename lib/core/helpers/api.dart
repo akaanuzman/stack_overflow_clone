@@ -1,14 +1,18 @@
 // ignore_for_file: avoid_print
 
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:stack_overflow_clone/core/base/base_singleton.dart';
 import 'package:stack_overflow_clone/core/helpers/token.dart';
 import 'package:dio/dio.dart';
+
+import '../utils/navigation_service.dart';
 
 class Api extends BaseSingleton {
   String baseUrl = "http://localhost:3030/api";
   var dio = Dio();
   String? token;
+  BuildContext currentContext = NavigationService.navigatorKey.currentContext!;
   setHeaderWithOutToken() {
     Map<String, String> q = {
       HttpHeaders.contentTypeHeader: 'application/json',
@@ -91,6 +95,8 @@ class Api extends BaseSingleton {
       }
       return response;
     } on DioError catch (e) {
+      print(e.message);
+      print(e.response?.statusCode);
       print('dioGet error : ${e.response?.data}');
       return e.response;
     }
@@ -115,6 +121,4 @@ class Api extends BaseSingleton {
       return e.response;
     }
   }
-
-
 }

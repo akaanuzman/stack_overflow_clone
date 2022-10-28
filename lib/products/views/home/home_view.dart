@@ -1,9 +1,15 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stack_overflow_clone/core/base/base_singleton.dart';
+import 'package:stack_overflow_clone/products/components/textformfield/default_text_form_field.dart';
+import 'package:stack_overflow_clone/uikit/textformfield/special_text_form_field.dart';
 import '../../../core/extensions/ui_extensions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../core/helpers/token.dart';
+import '../../models/question_model.dart';
+import '../../viewmodels/question_view_model.dart';
+import 'question_detail_view.dart';
 
 class HomeView extends StatelessWidget with BaseSingleton {
   const HomeView({super.key});
@@ -11,93 +17,163 @@ class HomeView extends StatelessWidget with BaseSingleton {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: FadeInDown(
-          child: Row(
-            mainAxisAlignment: context.mainAxisASpaceBetween,
+      appBar: _appBar(context),
+      body: _body(context),
+    );
+  }
+
+  AppBar _appBar(BuildContext context) {
+    return AppBar(
+      title: FadeInDown(
+        child: Row(
+          mainAxisAlignment: context.mainAxisASpaceBetween,
+          children: [
+            _title(context),
+            _askQuestionButton(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Text _title(BuildContext context) {
+    return Text(
+      AppLocalizations.of(context)!.questionsTitle,
+      style: context.textTheme.headline6,
+    );
+  }
+
+  ElevatedButton _askQuestionButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        Token.deleteAll();
+      },
+      child: Text(AppLocalizations.of(context)!.askQuestion),
+    );
+  }
+
+  FadeInUp _body(BuildContext context) {
+    return FadeInUp(
+      child: ListView(
+        children: [
+          Padding(
+            padding: context.padding2x,
+            child: DefaultTextFormField(
+              context: context,
+              labelText: AppLocalizations.of(context)!.searchLabel,
+              prefixIcon: const Icon(Icons.search),
+              filled: true,
+              fillColor: colors.white,
+            ),
+          ),
+          Container(
+            padding: context.padding1x,
+            color: colors.yellow1.withOpacity(0.65),
+            child: _questionList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _questionList() {
+    return Consumer<QuestionViewModel>(
+      builder: (BuildContext context, QuestionViewModel pv, Widget? child) {
+        return ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: pv.questions.length,
+          separatorBuilder: (BuildContext context, int index) {
+            return uiGlobals.divider;
+          },
+          itemBuilder: (BuildContext context, int index) {
+            var item = pv.questions[index];
+
+            return _question(context, item);
+          },
+        );
+      },
+    );
+  }
+
+  Widget _question(BuildContext context, QuestionModel item) {
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const QuestionDetailView(),
+        ),
+      ),
+      child: Column(
+        children: [
+          _questionPropertiesAndTitle(context, item),
+          context.emptySizedHeightBox1x,
+          _questionInformation(context, item)
+        ],
+      ),
+    );
+  }
+
+  ListTile _questionPropertiesAndTitle(
+      BuildContext context, QuestionModel item) {
+    return ListTile(
+      title: _questionProperties(context, item),
+      subtitle: _questionTitle(context, item),
+    );
+  }
+
+  Text _questionProperties(BuildContext context, QuestionModel item) {
+    String like = "${item.fav?.length}";
+    String answers = "${item.answer?.length}";
+    return Text(
+      "$like likes $answers answers",
+      style: context.textTheme.subtitle2,
+    );
+  }
+
+  Text _questionTitle(BuildContext context, QuestionModel item) {
+    return Text(
+      item.title ?? "",
+      style: context.textTheme.subtitle1!.copyWith(
+        fontWeight: context.fw600,
+        color: colors.blue6,
+      ),
+    );
+  }
+
+  Row _questionInformation(BuildContext context, QuestionModel item) {
+    String username = "${item.user?.name} ${item.user?.lastname}";
+    String time = globals.formatDate("${item.createdAt}");
+    String asked = "${item.user?.question?.length}";
+    return Row(
+      mainAxisAlignment: context.mainAxisAEnd,
+      children: [
+        RichText(
+          text: TextSpan(
             children: [
-              Text(
-                AppLocalizations.of(context)!.questionsTitle,
-                style: context.textTheme.headline6,
+              TextSpan(
+                text: "$username ",
+                style:
+                    context.textTheme.subtitle2!.copyWith(color: colors.blue6),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Token.deleteAll();
-                },
-                child: Text(AppLocalizations.of(context)!.askQuestion),
+              TextSpan(
+                text: "$asked asked ",
+                style: context.textTheme.subtitle2!.copyWith(
+                  color: colors.black54,
+                  fontWeight: context.fw700,
+                ),
+              ),
+              TextSpan(
+                text: " $time created ",
+                style: context.textTheme.subtitle2!.copyWith(
+                  color: colors.black45,
+                  fontWeight: context.fw500,
+                ),
               ),
             ],
           ),
         ),
-      ),
-      body: FadeInUp(
-        child: ListView(
-          children: [
-            Container(
-              padding: context.padding1x,
-              color: colors.yellow1.withOpacity(0.65),
-              child: ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 15,
-                separatorBuilder: (BuildContext context, int index) {
-                  return uiGlobals.divider;
-                },
-                itemBuilder: (BuildContext context, int index) {
-                  return Column(
-                    children: [
-                      ListTile(
-                        title: Text(
-                          "0 likes 0 answers",
-                          style: context.textTheme.subtitle2,
-                        ),
-                        subtitle: Text(
-                          "Creating a keyboard shortcut with python tkinter and get error TypeError: savF() takes 0 positional arguments but 1 was given",
-                          style: context.textTheme.subtitle1!.copyWith(
-                            fontWeight: context.fw600,
-                            color: colors.blue6,
-                          ),
-                        ),
-                      ),
-                      context.emptySizedHeightBox1x,
-                      Row(
-                        mainAxisAlignment: context.mainAxisAEnd,
-                        children: [
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: "username ",
-                                  style: context.textTheme.subtitle2!
-                                      .copyWith(color: colors.blue6),
-                                ),
-                                TextSpan(
-                                  text: "1 asked ",
-                                  style: context.textTheme.subtitle2!.copyWith(
-                                    color: colors.black54,
-                                    fontWeight: context.fw700,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: "2 seconds ago",
-                                  style: context.textTheme.subtitle2!.copyWith(
-                                    color: colors.black45,
-                                    fontWeight: context.fw500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+      ],
     );
   }
 }

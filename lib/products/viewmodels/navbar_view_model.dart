@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stack_overflow_clone/products/views/home/profile_view.dart';
 import '../models/navbar_model.dart';
 import '../views/home/home_view.dart';
 
@@ -20,7 +21,7 @@ class NavbarViewModel extends ChangeNotifier {
 
   final List<Widget> _views = [
     const HomeView(),
-    const Scaffold(),
+    const ProfileView(),
   ];
 
   List<Widget> get views => _views;

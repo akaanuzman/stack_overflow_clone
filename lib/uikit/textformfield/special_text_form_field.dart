@@ -24,6 +24,8 @@ class SpecialTextFormField extends Theme {
     OutlineInputBorder? focusedBorder,
     OutlineInputBorder? errorBorder,
     OutlineInputBorder? focusedErrorBorder,
+    bool filled = false,
+    Color? fillColor,
   }) : super(
           key: key,
           data: Theme.of(context).copyWith(
@@ -59,6 +61,8 @@ class SpecialTextFormField extends Theme {
               focusedBorder: focusedBorder,
               errorBorder: errorBorder,
               focusedErrorBorder: focusedErrorBorder,
+              filled: filled,
+              fillColor: fillColor,
             ),
             style: context.textTheme.subtitle1!.copyWith(
               fontWeight: FontWeight.w800,
