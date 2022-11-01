@@ -108,9 +108,10 @@ class LoginView extends StatelessWidget with BaseSingleton {
     return SizedBox(
       width: double.maxFinite,
       child: SpecialButton(
-          buttonLabel: AppLocalizations.of(context)!.loginButton,
-          borderRadius: context.borderRadius2x,
-          onTap: () => _login(pv, context)),
+        buttonLabel: AppLocalizations.of(context)!.loginButton,
+        borderRadius: context.borderRadius2x,
+        onTap: () => _login(pv, context),
+      ),
     );
   }
 

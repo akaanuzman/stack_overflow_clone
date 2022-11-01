@@ -34,5 +34,9 @@
     "contentDesc": "Introduce the problem and expand on what you put in the title. Minimum 20 characters.",
     "reviewYourQuestion": "Review your question",
     "success": "Successful!",
-    "fail": "Error!"
+    "fail": "Error!",
+    "yourAnswer": "Your Answer",
+    "addAnswerInfo": "Thanks for contributing an answer to Stack Overflow!\n\nPlease be sure to answer the question. Provide details and share your research!\n\nBut avoid …\n\nAsking for help, clarification, or responding to other answers.\nMaking statements based on opinion; back them up with references or personal experience.\n\nTo learn more, see our tips on writing great answers.",
+    "answerLabel": "Answer",
+    "postYourAnswer": "Post your answer"
 }

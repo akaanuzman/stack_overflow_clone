@@ -1,15 +1,15 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../core/base/base_singleton.dart';
-import '../../components/textformfield/default_text_form_field.dart';
-import '../../../core/extensions/ui_extensions.dart';
+import '../../../../core/base/base_singleton.dart';
+import '../../../components/textformfield/default_text_form_field.dart';
+import '../../../../core/extensions/ui_extensions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../../uikit/button/special_button.dart';
-import '../../models/question_model.dart';
-import '../../viewmodels/question_view_model.dart';
+import '../../../../uikit/button/special_button.dart';
+import '../../../models/question_model.dart';
+import '../../../viewmodels/question_view_model.dart';
 import 'ask_question_view.dart';
-import 'question_detail_view.dart';
+import '../answer/question_detail_view.dart';
 
 class HomeView extends StatelessWidget with BaseSingleton {
   final _questionController = TextEditingController();
@@ -116,7 +116,9 @@ class HomeView extends StatelessWidget with BaseSingleton {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const QuestionDetailView(),
+          builder: (context) => QuestionDetailView(
+            model: item,
+          ),
         ),
       ),
       child: Column(
