@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'dart:io';
 
@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:stack_overflow_clone/core/base/base_singleton.dart';
 import 'package:stack_overflow_clone/core/helpers/api.dart';
 import 'package:stack_overflow_clone/products/models/answer_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AnswerViewModel extends ChangeNotifier with BaseSingleton {
   List<AnswerModel> _answers = [];
@@ -45,9 +46,15 @@ class AnswerViewModel extends ChangeNotifier with BaseSingleton {
     globals.getAlertDialog(
       context: _api.currentContext,
       result: result,
-      successTitle: "successTitle",
-      fail400Title: "fail400Title",
-      fail500Title: "fail500Title",
+      successTitle: AppLocalizations.of(_api.currentContext)!.success,
+      fail400Title: AppLocalizations.of(_api.currentContext)!.fail,
+      fail500Title: AppLocalizations.of(_api.currentContext)!.fail,
+      successOnTap: () {
+        Navigator.pop(_api.currentContext);
+        Navigator.pop(_api.currentContext);
+      }
     );
+
+    await getAllAnswers(qId: qId);
   }
 }

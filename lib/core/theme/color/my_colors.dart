@@ -1,5 +1,6 @@
-import '../../base/base_singleton.dart';
 import 'package:flutter/material.dart';
+
+import '../../base/base_singleton.dart';
 
 
 class MyColors with BaseSingleton {

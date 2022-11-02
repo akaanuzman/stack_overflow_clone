@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stack_overflow_clone/products/viewmodels/answer_view_model.dart';
+import 'products/viewmodels/answer_view_model.dart';
 import 'products/viewmodels/question_view_model.dart';
 import 'core/utils/navigation_service.dart';
 import 'products/viewmodels/navbar_view_model.dart';

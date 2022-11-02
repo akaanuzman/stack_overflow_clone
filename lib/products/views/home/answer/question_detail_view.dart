@@ -1,8 +1,9 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stack_overflow_clone/products/views/home/answer/add_answer_view.dart';
-import 'package:stack_overflow_clone/uikit/skeleton/skeleton_list.dart';
+import 'add_answer_view.dart';
+import '../../../../uikit/decoration/special_container_decoration.dart';
+import '../../../../uikit/skeleton/skeleton_list.dart';
 import '../../../../core/base/base_singleton.dart';
 import '../../../../core/extensions/ui_extensions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -35,7 +36,9 @@ class QuestionDetailView extends StatelessWidget with BaseSingleton {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AddAnswerView(),
+                      builder: (context) => AddAnswerView(
+                        questionId: "${model.sId}",
+                      ),
                     ),
                   );
                 },
@@ -96,13 +99,21 @@ class QuestionDetailView extends StatelessWidget with BaseSingleton {
                     context.emptySizedHeightBox2x,
                     uiGlobals.divider,
                     context.emptySizedHeightBox2x,
-                    Text(
-                      model.subtitle ?? "null_subtitle",
+                    Container(
+                      padding: context.padding2x,
+                      decoration: SpecialContainerDecoration(
+                        context: context,
+                        color: colors.grey3,
+                      ),
+                      child: Text(
+                        model.subtitle ?? "null_subtitle",
+                      ),
                     ),
                     context.emptySizedHeightBox3x,
                     Row(
                       children: [
                         Expanded(
+                          flex: 2,
                           child: Row(
                             children: [
                               Icon(
@@ -128,7 +139,7 @@ class QuestionDetailView extends StatelessWidget with BaseSingleton {
                                 crossAxisAlignment: context.crossAxisAStart,
                                 children: [
                                   Text(
-                                    "edited ${globals.formatDate(model.createdAt)}",
+                                    "asked ${globals.formatDate(model.createdAt)}",
                                     style: context.textTheme.caption!
                                         .copyWith(color: colors.blue6),
                                   ),
@@ -142,31 +153,9 @@ class QuestionDetailView extends StatelessWidget with BaseSingleton {
                             ],
                           ),
                         ),
-                        context.emptySizedWidthBox2x,
-                        Expanded(
-                          child: Wrap(
-                            children: [
-                              Column(
-                                crossAxisAlignment: context.crossAxisAStart,
-                                children: [
-                                  Text(
-                                    "edited ${globals.formatDate(model.createdAt)}",
-                                    style: context.textTheme.caption!
-                                        .copyWith(color: colors.blue6),
-                                  ),
-                                  Text(
-                                    "username",
-                                    style: context.textTheme.caption!
-                                        .copyWith(color: colors.blue8),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
                       ],
                     ),
-                    context.emptySizedHeightBox3x,
+                    context.emptySizedHeightBox5x,
                     Text(
                       "${model.answer?.length} Answers",
                       style: context.textTheme.headline6,
@@ -188,13 +177,22 @@ class QuestionDetailView extends StatelessWidget with BaseSingleton {
                               crossAxisAlignment: context.crossAxisAStart,
                               children: [
                                 context.emptySizedHeightBox2x,
-                                Text(
-                                  "${item.content}",
+                                Container(
+                                  width: double.maxFinite,
+                                  padding: context.padding2x,
+                                  decoration: SpecialContainerDecoration(
+                                    context: context,
+                                    color: colors.grey3,
+                                  ),
+                                  child: Text(
+                                    "${item.content}",
+                                  ),
                                 ),
                                 context.emptySizedHeightBox3x,
                                 Row(
                                   children: [
                                     Expanded(
+                                      flex: 2,
                                       child: Row(
                                         children: [
                                           Icon(
@@ -223,7 +221,7 @@ class QuestionDetailView extends StatelessWidget with BaseSingleton {
                                                 context.crossAxisAStart,
                                             children: [
                                               Text(
-                                                "edited Apr 12, 2019 at 9:47",
+                                                "answered ${globals.formatDate(item.createdAt)}",
                                                 style: context
                                                     .textTheme.caption!
                                                     .copyWith(
@@ -231,33 +229,6 @@ class QuestionDetailView extends StatelessWidget with BaseSingleton {
                                               ),
                                               Text(
                                                 "${item.user?.name} ${item.user?.lastname}",
-                                                style: context
-                                                    .textTheme.caption!
-                                                    .copyWith(
-                                                        color: colors.blue8),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    context.emptySizedWidthBox2x,
-                                    Expanded(
-                                      child: Wrap(
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                context.crossAxisAStart,
-                                            children: [
-                                              Text(
-                                                "edited Apr 12, 2019 at 9:47",
-                                                style: context
-                                                    .textTheme.caption!
-                                                    .copyWith(
-                                                        color: colors.blue6),
-                                              ),
-                                              Text(
-                                                "username",
                                                 style: context
                                                     .textTheme.caption!
                                                     .copyWith(
