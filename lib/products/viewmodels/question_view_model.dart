@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stack_overflow_clone/core/base/base_singleton.dart';
@@ -12,13 +14,16 @@ class QuestionViewModel extends ChangeNotifier with BaseSingleton {
   List<QuestionModel> get questions => _questions;
   List<QuestionModel> _searchList = [];
   List<QuestionModel> get searchList => _searchList;
+  QuestionModel _question = QuestionModel();
+  QuestionModel get question => _question;
   final String baseUrl = "/questions";
   final _api = Api();
+
   Future<void> get getAllQuestions async {
     String url = "$baseUrl/allQuestions";
     final result = await _api.dioGet(url: url);
 
-    if (result?.statusCode == 200) {
+    if (result?.statusCode == HttpStatus.ok) {
       try {
         var datasBest = <QuestionModel>[];
         Iterable listBest = result?.data["questions"];
@@ -30,6 +35,22 @@ class QuestionViewModel extends ChangeNotifier with BaseSingleton {
       }
     } else {
       _questions = [];
+    }
+    notifyListeners();
+  }
+
+  Future<void> getQuestionById({required String id}) async {
+    String url = "$baseUrl/getQuestion/$id";
+    final result = await _api.dioGet(url: url);
+  print(result?.data["question"]);
+    if (result?.statusCode == HttpStatus.ok) {
+      try {
+        _question = QuestionModel.fromJson(result?.data["question"]);
+      } catch (e) {
+        print(e);
+      }
+    } else {
+      _question = QuestionModel();
     }
     notifyListeners();
   }
@@ -60,6 +81,24 @@ class QuestionViewModel extends ChangeNotifier with BaseSingleton {
         Navigator.pop(context);
       },
     );
+
+    await getAllQuestions;
+  }
+
+  Future<void> favQuestion({required String id}) async {
+    String url = "$baseUrl/favQuestion/$id";
+    final result = await _api.dioGet(url: url);
+    print(result?.data);
+    if (result?.statusCode == HttpStatus.ok) {
+      uiGlobals.showSnackBar(
+        content: "content",
+        context: _api.currentContext,
+      );
+    } else if (result?.statusCode == HttpStatus.badRequest) {
+      uiGlobals.showSnackBar(content: "wqdwqdqw", context: _api.currentContext);
+    } else {
+      uiGlobals.showSnackBar(content: "ewc", context: _api.currentContext);
+    }
 
     await getAllQuestions;
   }

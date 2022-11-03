@@ -117,7 +117,7 @@ class HomeView extends StatelessWidget with BaseSingleton {
         context,
         MaterialPageRoute(
           builder: (context) => QuestionDetailView(
-            model: item,
+            id: "${item.sId}",
           ),
         ),
       ),
