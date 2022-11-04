@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stack_overflow_clone/products/viewmodels/api_view_model.dart';
+import 'package:stack_overflow_clone/products/viewmodels/user_view_model.dart';
 import 'products/viewmodels/answer_view_model.dart';
 import 'products/viewmodels/question_view_model.dart';
 import 'core/utils/navigation_service.dart';
@@ -31,6 +33,12 @@ void main() => runApp(
           ),
           ChangeNotifierProvider(
             create: (_) => AnswerViewModel(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => ApiViewModel(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => UserViewModel(),
           ),
         ],
         child: const MyApp(),

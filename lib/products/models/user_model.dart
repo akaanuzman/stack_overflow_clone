@@ -4,6 +4,7 @@ class UserModel {
   String? lastname;
   String? email;
   String? role;
+  String? password;
   String? img;
   bool? isBlocked;
   bool? isActive;
@@ -14,6 +15,7 @@ class UserModel {
   String? title;
   String? website;
   List<Question>? question;
+  List<Answer>? answer;
 
   UserModel(
       {this.sId,
@@ -21,6 +23,7 @@ class UserModel {
       this.lastname,
       this.email,
       this.role,
+      this.password,
       this.img,
       this.isBlocked,
       this.isActive,
@@ -30,7 +33,8 @@ class UserModel {
       this.place,
       this.title,
       this.website,
-      this.question});
+      this.question,
+      this.answer});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -38,6 +42,7 @@ class UserModel {
     lastname = json['lastname'];
     email = json['email'];
     role = json['role'];
+    password = json['password'];
     img = json['img'];
     isBlocked = json['isBlocked'];
     isActive = json['isActive'];
@@ -53,6 +58,12 @@ class UserModel {
         question!.add(Question.fromJson(v));
       });
     }
+    if (json['answer'] != null) {
+      answer = <Answer>[];
+      json['answer'].forEach((v) {
+        answer!.add(Answer.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -62,6 +73,7 @@ class UserModel {
     data['lastname'] = lastname;
     data['email'] = email;
     data['role'] = role;
+    data['password'] = password;
     data['img'] = img;
     data['isBlocked'] = isBlocked;
     data['isActive'] = isActive;
@@ -73,6 +85,9 @@ class UserModel {
     data['website'] = website;
     if (question != null) {
       data['question'] = question!.map((v) => v.toJson()).toList();
+    }
+    if (answer != null) {
+      data['answer'] = answer!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -126,6 +141,51 @@ class Question {
     data['fav'] = fav;
     data['answer'] = answer;
     data['slug'] = slug;
+    data['__v'] = iV;
+    return data;
+  }
+}
+
+class Answer {
+  String? sId;
+  String? content;
+  String? createdAt;
+  List<String>? fav;
+  String? user;
+  String? question;
+  bool? isActive;
+  int? iV;
+
+  Answer(
+      {this.sId,
+      this.content,
+      this.createdAt,
+      this.fav,
+      this.user,
+      this.question,
+      this.isActive,
+      this.iV});
+
+  Answer.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    content = json['content'];
+    createdAt = json['createdAt'];
+    fav = json['fav'].cast<String>();
+    user = json['user'];
+    question = json['question'];
+    isActive = json['isActive'];
+    iV = json['__v'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['content'] = content;
+    data['createdAt'] = createdAt;
+    data['fav'] = fav;
+    data['user'] = user;
+    data['question'] = question;
+    data['isActive'] = isActive;
     data['__v'] = iV;
     return data;
   }

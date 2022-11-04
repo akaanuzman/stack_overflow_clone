@@ -10,12 +10,14 @@ class SpecialSnackbar extends SnackBar {
     required String content,
     Color? contentColor,
     Color? bgColor,
-    String actionLabel = "Kapat",
+    String actionLabel = "Close",
   }) : super(
           content: Text(
             content,
-            style: context.textTheme.bodyText1!
-                .copyWith(color: contentColor ?? MyColors.instance.white),
+            style: context.textTheme.bodyText1!.copyWith(
+              color: contentColor ?? MyColors.instance.white,
+              fontWeight: context.fw700,
+            ),
           ),
           action: SnackBarAction(
             label: actionLabel,

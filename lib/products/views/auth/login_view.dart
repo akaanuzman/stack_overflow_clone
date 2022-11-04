@@ -22,7 +22,6 @@ class LoginView extends StatelessWidget with BaseSingleton {
     await pv.login(
       email: _emailController.text,
       password: _passwordController.text,
-      context: context,
     );
   }
 

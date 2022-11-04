@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/base/base_singleton.dart';
+import '../../../../core/helpers/token.dart';
 import '../../../components/textformfield/default_text_form_field.dart';
 import '../../../../core/extensions/ui_extensions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -49,6 +50,7 @@ class HomeView extends StatelessWidget with BaseSingleton {
       buttonLabel: AppLocalizations.of(context)!.askQuestion,
       borderRadius: context.borderRadius2x,
       onTap: () {
+        Token.deleteAll();
         Navigator.push(
           context,
           MaterialPageRoute(

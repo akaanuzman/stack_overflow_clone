@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -47,7 +49,7 @@ class Globals with BaseSingleton {
     required String fail500Title,
     VoidCallback? successOnTap,
   }) {
-    if (result?.statusCode == 200) {
+    if (result?.statusCode == HttpStatus.ok) {
       uiGlobals.showAlertDialog(
         context: context,
         alertEnum: AlertEnum.SUCCESS,
@@ -56,7 +58,7 @@ class Globals with BaseSingleton {
         buttonLabel: AppLocalizations.of(context)!.okButton,
         onTap: successOnTap,
       );
-    } else if (result?.statusCode == 400) {
+    } else if (result?.statusCode == HttpStatus.badRequest) {
       uiGlobals.showAlertDialog(
         context: context,
         alertEnum: AlertEnum.ERROR,
@@ -64,7 +66,8 @@ class Globals with BaseSingleton {
         contentSubtitle: result?.data['message'],
         buttonLabel: AppLocalizations.of(context)!.okButton,
       );
-    } else if (result == null || result.statusCode == 500) {
+    } else if (result == null ||
+        result.statusCode == HttpStatus.internalServerError) {
       uiGlobals.showAlertDialog(
         context: context,
         alertEnum: AlertEnum.ERROR,

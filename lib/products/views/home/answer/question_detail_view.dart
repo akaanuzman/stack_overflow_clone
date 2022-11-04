@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stack_overflow_clone/products/models/answer_model.dart';
 import '../../../viewmodels/question_view_model.dart';
+import '../../../viewmodels/user_view_model.dart';
 import 'add_answer_view.dart';
 import '../../../../uikit/decoration/special_container_decoration.dart';
 import '../../../../uikit/skeleton/skeleton_list.dart';
@@ -34,10 +35,11 @@ class QuestionDetailView extends StatelessWidget with BaseSingleton {
     );
   }
 
-  Color isFavQuestion(QuestionModel model) {
+  Color isFavQuestion(QuestionModel model, BuildContext context) {
+    final upv = Provider.of<UserViewModel>(context, listen: false);
     if (model.fav != null) {
       for (var e in model.fav!) {
-        if (model.user?.sId == e.sId)
+        if (upv.user.sId == e.sId)
           return colors.redAccent;
         else
           return colors.grey;
@@ -45,6 +47,19 @@ class QuestionDetailView extends StatelessWidget with BaseSingleton {
     } else
       return colors.grey;
     return colors.grey;
+  }
+
+  Future<void> questionFavOperation(
+    QuestionModel model,
+    BuildContext context,
+    QuestionViewModel pv,
+  ) async {
+    final Color color = isFavQuestion(model, context);
+    if (color == colors.redAccent) {
+      await pv.unFavQuestion(id: id);
+    } else {
+      await pv.favQuestion(id: id);
+    }
   }
 
   Color isFavAnswer(QuestionModel model, AnswerModel answerModel) {
@@ -159,10 +174,12 @@ class QuestionDetailView extends StatelessWidget with BaseSingleton {
                             child: Row(
                               children: [
                                 IconButton(
-                                  onPressed: () async {},
+                                  onPressed: () async {
+                                    questionFavOperation(question, context, pv);
+                                  },
                                   icon: Icon(
                                     Icons.favorite,
-                                    color: isFavQuestion(question),
+                                    color: isFavQuestion(question, context),
                                   ),
                                 ),
                                 context.emptySizedWidthBox2x,
@@ -209,17 +226,17 @@ class QuestionDetailView extends StatelessWidget with BaseSingleton {
                       context.emptySizedHeightBox2x,
                       uiGlobals.divider,
                       Consumer<AnswerViewModel>(
-                        builder: (BuildContext context, AnswerViewModel pv, _) {
+                        builder: (context, apv, _) {
                           return ListView.separated(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: pv.answers.length,
+                            itemCount: apv.answers.length,
                             separatorBuilder:
                                 (BuildContext context, int index) {
                               return uiGlobals.divider;
                             },
                             itemBuilder: (BuildContext context, int index) {
-                              var item = pv.answers[index];
+                              var item = apv.answers[index];
                               return Column(
                                 crossAxisAlignment: context.crossAxisAStart,
                                 children: [

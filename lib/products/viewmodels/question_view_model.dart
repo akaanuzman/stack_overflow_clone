@@ -42,7 +42,6 @@ class QuestionViewModel extends ChangeNotifier with BaseSingleton {
   Future<void> getQuestionById({required String id}) async {
     String url = "$baseUrl/getQuestion/$id";
     final result = await _api.dioGet(url: url);
-  print(result?.data["question"]);
     if (result?.statusCode == HttpStatus.ok) {
       try {
         _question = QuestionModel.fromJson(result?.data["question"]);
@@ -86,21 +85,51 @@ class QuestionViewModel extends ChangeNotifier with BaseSingleton {
   }
 
   Future<void> favQuestion({required String id}) async {
+    final BuildContext context = _api.currentContext;
     String url = "$baseUrl/favQuestion/$id";
     final result = await _api.dioGet(url: url);
-    print(result?.data);
     if (result?.statusCode == HttpStatus.ok) {
       uiGlobals.showSnackBar(
-        content: "content",
+        content: AppLocalizations.of(context)!.questionFavSuccess,
         context: _api.currentContext,
       );
     } else if (result?.statusCode == HttpStatus.badRequest) {
-      uiGlobals.showSnackBar(content: "wqdwqdqw", context: _api.currentContext);
+      uiGlobals.showSnackBar(
+        content: AppLocalizations.of(context)!.questionFavUnsuccess,
+        context: _api.currentContext,
+      );
     } else {
-      uiGlobals.showSnackBar(content: "ewc", context: _api.currentContext);
+      uiGlobals.showSnackBar(
+        content: AppLocalizations.of(context)!.unsuccessMessage,
+        context: _api.currentContext,
+      );
     }
 
-    await getAllQuestions;
+    await getQuestionById(id: id);
+  }
+
+  Future<void> unFavQuestion({required String id}) async {
+    final BuildContext context = _api.currentContext;
+    String url = "$baseUrl/unFavQuestion/$id";
+    final result = await _api.dioGet(url: url);
+    if (result?.statusCode == HttpStatus.ok) {
+      uiGlobals.showSnackBar(
+        content: AppLocalizations.of(context)!.questionUnfavSuccess,
+        context: _api.currentContext,
+      );
+    } else if (result?.statusCode == HttpStatus.badRequest) {
+      uiGlobals.showSnackBar(
+        content: AppLocalizations.of(context)!.questionUnfavUnsuccess,
+        context: _api.currentContext,
+      );
+    } else {
+      uiGlobals.showSnackBar(
+        content: AppLocalizations.of(context)!.unsuccessMessage,
+        context: _api.currentContext,
+      );
+    }
+
+    await getQuestionById(id: id);
   }
 
   void searchQuestion(String query) {
