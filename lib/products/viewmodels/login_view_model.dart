@@ -15,7 +15,7 @@ import 'api_view_model.dart';
 class LoginViewModel extends ChangeNotifier with BaseSingleton {
   final _api = Api();
 
-  Future<void> login({
+  Future<int> login({
     required String email,
     required String password,
   }) async {
@@ -53,5 +53,7 @@ class LoginViewModel extends ChangeNotifier with BaseSingleton {
       final apv = Provider.of<ApiViewModel>(context, listen: false);
       await apv.getAllApi;
     }
+
+    return result?.statusCode ?? 500;
   }
 }

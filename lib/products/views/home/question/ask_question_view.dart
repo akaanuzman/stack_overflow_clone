@@ -1,11 +1,12 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:async_button/async_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:stack_overflow_clone/uikit/button/special_async_button.dart';
 
 import '../../../../core/base/base_singleton.dart';
 import '../../../../core/extensions/ui_extensions.dart';
-import '../../../../uikit/button/special_button.dart';
 import '../../../../uikit/decoration/special_container_decoration.dart';
 import '../../../components/textformfield/default_text_form_field.dart';
 import '../../../viewmodels/question_view_model.dart';
@@ -100,10 +101,10 @@ class AskQuestionView extends StatelessWidget with BaseSingleton {
                 ),
               ),
               context.emptySizedHeightBox3x,
-              SpecialButton(
-                buttonLabel: AppLocalizations.of(context)!.reviewYourQuestion,
+              SpecialAsyncButton(
                 borderRadius: context.borderRadius2x,
-                onTap: () async {
+                onTap: (btnStateController) async {
+                  btnStateController.update(ButtonState.loading);
                   final pv =
                       Provider.of<QuestionViewModel>(context, listen: false);
                   _formKey.currentState!.save();
@@ -112,8 +113,12 @@ class AskQuestionView extends StatelessWidget with BaseSingleton {
                       title: _titleController.text,
                       content: _contentController.text,
                     );
+                    btnStateController.update(ButtonState.success);
+                  } else {
+                    btnStateController.update(ButtonState.failure);
                   }
                 },
+                buttonLabel: AppLocalizations.of(context)!.reviewYourQuestion,
               ),
             ],
           ),

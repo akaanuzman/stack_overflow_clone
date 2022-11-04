@@ -1,12 +1,13 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:async_button/async_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:stack_overflow_clone/uikit/button/special_async_button.dart';
 
 import '../../../core/base/base_singleton.dart';
 import '../../../core/extensions/ui_extensions.dart';
-import '../../../uikit/button/special_button.dart';
 import '../../../uikit/decoration/special_container_decoration.dart';
 import '../../components/textformfield/default_text_form_field.dart';
 import '../../viewmodels/login_view_model.dart';
@@ -17,13 +18,6 @@ class LoginView extends StatelessWidget with BaseSingleton {
   final _passwordController = TextEditingController();
 
   LoginView({super.key});
-
-  void _login(LoginViewModel pv, BuildContext context) async {
-    await pv.login(
-      email: _emailController.text,
-      password: _passwordController.text,
-    );
-  }
 
   void _signUp(BuildContext context) {
     Navigator.push(
@@ -102,14 +96,23 @@ class LoginView extends StatelessWidget with BaseSingleton {
     );
   }
 
-  SizedBox _loginButton(BuildContext context) {
+  Widget _loginButton(BuildContext context) {
     final pv = Provider.of<LoginViewModel>(context, listen: false);
     return SizedBox(
       width: double.maxFinite,
-      child: SpecialButton(
+      child: SpecialAsyncButton(
+        onTap: (btnStateController) async {
+          btnStateController.update(ButtonState.loading);
+          int statusCode = await pv.login(
+            email: _emailController.text,
+            password: _passwordController.text,
+          );
+          statusCode == 200
+              ? btnStateController.update(ButtonState.success)
+              : btnStateController.update(ButtonState.failure);
+        },
         buttonLabel: AppLocalizations.of(context)!.loginButton,
         borderRadius: context.borderRadius2x,
-        onTap: () => _login(pv, context),
       ),
     );
   }

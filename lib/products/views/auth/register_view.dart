@@ -1,7 +1,9 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:async_button/async_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:stack_overflow_clone/uikit/button/special_async_button.dart';
 import '../../../core/base/base_singleton.dart';
 import '../../../core/extensions/ui_extensions.dart';
 import '../../../uikit/button/special_button.dart';
@@ -148,20 +150,26 @@ class RegisterView extends StatelessWidget with BaseSingleton {
   SizedBox _signUpButton(BuildContext context) {
     return SizedBox(
       width: double.maxFinite,
-      child: SpecialButton(
+      child: SpecialAsyncButton(
         borderRadius: context.borderRadius2x,
         buttonLabel: AppLocalizations.of(context)!.signUp,
-        onTap: () async {
+        onTap: (btnStateController) async {
+          btnStateController.update(ButtonState.loading);
           _formKey.currentState!.save();
           if (_formKey.currentState!.validate()) {
             final pv = Provider.of<RegisterViewModel>(context, listen: false);
-            await pv.register(
+            int statusCode = await pv.register(
               name: _nameController.text,
               lastname: _lastnameController.text,
               email: _emailController.text,
               password: _passwordController.text,
               context: context,
             );
+            statusCode == 200
+                ? btnStateController.update(ButtonState.success)
+                : btnStateController.update(ButtonState.failure);
+          } else {
+            btnStateController.update(ButtonState.failure);
           }
         },
       ),

@@ -47,5 +47,13 @@
     "answerFavSuccess": "The answer was successfully liked!",
     "answerFavUnsuccess": "The answer was already liked!",
     "answerUnfavSuccess": "The answer was successfully uncommented!",
-    "answerUnfavUnsuccess": "The answer was already uncommented!"
+    "answerUnfavUnsuccess": "The answer was already uncommented!",
+    "profileAppBarTitle": "My Profile",
+    "editProfile": "Edit profile",
+    "website": "Website",
+    "answers": "Answers",
+    "noAnswered": "You have not answered any questions.",
+    "noAsked": "You have not asked any questions.",
+    "seeAll": "See All",
+    "about": "About"
 }

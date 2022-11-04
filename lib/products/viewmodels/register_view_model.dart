@@ -10,7 +10,7 @@ import '../views/auth/login_view.dart';
 class RegisterViewModel extends ChangeNotifier with BaseSingleton {
   final _api = Api();
 
-  Future<void> register({
+  Future<int> register({
     required String name,
     required String lastname,
     required String email,
@@ -37,9 +37,14 @@ class RegisterViewModel extends ChangeNotifier with BaseSingleton {
       fail500Title: AppLocalizations.of(context)!.registerFail,
       successOnTap: () => Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) => LoginView()),
+        MaterialPageRoute(
+          builder: (_) => LoginView(),
+        ),
         (route) => false,
       ),
     );
+    print("******${result?.statusCode}");
+
+    return result?.statusCode ?? 500;
   }
 }

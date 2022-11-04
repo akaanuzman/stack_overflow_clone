@@ -36,7 +36,7 @@ class AnswerViewModel extends ChangeNotifier with BaseSingleton {
     notifyListeners();
   }
 
-  Future<void> addAnswer({
+  Future<int> addAnswer({
     required String qId,
     required String content,
   }) async {
@@ -61,6 +61,7 @@ class AnswerViewModel extends ChangeNotifier with BaseSingleton {
     );
 
     await getAllAnswers(qId: qId);
+    return result?.statusCode ?? 500;
   }
 
   Future<void> favUnFavAnswer({

@@ -1,11 +1,12 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:async_button/async_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:stack_overflow_clone/uikit/button/special_async_button.dart';
 
 import '../../../../core/base/base_singleton.dart';
 import '../../../../core/extensions/ui_extensions.dart';
-import '../../../../uikit/button/special_button.dart';
 import '../../../../uikit/decoration/special_container_decoration.dart';
 import '../../../components/textformfield/default_text_form_field.dart';
 import '../../../viewmodels/answer_view_model.dart';
@@ -67,17 +68,21 @@ class AddAnswerView extends StatelessWidget with BaseSingleton {
               ),
             ),
             context.emptySizedHeightBox3x,
-            SpecialButton(
-              onTap: () async {
+            SpecialAsyncButton(
+              onTap: (btnStateController) async {
+                btnStateController.update(ButtonState.loading);
                 final pv = Provider.of<AnswerViewModel>(context, listen: false);
-                await pv.addAnswer(
+                int statusCode = await pv.addAnswer(
                   qId: questionId,
                   content: _contentController.text,
                 );
+                statusCode == 200
+                    ? btnStateController.update(ButtonState.success)
+                    : btnStateController.update(ButtonState.failure);
               },
               buttonLabel: AppLocalizations.of(context)!.postYourAnswer,
               borderRadius: context.borderRadius2x,
-            )
+            ),
           ],
         ),
       ),
