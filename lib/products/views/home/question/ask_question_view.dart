@@ -2,12 +2,12 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+
 import '../../../../core/base/base_singleton.dart';
 import '../../../../core/extensions/ui_extensions.dart';
-import '../../../components/textformfield/default_text_form_field.dart';
 import '../../../../uikit/button/special_button.dart';
 import '../../../../uikit/decoration/special_container_decoration.dart';
-
+import '../../../components/textformfield/default_text_form_field.dart';
 import '../../../viewmodels/question_view_model.dart';
 
 class AskQuestionView extends StatelessWidget with BaseSingleton {

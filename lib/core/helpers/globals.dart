@@ -77,4 +77,29 @@ class Globals with BaseSingleton {
       );
     }
   }
+
+  getSnackBar({
+    required Response<dynamic>? result,
+    required String successContent,
+    required String error404Content,
+    required String error500Content,
+    required BuildContext context,
+  }) {
+    if (result?.statusCode == HttpStatus.ok) {
+      uiGlobals.showSnackBar(
+        content: successContent,
+        context: context,
+      );
+    } else if (result?.statusCode == HttpStatus.badRequest) {
+      uiGlobals.showSnackBar(
+        content: error404Content,
+        context: context,
+      );
+    } else {
+      uiGlobals.showSnackBar(
+        content: error500Content,
+        context: context,
+      );
+    }
+  }
 }

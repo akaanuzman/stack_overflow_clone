@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
+
 import 'IMyTheme.dart';
 import 'text/my_texts.dart';
-import 'package:flutter/material.dart';
 
 class MyTheme extends IMyTheme {
   static MyTheme? _instance;

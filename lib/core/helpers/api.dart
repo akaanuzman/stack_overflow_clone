@@ -1,10 +1,11 @@
 // ignore_for_file: avoid_print
 
 import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_overflow_clone/core/base/base_singleton.dart';
 import 'package:stack_overflow_clone/core/helpers/token.dart';
-import 'package:dio/dio.dart';
 
 import '../utils/navigation_service.dart';
 

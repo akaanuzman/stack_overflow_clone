@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stack_overflow_clone/products/viewmodels/question_view_model.dart';
+import 'question_view_model.dart';
 
 import '../../core/helpers/api.dart';
 import 'user_view_model.dart';

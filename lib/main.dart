@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:stack_overflow_clone/products/viewmodels/api_view_model.dart';
-import 'package:stack_overflow_clone/products/viewmodels/user_view_model.dart';
-import 'products/viewmodels/answer_view_model.dart';
-import 'products/viewmodels/question_view_model.dart';
-import 'core/utils/navigation_service.dart';
-import 'products/viewmodels/navbar_view_model.dart';
-import 'products/viewmodels/splash_view_model.dart';
-import 'products/views/common/splash_view.dart';
-import 'core/base/base_singleton.dart';
-import 'products/viewmodels/login_view_model.dart';
-import 'products/viewmodels/register_view_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+
+import 'core/base/base_singleton.dart';
+import 'core/utils/navigation_service.dart';
+import 'products/viewmodels/answer_view_model.dart';
+import 'products/viewmodels/api_view_model.dart';
+import 'products/viewmodels/login_view_model.dart';
+import 'products/viewmodels/navbar_view_model.dart';
+import 'products/viewmodels/question_view_model.dart';
+import 'products/viewmodels/register_view_model.dart';
+import 'products/viewmodels/splash_view_model.dart';
+import 'products/viewmodels/user_view_model.dart';
+import 'products/views/common/splash_view.dart';
 
 void main() => runApp(
       MultiProvider(

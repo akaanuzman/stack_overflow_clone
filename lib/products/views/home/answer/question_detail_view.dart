@@ -2,20 +2,17 @@
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:stack_overflow_clone/products/models/answer_model.dart';
-import '../../../viewmodels/question_view_model.dart';
-import '../../../viewmodels/user_view_model.dart';
-import 'add_answer_view.dart';
-import '../../../../uikit/decoration/special_container_decoration.dart';
-import '../../../../uikit/skeleton/skeleton_list.dart';
+
 import '../../../../core/base/base_singleton.dart';
 import '../../../../core/extensions/ui_extensions.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import '../../../../uikit/button/special_button.dart';
-import '../../../models/question_model.dart';
+import '../../../../uikit/decoration/special_container_decoration.dart';
+import '../../../../uikit/skeleton/skeleton_list.dart';
 import '../../../viewmodels/answer_view_model.dart';
+import '../../../viewmodels/question_view_model.dart';
+import 'add_answer_view.dart';
 
 class QuestionDetailView extends StatelessWidget with BaseSingleton {
   final String id;
@@ -33,46 +30,6 @@ class QuestionDetailView extends StatelessWidget with BaseSingleton {
         apv.getAllAnswers(qId: id),
       ],
     );
-  }
-
-  Color isFavQuestion(QuestionModel model, BuildContext context) {
-    final upv = Provider.of<UserViewModel>(context, listen: false);
-    if (model.fav != null) {
-      for (var e in model.fav!) {
-        if (upv.user.sId == e.sId)
-          return colors.redAccent;
-        else
-          return colors.grey;
-      }
-    } else
-      return colors.grey;
-    return colors.grey;
-  }
-
-  Future<void> questionFavOperation(
-    QuestionModel model,
-    BuildContext context,
-    QuestionViewModel pv,
-  ) async {
-    final Color color = isFavQuestion(model, context);
-    if (color == colors.redAccent) {
-      await pv.unFavQuestion(id: id);
-    } else {
-      await pv.favQuestion(id: id);
-    }
-  }
-
-  Color isFavAnswer(QuestionModel model, AnswerModel answerModel) {
-    if (answerModel.fav != null) {
-      for (var e in answerModel.fav!) {
-        if (model.user?.sId == e.sId) {
-          return colors.redAccent;
-        } else
-          return colors.grey;
-      }
-    } else
-      return colors.grey;
-    return colors.grey;
   }
 
   @override
@@ -175,11 +132,15 @@ class QuestionDetailView extends StatelessWidget with BaseSingleton {
                               children: [
                                 IconButton(
                                   onPressed: () async {
-                                    questionFavOperation(question, context, pv);
+                                    await pv.questionFavOperation(
+                                      model: question,
+                                      context: context,
+                                      id: id,
+                                    );
                                   },
                                   icon: Icon(
                                     Icons.favorite,
-                                    color: isFavQuestion(question, context),
+                                    color: pv.isFavQuestion(question, context),
                                   ),
                                 ),
                                 context.emptySizedWidthBox2x,
@@ -260,11 +221,21 @@ class QuestionDetailView extends StatelessWidget with BaseSingleton {
                                         child: Row(
                                           children: [
                                             IconButton(
-                                              onPressed: () async {},
+                                              onPressed: () async {
+                                                apv.answerFavOperation(
+                                                  answerModel: item,
+                                                  context: context,
+                                                  pv: apv,
+                                                  qId: id,
+                                                  aId: "${item.sId}",
+                                                );
+                                              },
                                               icon: Icon(
                                                 Icons.favorite,
-                                                color:
-                                                    isFavAnswer(question, item),
+                                                color: apv.isFavAnswer(
+                                                  item,
+                                                  context,
+                                                ),
                                               ),
                                             ),
                                             context.emptySizedWidthBox2x,
