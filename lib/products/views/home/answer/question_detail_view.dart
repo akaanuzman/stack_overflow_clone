@@ -69,6 +69,7 @@ class QuestionDetailView extends StatelessWidget with BaseSingleton {
               return FadeInUp(
                 child: Consumer<QuestionViewModel>(builder: (context, pv, _) {
                   final question = pv.question;
+                  int answerLength = question.answer?.length ?? 0;
                   return ListView(
                     padding: context.padding2x,
                     children: [
@@ -180,12 +181,29 @@ class QuestionDetailView extends StatelessWidget with BaseSingleton {
                         ],
                       ),
                       context.emptySizedHeightBox5x,
-                      Text(
-                        "${question.answer?.length} Answers",
-                        style: context.textTheme.headline6,
-                      ),
-                      context.emptySizedHeightBox2x,
-                      uiGlobals.divider,
+                      answerLength == 0
+                          ? Container(
+                              padding: context.padding4x,
+                              decoration:
+                                  SpecialContainerDecoration(context: context),
+                              alignment: context.alignmentCenter,
+                              child: Text(
+                                AppLocalizations.of(context)!.emptyQuestion,
+                                style: context.textTheme.headline6,
+                                textAlign: context.taCenter,
+                              ),
+                            )
+                          : Column(
+                            crossAxisAlignment: context.crossAxisAStart,
+                              children: [
+                                Text(
+                                  "${question.answer?.length} Answers",
+                                  style: context.textTheme.headline6,
+                                ),
+                                context.emptySizedHeightBox2x,
+                                uiGlobals.divider,
+                              ],
+                            ),
                       Consumer<AnswerViewModel>(
                         builder: (context, apv, _) {
                           return ListView.separated(
@@ -198,90 +216,92 @@ class QuestionDetailView extends StatelessWidget with BaseSingleton {
                             },
                             itemBuilder: (BuildContext context, int index) {
                               var item = apv.answers[index];
-                              return Column(
-                                crossAxisAlignment: context.crossAxisAStart,
-                                children: [
-                                  context.emptySizedHeightBox2x,
-                                  Container(
-                                    width: double.maxFinite,
-                                    padding: context.padding2x,
-                                    decoration: SpecialContainerDecoration(
-                                      context: context,
-                                      color: colors.grey3,
+                              return FadeInUp(
+                                child: Column(
+                                  crossAxisAlignment: context.crossAxisAStart,
+                                  children: [
+                                    context.emptySizedHeightBox2x,
+                                    Container(
+                                      width: double.maxFinite,
+                                      padding: context.padding2x,
+                                      decoration: SpecialContainerDecoration(
+                                        context: context,
+                                        color: colors.grey3,
+                                      ),
+                                      child: Text(
+                                        "${item.content}",
+                                      ),
                                     ),
-                                    child: Text(
-                                      "${item.content}",
-                                    ),
-                                  ),
-                                  context.emptySizedHeightBox3x,
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Row(
-                                          children: [
-                                            IconButton(
-                                              onPressed: () async {
-                                                apv.answerFavOperation(
-                                                  answerModel: item,
-                                                  context: context,
-                                                  pv: apv,
-                                                  qId: id,
-                                                  aId: "${item.sId}",
-                                                );
-                                              },
-                                              icon: Icon(
-                                                Icons.favorite,
-                                                color: apv.isFavAnswer(
-                                                  item,
-                                                  context,
+                                    context.emptySizedHeightBox3x,
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: Row(
+                                            children: [
+                                              IconButton(
+                                                onPressed: () async {
+                                                  apv.answerFavOperation(
+                                                    answerModel: item,
+                                                    context: context,
+                                                    pv: apv,
+                                                    qId: id,
+                                                    aId: "${item.sId}",
+                                                  );
+                                                },
+                                                icon: Icon(
+                                                  Icons.favorite,
+                                                  color: apv.isFavAnswer(
+                                                    item,
+                                                    context,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            context.emptySizedWidthBox2x,
-                                            Expanded(
-                                              child: Text(
-                                                "${item.fav?.length}",
-                                                style: context
-                                                    .textTheme.subtitle1!
-                                                    .copyWith(
-                                                  fontWeight: context.fw700,
+                                              context.emptySizedWidthBox2x,
+                                              Expanded(
+                                                child: Text(
+                                                  "${item.fav?.length}",
+                                                  style: context
+                                                      .textTheme.subtitle1!
+                                                      .copyWith(
+                                                    fontWeight: context.fw700,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Expanded(
-                                        child: Wrap(
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  context.crossAxisAStart,
-                                              children: [
-                                                Text(
-                                                  "answered ${globals.formatDate(item.createdAt)}",
-                                                  style: context
-                                                      .textTheme.caption!
-                                                      .copyWith(
-                                                          color: colors.blue6),
-                                                ),
-                                                Text(
-                                                  "${item.user?.name} ${item.user?.lastname}",
-                                                  style: context
-                                                      .textTheme.caption!
-                                                      .copyWith(
-                                                          color: colors.blue8),
-                                                ),
-                                              ],
-                                            )
-                                          ],
+                                        Expanded(
+                                          child: Wrap(
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    context.crossAxisAStart,
+                                                children: [
+                                                  Text(
+                                                    "answered ${globals.formatDate(item.createdAt)}",
+                                                    style: context
+                                                        .textTheme.caption!
+                                                        .copyWith(
+                                                            color: colors.blue6),
+                                                  ),
+                                                  Text(
+                                                    "${item.user?.name} ${item.user?.lastname}",
+                                                    style: context
+                                                        .textTheme.caption!
+                                                        .copyWith(
+                                                            color: colors.blue8),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  context.emptySizedHeightBox3x,
-                                ],
+                                      ],
+                                    ),
+                                    context.emptySizedHeightBox3x,
+                                  ],
+                                ),
                               );
                             },
                           );

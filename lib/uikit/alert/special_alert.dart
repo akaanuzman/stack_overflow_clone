@@ -42,28 +42,32 @@ class SpecialAlert extends StatelessWidget with BaseSingleton {
       actionsAlignment: MainAxisAlignment.center,
       actions: [
         if (isHasActions) ...[
-          ElevatedButton(
-            onPressed: onTap ??
-                () {
-                  Navigator.pop(context);
-                },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: colors.redAccent,
-              shape:
-                  RoundedRectangleBorder(borderRadius: context.borderRadius10x),
+          FadeInUp(
+            child: ElevatedButton(
+              onPressed: secondActionOnTap ??
+                  () {
+                    Navigator.pop(context);
+                  },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: colors.redAccent,
+                shape:
+                    RoundedRectangleBorder(borderRadius: context.borderRadius10x),
+              ),
+              child: Text(secondButtonLabel ?? "null_value"),
             ),
-            child: Text(secondButtonLabel ?? "null_value"),
           ),
-          ElevatedButton(
-            onPressed: secondActionOnTap ??
-                () {
-                  Navigator.pop(context);
-                },
-            style: ElevatedButton.styleFrom(
-              shape:
-                  RoundedRectangleBorder(borderRadius: context.borderRadius10x),
+          FadeInUp(
+            child: ElevatedButton(
+              onPressed: onTap ??
+                  () {
+                    Navigator.pop(context);
+                  },
+              style: ElevatedButton.styleFrom(
+                shape:
+                    RoundedRectangleBorder(borderRadius: context.borderRadius10x),
+              ),
+              child: Text(buttonLabel),
             ),
-            child: Text(buttonLabel),
           ),
         ] else ...[
           _onlyOneAction(context),

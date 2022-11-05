@@ -43,7 +43,6 @@ class RegisterViewModel extends ChangeNotifier with BaseSingleton {
         (route) => false,
       ),
     );
-    print("******${result?.statusCode}");
 
     return result?.statusCode ?? 500;
   }

@@ -10,7 +10,6 @@
     "signUpDesc": "Don't have an account",
     "loginFail": "Login Failed",
     "loginSuccess": "Login Success",
-    "failContent": "Please check your internet\nand try again.",
     "okButton": "OK",
     "registerAppbarTitle": "Register",
     "registerTitle": "Join the Stack Overflow community",
@@ -55,5 +54,16 @@
     "noAnswered": "You have not answered any questions.",
     "noAsked": "You have not asked any questions.",
     "seeAll": "See All",
-    "about": "About"
+    "about": "About",
+    "editProfile": "Edit Profile",
+    "place": "Place",
+    "saveProfile": "Save Profile",
+    "successEdit": "Your information has been successfully updated!",
+    "unsuccessEdit": "Your information could not be successfully updated!",
+    "logout": "Log out",
+    "emptyQuestion": "The questions has not asked yet!",
+    "cancelButton": "CANCEL",
+    "areYouSure": "Are you sure?",
+    "logoutContent": "Your account will be logged out. \nAre you sure?"
+
 }

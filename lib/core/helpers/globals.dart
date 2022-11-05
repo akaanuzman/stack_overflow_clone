@@ -72,7 +72,7 @@ class Globals with BaseSingleton {
         context: context,
         alertEnum: AlertEnum.ERROR,
         contentTitle: fail500Title,
-        contentSubtitle: AppLocalizations.of(context)!.failContent,
+        contentSubtitle: AppLocalizations.of(context)!.unsuccessMessage,
         buttonLabel: AppLocalizations.of(context)!.okButton,
       );
     }

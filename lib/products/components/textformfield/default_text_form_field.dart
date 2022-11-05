@@ -33,6 +33,7 @@ class DefaultTextFormField extends SpecialTextFormField {
           labelText: labelText,
           hintText: hintText,
           prefixIcon: prefixIcon,
+          initialValue: initialValue,
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: MyColors.instance.grey),
           ),
@@ -54,5 +55,6 @@ class DefaultTextFormField extends SpecialTextFormField {
           fillColor: fillColor,
           minLines: minLines,
           maxLines: maxLines,
+          readOnly: readOnly,
         );
 }

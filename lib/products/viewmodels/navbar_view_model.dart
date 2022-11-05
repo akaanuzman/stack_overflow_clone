@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../views/home/profile_view.dart';
+import '../views/home/profile/profile_view.dart';
 import '../models/navbar_model.dart';
 import '../views/home/question/home_view.dart';
 

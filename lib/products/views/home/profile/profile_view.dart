@@ -9,7 +9,11 @@ import 'package:stack_overflow_clone/uikit/button/special_button.dart';
 import 'package:stack_overflow_clone/uikit/decoration/special_container_decoration.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../../viewmodels/user_view_model.dart';
+import '../../../../core/enums/alert_enum.dart';
+import '../../../../core/helpers/token.dart';
+import '../../../viewmodels/user_view_model.dart';
+import '../../auth/login_view.dart';
+import 'edit_profile_view.dart';
 
 class ProfileView extends StatelessWidget with BaseSingleton {
   const ProfileView({super.key});
@@ -26,6 +30,14 @@ class ProfileView extends StatelessWidget with BaseSingleton {
               SpecialButton(
                 borderRadius: context.borderRadius2x,
                 buttonLabel: AppLocalizations.of(context)!.editProfile,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditProfileView(),
+                    ),
+                  );
+                },
               )
             ],
           ),
@@ -120,16 +132,50 @@ class ProfileView extends StatelessWidget with BaseSingleton {
                   ? Column(
                       crossAxisAlignment: context.crossAxisAStart,
                       children: [
-                        Text(
-                          AppLocalizations.of(context)!.about,
-                          style: context.textTheme.headline6,
+                        Row(
+                          mainAxisAlignment: context.mainAxisASpaceBetween,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)!.about,
+                              style: context.textTheme.headline6,
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                uiGlobals.showAlertDialog(
+                                  context: context,
+                                  alertEnum: AlertEnum.AREUSURE,
+                                  contentTitle: "Are you sure?",
+                                  contentSubtitle:
+                                      "Your account will be logged out. \nAre you sure?",
+                                  buttonLabel:
+                                      AppLocalizations.of(context)!.okButton,
+                                  onTap: () {
+                                    Token.deleteAll();
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => LoginView(),
+                                      ),
+                                      (route) => false,
+                                    );
+                                  },
+                                  secondButtonLabel: "CANCEL"
+                                );
+                              },
+                              child: Text(
+                                AppLocalizations.of(context)!.logout,
+                                style: context.textTheme.headline6!
+                                    .copyWith(color: colors.blue),
+                              ),
+                            )
+                          ],
                         ),
                         context.emptySizedHeightBox2x,
                         Container(
                           padding: context.padding4x,
                           decoration:
                               SpecialContainerDecoration(context: context),
-                          alignment: Alignment.center,
+                          alignment: context.alignmentCenter,
                           child: Text(title),
                         ),
                       ],
@@ -157,7 +203,7 @@ class ProfileView extends StatelessWidget with BaseSingleton {
               Container(
                 padding: context.padding4x,
                 decoration: SpecialContainerDecoration(context: context),
-                alignment: Alignment.center,
+                alignment: context.alignmentCenter,
                 child: Text(
                   answerLength != 0
                       ? "You have answered $answerLength question."
@@ -186,7 +232,7 @@ class ProfileView extends StatelessWidget with BaseSingleton {
               Container(
                 padding: context.padding4x,
                 decoration: SpecialContainerDecoration(context: context),
-                alignment: Alignment.center,
+                alignment: context.alignmentCenter,
                 child: Text(
                   questionLength != 0
                       ? "You have asked $questionLength question."

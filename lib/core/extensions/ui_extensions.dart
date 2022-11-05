@@ -241,7 +241,7 @@ extension AlignmentExtension on BuildContext {
   Alignment get alignmentBottomCenter => Alignment.bottomCenter;
   Alignment get alignmentBottomLeft => Alignment.bottomLeft;
   Alignment get alignmentBottomRight => Alignment.bottomRight;
-  Alignment get alignmentcenter => Alignment.center;
+  Alignment get alignmentCenter => Alignment.center;
   Alignment get alignmentCenterLeft => Alignment.centerLeft;
   Alignment get alignmentCenterRight => Alignment.centerRight;
   Alignment get alignmentTopCenter => Alignment.topCenter;

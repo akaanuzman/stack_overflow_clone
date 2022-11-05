@@ -1,8 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stack_overflow_clone/uikit/decoration/special_container_decoration.dart';
 import '../../../../core/base/base_singleton.dart';
-import '../../../../core/helpers/token.dart';
 import '../../../components/textformfield/default_text_form_field.dart';
 import '../../../../core/extensions/ui_extensions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -50,7 +50,6 @@ class HomeView extends StatelessWidget with BaseSingleton {
       buttonLabel: AppLocalizations.of(context)!.askQuestion,
       borderRadius: context.borderRadius2x,
       onTap: () {
-        Token.deleteAll();
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -65,26 +64,51 @@ class HomeView extends StatelessWidget with BaseSingleton {
     return FadeInUp(
       child: Consumer<QuestionViewModel>(
         builder: (BuildContext context, QuestionViewModel pv, _) {
-          return ListView(
-            children: [
-              Padding(
-                padding: context.padding2x,
-                child: DefaultTextFormField(
-                  context: context,
-                  labelText: AppLocalizations.of(context)!.searchLabel,
-                  prefixIcon: const Icon(Icons.search),
-                  filled: true,
-                  fillColor: colors.white,
-                  controller: _questionController,
-                  onChanged: pv.searchQuestion,
-                ),
-              ),
-              Container(
-                padding: context.padding1x,
-                color: colors.yellow1.withOpacity(0.65),
-                child: _questionList(pv),
-              ),
-            ],
+          int questionLength = pv.questions.length;
+          return Center(
+            child: ListView(
+              shrinkWrap: questionLength == 0 ? true : false,
+              children: [
+                questionLength == 0
+                    ? Center(
+                        child: Container(
+                          padding: context.padding4x,
+                          decoration:
+                              SpecialContainerDecoration(context: context),
+                          alignment: context.alignmentCenter,
+                          child: Text(
+                            AppLocalizations.of(context)!.emptyQuestion,
+                            style: context.textTheme.headline6,
+                            textAlign: context.taCenter,
+                          ),
+                        ),
+                      )
+                    : Column(
+                        children: [
+                          Padding(
+                            padding: context.padding2x,
+                            child: DefaultTextFormField(
+                              context: context,
+                              labelText:
+                                  AppLocalizations.of(context)!.searchLabel,
+                              prefixIcon: const Icon(Icons.search),
+                              filled: true,
+                              fillColor: colors.white,
+                              controller: _questionController,
+                              onChanged: pv.searchQuestion,
+                            ),
+                          ),
+                          FadeInUp(
+                            child: Container(
+                              padding: context.padding1x,
+                              color: colors.yellow1.withOpacity(0.65),
+                              child: _questionList(pv),
+                            ),
+                          ),
+                        ],
+                      ),
+              ],
+            ),
           );
         },
       ),
@@ -114,21 +138,23 @@ class HomeView extends StatelessWidget with BaseSingleton {
   }
 
   Widget _question(BuildContext context, QuestionModel item) {
-    return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => QuestionDetailView(
-            id: "${item.sId}",
+    return FadeInUp(
+      child: GestureDetector(
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => QuestionDetailView(
+              id: "${item.sId}",
+            ),
           ),
         ),
-      ),
-      child: Column(
-        children: [
-          _questionPropertiesAndTitle(context, item),
-          context.emptySizedHeightBox1x,
-          _questionInformation(context, item)
-        ],
+        child: Column(
+          children: [
+            _questionPropertiesAndTitle(context, item),
+            context.emptySizedHeightBox1x,
+            _questionInformation(context, item)
+          ],
+        ),
       ),
     );
   }

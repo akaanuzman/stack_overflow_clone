@@ -4,7 +4,6 @@ class UserModel {
   String? lastname;
   String? email;
   String? role;
-  String? password;
   String? img;
   bool? isBlocked;
   bool? isActive;
@@ -23,7 +22,6 @@ class UserModel {
       this.lastname,
       this.email,
       this.role,
-      this.password,
       this.img,
       this.isBlocked,
       this.isActive,
@@ -42,7 +40,6 @@ class UserModel {
     lastname = json['lastname'];
     email = json['email'];
     role = json['role'];
-    password = json['password'];
     img = json['img'];
     isBlocked = json['isBlocked'];
     isActive = json['isActive'];
@@ -73,7 +70,6 @@ class UserModel {
     data['lastname'] = lastname;
     data['email'] = email;
     data['role'] = role;
-    data['password'] = password;
     data['img'] = img;
     data['isBlocked'] = isBlocked;
     data['isActive'] = isActive;
