@@ -12,6 +12,8 @@ import '../../core/helpers/token.dart';
 class UserViewModel extends ChangeNotifier with BaseSingleton {
   UserModel _user = UserModel();
   UserModel get user => _user;
+  List<Question> _searchList = [];
+  List<Question> get searchList => _searchList;
 
   final _api = Api();
 
@@ -51,5 +53,20 @@ class UserViewModel extends ChangeNotifier with BaseSingleton {
       context: context,
     );
     await getMyDetails;
+  }
+
+  void searchQuestion(String query) {
+    if (user.question!.isNotEmpty && user.question != null) {
+      if (query.isNotEmpty) {
+        final suggestions = user.question!.where((question) {
+          final questionTitle = question.title?.toLowerCase();
+          final input = query.toLowerCase();
+          return questionTitle?.contains(input) ?? false;
+        }).toList();
+        _searchList = suggestions;
+      }
+    }
+
+    notifyListeners();
   }
 }

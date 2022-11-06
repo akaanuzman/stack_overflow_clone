@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:stack_overflow_clone/core/base/base_singleton.dart';
-import 'package:stack_overflow_clone/core/extensions/ui_extensions.dart';
-import 'package:stack_overflow_clone/uikit/button/special_button.dart';
-import 'package:stack_overflow_clone/uikit/decoration/special_container_decoration.dart';
+import '../../../../core/base/base_singleton.dart';
+import '../../../../core/extensions/ui_extensions.dart';
+import '../../../../uikit/button/special_button.dart';
+import '../../../../uikit/decoration/special_container_decoration.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../../core/enums/alert_enum.dart';
 import '../../../../core/helpers/token.dart';
 import '../../../viewmodels/user_view_model.dart';
 import '../../auth/login_view.dart';
+import '../question/my_questions_view.dart';
 import 'edit_profile_view.dart';
 
 class ProfileView extends StatelessWidget with BaseSingleton {
@@ -48,7 +49,8 @@ class ProfileView extends StatelessWidget with BaseSingleton {
           var user = pv.user;
           String memberDate = globals.formatDate(user.createdAt);
           String place = user.place ?? "null";
-          String title = user.title ?? "null";
+          String title =
+              user.title ?? AppLocalizations.of(context)!.noAboutMeHasBeenYet;
           int answerLength = user.answer?.length ?? 0;
           int questionLength = user.question?.length ?? 0;
           return ListView(
@@ -88,39 +90,44 @@ class ProfileView extends StatelessWidget with BaseSingleton {
                           ],
                         ),
                         context.emptySizedHeightBox1x,
-                        place != "null"
-                            ? Row(
-                                children: [
-                                  Icon(
-                                    Icons.place,
-                                    color: colors.grey,
-                                    size: 16,
-                                  ),
-                                  context.emptySizedWidthBox2x,
-                                  Text(place),
-                                  context.emptySizedWidthBox2x,
-                                  user.website != null
-                                      ? GestureDetector(
-                                          onTap: () {
-                                            launchUrlString("${user.website}");
-                                          },
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.language,
-                                                color: colors.grey,
-                                                size: 16,
-                                              ),
-                                              context.emptySizedWidthBox2x,
-                                              Text(AppLocalizations.of(context)!
-                                                  .website),
-                                            ],
-                                          ),
-                                        )
-                                      : context.emptySizedHeightBox1x,
-                                ],
-                              )
-                            : context.emptySizedWidthBox1x,
+                        Row(
+                          children: [
+                            place != "null"
+                                ? Row(
+                                    children: [
+                                      Icon(
+                                        Icons.place,
+                                        color: colors.grey,
+                                        size: 16,
+                                      ),
+                                      context.emptySizedWidthBox2x,
+                                      Text(place),
+                                      context.emptySizedWidthBox2x,
+                                    ],
+                                  )
+                                : context.emptySizedHeightBox2x,
+                            user.website != null
+                                ? GestureDetector(
+                                    onTap: () {
+                                      launchUrlString(
+                                          "https://${user.website}");
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.language,
+                                          color: colors.grey,
+                                          size: 16,
+                                        ),
+                                        context.emptySizedWidthBox2x,
+                                        Text(AppLocalizations.of(context)!
+                                            .website),
+                                      ],
+                                    ),
+                                  )
+                                : context.emptySizedHeightBox1x,
+                          ],
+                        ),
                         context.emptySizedHeightBox1x,
                       ],
                     ),
@@ -144,9 +151,10 @@ class ProfileView extends StatelessWidget with BaseSingleton {
                                 uiGlobals.showAlertDialog(
                                   context: context,
                                   alertEnum: AlertEnum.AREUSURE,
-                                  contentTitle: "Are you sure?",
-                                  contentSubtitle:
-                                      "Your account will be logged out. \nAre you sure?",
+                                  contentTitle:
+                                      AppLocalizations.of(context)!.areYouSure,
+                                  contentSubtitle: AppLocalizations.of(context)!
+                                      .logoutContent,
                                   buttonLabel:
                                       AppLocalizations.of(context)!.okButton,
                                   onTap: () {
@@ -159,7 +167,7 @@ class ProfileView extends StatelessWidget with BaseSingleton {
                                       (route) => false,
                                     );
                                   },
-                                  secondButtonLabel: "CANCEL"
+                                  secondButtonLabel: AppLocalizations.of(context)!.cancelButton,
                                 );
                               },
                               child: Text(
@@ -219,7 +227,14 @@ class ProfileView extends StatelessWidget with BaseSingleton {
                     style: context.textTheme.headline6,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MyQuestionsView(),
+                        ),
+                      );
+                    },
                     child: Text(
                       AppLocalizations.of(context)!.seeAll,
                       style: context.textTheme.headline6!

@@ -1,8 +1,9 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stack_overflow_clone/uikit/decoration/special_container_decoration.dart';
+import '../../../../uikit/decoration/special_container_decoration.dart';
 import '../../../../core/base/base_singleton.dart';
+import '../../../../core/helpers/token.dart';
 import '../../../components/textformfield/default_text_form_field.dart';
 import '../../../../core/extensions/ui_extensions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -72,6 +73,7 @@ class HomeView extends StatelessWidget with BaseSingleton {
                 questionLength == 0
                     ? Center(
                         child: Container(
+                          margin: context.padding2x,
                           padding: context.padding4x,
                           decoration:
                               SpecialContainerDecoration(context: context),

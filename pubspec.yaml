@@ -17,6 +17,7 @@ dependencies:
   shimmer_animation: ^2.1.0+1
   flutter_svg: ^1.1.5
   async_button: ^1.0.0-beta.1+1
+  flutter_slidable: ^2.0.0
 
   # State Management
   provider: ^6.0.3

@@ -82,8 +82,13 @@ class QuestionViewModel extends ChangeNotifier with BaseSingleton {
         Navigator.pop(context);
       },
     );
-
-    await getAllQuestions;
+    final upv = Provider.of<UserViewModel>(context, listen: false);
+    await Future.wait(
+      [
+        getAllQuestions,
+        upv.getMyDetails,
+      ],
+    );
   }
 
   Future<void> favUnFavQuestion({
@@ -107,7 +112,12 @@ class QuestionViewModel extends ChangeNotifier with BaseSingleton {
       context: context,
     );
 
-    await getQuestionById(id: id);
+    await Future.wait(
+      [
+        getQuestionById(id: id),
+        getAllQuestions,
+      ],
+    );
   }
 
   Color isFavQuestion(QuestionModel model, BuildContext context) {

@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:stack_overflow_clone/core/base/base_singleton.dart';
 import 'package:stack_overflow_clone/core/helpers/api.dart';
 import 'package:stack_overflow_clone/products/models/answer_model.dart';
+import 'package:stack_overflow_clone/products/viewmodels/question_view_model.dart';
 
 import 'user_view_model.dart';
 
@@ -59,8 +60,16 @@ class AnswerViewModel extends ChangeNotifier with BaseSingleton {
         Navigator.pop(context);
       },
     );
+    final upv = Provider.of<UserViewModel>(context, listen: false);
+    final qpv = Provider.of<QuestionViewModel>(context, listen:false);
+    await Future.wait(
+      [
+        upv.getMyDetails,
+        qpv.getAllQuestions,
+        getAllAnswers(qId: qId),
+      ],
+    );
 
-    await getAllAnswers(qId: qId);
     return result?.statusCode ?? 500;
   }
 
