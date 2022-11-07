@@ -134,7 +134,6 @@ class QuestionDetailView extends StatelessWidget with BaseSingleton {
                                   onPressed: () async {
                                     await pv.questionFavOperation(
                                       model: question,
-                                      context: context,
                                       id: id,
                                     );
                                   },

@@ -55,7 +55,6 @@
     "noAsked": "You have not asked any questions.",
     "seeAll": "See All",
     "about": "About",
-    "editProfile": "Edit Profile",
     "place": "Place",
     "saveProfile": "Save Profile",
     "successEdit": "Your information has been successfully updated!",
@@ -66,5 +65,10 @@
     "areYouSure": "Are you sure?",
     "logoutContent": "Your account will be logged out. \nAre you sure?",
     "myQuestions": "My Questions",
-    "noAboutMeHasBeenYet": "No about me has been yet"
+    "noAboutMeHasBeenYet": "No about me has been yet",
+    "edit": "Edit",
+    "delete": "Delete",
+    "editQuestion": "Edit Question",
+    "editYourQuestion": "Edit your question",
+    "saveEdit": "Save edit your question"
 }

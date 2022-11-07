@@ -112,10 +112,12 @@ class QuestionViewModel extends ChangeNotifier with BaseSingleton {
       context: context,
     );
 
+    final upv = Provider.of<UserViewModel>(context, listen: false);
     await Future.wait(
       [
         getQuestionById(id: id),
         getAllQuestions,
+        upv.getMyDetails,
       ],
     );
   }
@@ -136,10 +138,9 @@ class QuestionViewModel extends ChangeNotifier with BaseSingleton {
 
   Future<void> questionFavOperation({
     required QuestionModel model,
-    required BuildContext context,
     required String id,
   }) async {
-    final Color color = isFavQuestion(model, context);
+    final Color color = isFavQuestion(model, _api.currentContext);
     if (color == colors.redAccent) {
       await favUnFavQuestion(
         id: id,
@@ -148,6 +149,40 @@ class QuestionViewModel extends ChangeNotifier with BaseSingleton {
     } else {
       await favUnFavQuestion(id: id);
     }
+  }
+
+  Future<int> updateQuestion({
+    required String title,
+    required String subtitle,
+    required String id,
+  }) async {
+    final BuildContext context = _api.currentContext;
+    String url = "$baseUrl/updateQuestion/$id";
+    final result = await _api.dioPost(
+      url: url,
+      post: false,
+      obj: {
+        "title": title,
+        "subtitle": subtitle,
+      },
+    );
+    globals.getSnackBar(
+      result: result,
+      successContent: AppLocalizations.of(context)!.successEdit,
+      error404Content: AppLocalizations.of(context)!.unsuccessEdit,
+      error500Content: AppLocalizations.of(context)!.unsuccessMessage,
+      context: context,
+    );
+    final upv = Provider.of<UserViewModel>(context, listen: false);
+
+    await Future.wait(
+      [
+        upv.getMyDetails,
+        getAllQuestions,
+      ],
+    );
+
+    return result?.statusCode ?? 500;
   }
 
   void searchQuestion(String query) {

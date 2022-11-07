@@ -66,7 +66,6 @@ class UserViewModel extends ChangeNotifier with BaseSingleton {
         _searchList = suggestions;
       }
     }
-
     notifyListeners();
   }
 }

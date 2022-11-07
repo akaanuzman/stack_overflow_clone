@@ -1,7 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/base/base_singleton.dart';
 import '../../../../core/extensions/ui_extensions.dart';
@@ -13,6 +12,7 @@ import '../../../models/user_model.dart';
 import '../../../viewmodels/user_view_model.dart';
 import '../answer/question_detail_view.dart';
 import 'ask_question_view.dart';
+import 'edit_question_view.dart';
 
 class MyQuestionsView extends StatelessWidget with BaseSingleton {
   final _questionController = TextEditingController();
@@ -97,47 +97,26 @@ class MyQuestionsView extends StatelessWidget with BaseSingleton {
     if (_questionController.text.isNotEmpty) {
       questionLength = pv.searchList.length;
     }
-    return Slidable(
-      endActionPane: ActionPane(
-        motion: ScrollMotion(),
-        children: [
-          SlidableAction(
-            onPressed: (context) {},
-            backgroundColor: colors.blueAccent,
-            foregroundColor: colors.white,
-            icon: Icons.edit,
-            label: 'Edit',
-          ),
-          SlidableAction(
-            onPressed: (context) {},
-            backgroundColor: colors.redAccent,
-            foregroundColor: colors.white,
-            icon: Icons.delete,
-            label: 'Delete',
-          ),
-        ],
-      ),
-      child: Container(
-        padding: context.padding1x,
-        color: colors.yellow1.withOpacity(0.65),
-        child: ListView.separated(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            var item = Question();
-            if (pv.user.question != null) {
-              item = pv.user.question![index];
-            }
-            if (_questionController.text.isNotEmpty) {
-              item = pv.searchList[index];
-            }
-            return _question(context, item);
-          },
-          separatorBuilder: (context, index) {
-            return uiGlobals.divider;
-          },
-          itemCount: questionLength,
-        ),
+    return Container(
+      padding: context.padding1x,
+      color: colors.yellow1.withOpacity(0.65),
+      child: ListView.separated(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) {
+          var item = Question();
+          if (pv.user.question != null) {
+            item = pv.user.question![index];
+          }
+          if (_questionController.text.isNotEmpty) {
+            item = pv.searchList[index];
+          }
+          return _question(context, item);
+        },
+        separatorBuilder: (context, index) {
+          return uiGlobals.divider;
+        },
+        itemCount: questionLength,
       ),
     );
   }
@@ -167,6 +146,7 @@ class MyQuestionsView extends StatelessWidget with BaseSingleton {
     return ListTile(
       title: _questionProperties(context, item),
       subtitle: _questionTitle(context, item),
+      trailing: _editAndRemoveButtons(context,item),
     );
   }
 
@@ -179,13 +159,43 @@ class MyQuestionsView extends StatelessWidget with BaseSingleton {
     );
   }
 
-  Text _questionTitle(BuildContext context, Question item) {
+  Widget _questionTitle(BuildContext context, Question item) {
     return Text(
       item.title ?? "",
       style: context.textTheme.subtitle1!.copyWith(
         fontWeight: context.fw600,
         color: colors.blue6,
       ),
+    );
+  }
+
+  Wrap _editAndRemoveButtons(BuildContext context, Question item) {
+    return Wrap(
+      children: [
+        IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EditQuestionView(
+                  question: item,
+                ),
+              ),
+            );
+          },
+          icon: Icon(
+            Icons.edit,
+            color: colors.blueAccent,
+          ),
+        ),
+        IconButton(
+          onPressed: () {},
+          icon: Icon(
+            Icons.delete,
+            color: colors.redAccent,
+          ),
+        ),
+      ],
     );
   }
 }
