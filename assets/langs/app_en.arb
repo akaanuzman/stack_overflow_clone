@@ -73,5 +73,9 @@
     "saveEdit": "Save edit your question",
     "deleteQuestionContent": "Your question and the answers given to the question will be deleted.\nAre you sure?",
     "deleteQuestionSuccess": "This question and answers were successfully deleted!",
-    "myAnswers": "My Answers"
+    "myAnswers": "My Answers",
+    "editAnswer": "Edit Answer",
+    "editYourAnswer": "Edit your answer",
+    "deleteAnswerContent": "Your answer will be deleted this question.\nAre you sure?",
+    "deleteQuestionSuccess": "This answer was successfully deleted!"
 }

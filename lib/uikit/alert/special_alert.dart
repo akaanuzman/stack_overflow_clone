@@ -1,5 +1,7 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:async_button/async_button.dart';
 import 'package:flutter/material.dart';
+import 'package:stack_overflow_clone/uikit/button/special_async_button.dart';
 
 import '../../core/base/base_singleton.dart';
 import '../../core/extensions/ui_extensions.dart';
@@ -12,7 +14,7 @@ class SpecialAlert extends StatelessWidget with BaseSingleton {
   final String contentTitle;
   final String contentSubtitle;
   final String buttonLabel;
-  final Function()? onTap;
+  final Future<void> Function(AsyncButtonStateController)? onTap;
   final bool isHasActions;
   final String? secondButtonLabel;
   final Function()? secondActionOnTap;
@@ -50,23 +52,20 @@ class SpecialAlert extends StatelessWidget with BaseSingleton {
                   },
               style: ElevatedButton.styleFrom(
                 backgroundColor: colors.redAccent,
-                shape:
-                    RoundedRectangleBorder(borderRadius: context.borderRadius10x),
+                shape: RoundedRectangleBorder(
+                    borderRadius: context.borderRadius10x),
               ),
               child: Text(secondButtonLabel ?? "null_value"),
             ),
           ),
           FadeInUp(
-            child: ElevatedButton(
-              onPressed: onTap ??
-                  () {
+            child: SpecialAsyncButton(
+              onTap: onTap ??
+                  (btnStateController) async {
                     Navigator.pop(context);
                   },
-              style: ElevatedButton.styleFrom(
-                shape:
-                    RoundedRectangleBorder(borderRadius: context.borderRadius10x),
-              ),
-              child: Text(buttonLabel),
+              buttonLabel: buttonLabel,
+              borderRadius: context.borderRadius10x,
             ),
           ),
         ] else ...[
@@ -142,15 +141,13 @@ class SpecialAlert extends StatelessWidget with BaseSingleton {
 
   Widget _onlyOneAction(BuildContext context) {
     return FadeInUp(
-      child: ElevatedButton(
-        onPressed: onTap ??
-            () {
+      child: SpecialAsyncButton(
+        onTap: onTap ??
+            (btnStateController) async {
               Navigator.pop(context);
             },
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(borderRadius: context.borderRadius10x),
-        ),
-        child: Text(buttonLabel),
+        borderRadius: context.borderRadius10x,
+        buttonLabel: buttonLabel,
       ),
     );
   }

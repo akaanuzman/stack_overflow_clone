@@ -42,8 +42,7 @@ class AnswerViewModel extends ChangeNotifier with BaseSingleton {
     required String content,
   }) async {
     final BuildContext context = _api.currentContext;
-
-    String url = "/questions/$qId/answers/";
+    final String url = "/questions/$qId/answers/";
     final result = await _api.dioPost(
       url: url,
       obj: {"content": content},
@@ -55,13 +54,13 @@ class AnswerViewModel extends ChangeNotifier with BaseSingleton {
       successTitle: AppLocalizations.of(context)!.success,
       fail400Title: AppLocalizations.of(context)!.fail,
       fail500Title: AppLocalizations.of(context)!.fail,
-      successOnTap: () {
+      onTap: (btnStateController) async {
         Navigator.pop(context);
         Navigator.pop(context);
       },
     );
     final upv = Provider.of<UserViewModel>(context, listen: false);
-    final qpv = Provider.of<QuestionViewModel>(context, listen:false);
+    final qpv = Provider.of<QuestionViewModel>(context, listen: false);
     await Future.wait(
       [
         upv.getMyDetails,
@@ -71,6 +70,68 @@ class AnswerViewModel extends ChangeNotifier with BaseSingleton {
     );
 
     return result?.statusCode ?? 500;
+  }
+
+  Future<int> editAnswer({
+    required String qId,
+    required String aId,
+    required String content,
+  }) async {
+    final BuildContext context = _api.currentContext;
+    final String url = "/questions/$qId/answers/$aId";
+    final result = await _api.dioPost(
+      url: url,
+      obj: {"content": content},
+      post: false,
+    );
+
+    globals.getSnackBar(
+      result: result,
+      successContent: AppLocalizations.of(context)!.successEdit,
+      error404Content: AppLocalizations.of(context)!.unsuccessEdit,
+      error500Content: AppLocalizations.of(context)!.unsuccessMessage,
+      context: context,
+    );
+
+    final upv = Provider.of<UserViewModel>(context, listen: false);
+    await Future.wait(
+      [
+        getAllAnswers(qId: qId),
+        upv.getMyDetails,
+      ],
+    );
+
+    return result?.statusCode ?? 500;
+  }
+
+  Future<void> deleteAnswer({
+    required String qId,
+    required String aId,
+  }) async {
+    final BuildContext context = _api.currentContext;
+    final String url = "/questions/$qId/answers/$aId";
+    final result = await _api.dioGet(
+      url: url,
+      get: false,
+    );
+
+    final upv = Provider.of<UserViewModel>(context, listen: false);
+    final qpv = Provider.of<QuestionViewModel>(context, listen: false);
+    await Future.wait(
+      [
+        upv.getMyDetails,
+        getAllAnswers(qId: qId),
+        qpv.getAllQuestions,
+      ],
+    ).then((value) {
+      globals.getSnackBar(
+        result: result,
+        successContent: AppLocalizations.of(context)!.deleteQuestionSuccess,
+        error404Content: result?.data["message"],
+        error500Content: AppLocalizations.of(context)!.unsuccessMessage,
+        context: context,
+      );
+    });
   }
 
   Future<void> favUnFavAnswer({
@@ -93,7 +154,7 @@ class AnswerViewModel extends ChangeNotifier with BaseSingleton {
           ? AppLocalizations.of(context)!.answerFavUnsuccess
           : AppLocalizations.of(context)!.answerUnfavUnsuccess,
       error500Content: AppLocalizations.of(context)!.unsuccessMessage,
-      context: _api.currentContext,
+      context: context,
     );
 
     await getAllAnswers(qId: qId);

@@ -110,8 +110,12 @@ class ProfileView extends StatelessWidget with BaseSingleton {
                             user.website != null
                                 ? GestureDetector(
                                     onTap: () {
-                                      launchUrlString(
-                                          "https://${user.website}");
+                                      if (user.website!.contains("https://")) {
+                                        launchUrlString("${user.website}");
+                                      } else {
+                                        launchUrlString(
+                                            "https://${user.website}");
+                                      }
                                     },
                                     child: Row(
                                       children: [
@@ -158,7 +162,7 @@ class ProfileView extends StatelessWidget with BaseSingleton {
                                       .logoutContent,
                                   buttonLabel:
                                       AppLocalizations.of(context)!.okButton,
-                                  onTap: () {
+                                  onTap: (btnStateController) async {
                                     Token.deleteAll();
                                     Navigator.pushAndRemoveUntil(
                                       context,

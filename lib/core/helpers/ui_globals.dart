@@ -1,3 +1,5 @@
+import 'package:async_button/async_button.dart';
+
 import '../enums/alert_enum.dart';
 import 'package:flutter/material.dart';
 import '../extensions/alert_extension.dart';
@@ -42,7 +44,7 @@ class UIGlobals {
     required String contentTitle,
     required String contentSubtitle,
     required String buttonLabel,
-    Function()? onTap,
+    Future<void> Function(AsyncButtonStateController)? onTap,
     bool isHasActions = false,
     String? secondButtonLabel,
     Function()? secondActionOnTap,

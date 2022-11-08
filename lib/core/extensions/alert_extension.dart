@@ -1,3 +1,4 @@
+import 'package:async_button/async_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../uikit/alert/special_alert.dart';
@@ -9,7 +10,7 @@ extension AlertExtension on AlertEnum {
     required String contentTitle,
     required String contentSubtitle,
     required String buttonLabel,
-    Function()? onTap,
+    Future<void> Function(AsyncButtonStateController)? onTap,
     bool isHasActions = false,
     String? secondButtonLabel,
     Function()? secondActionOnTap,

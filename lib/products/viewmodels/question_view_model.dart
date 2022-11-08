@@ -77,7 +77,7 @@ class QuestionViewModel extends ChangeNotifier with BaseSingleton {
       successTitle: AppLocalizations.of(context)!.success,
       fail400Title: AppLocalizations.of(context)!.fail,
       fail500Title: AppLocalizations.of(context)!.fail,
-      successOnTap: () {
+      onTap: (btnStateController) async {
         Navigator.pop(context);
         Navigator.pop(context);
       },
@@ -89,66 +89,6 @@ class QuestionViewModel extends ChangeNotifier with BaseSingleton {
         upv.getMyDetails,
       ],
     );
-  }
-
-  Future<void> favUnFavQuestion({
-    required String id,
-    bool isFav = true,
-  }) async {
-    final BuildContext context = _api.currentContext;
-    String url =
-        isFav ? "$baseUrl/favQuestion/$id" : "$baseUrl/unFavQuestion/$id";
-    final result = await _api.dioGet(url: url);
-
-    globals.getSnackBar(
-      result: result,
-      successContent: isFav
-          ? AppLocalizations.of(context)!.questionFavSuccess
-          : AppLocalizations.of(context)!.questionUnfavSuccess,
-      error404Content: isFav
-          ? AppLocalizations.of(context)!.questionFavUnsuccess
-          : AppLocalizations.of(context)!.questionUnfavUnsuccess,
-      error500Content: AppLocalizations.of(context)!.unsuccessMessage,
-      context: context,
-    );
-
-    final upv = Provider.of<UserViewModel>(context, listen: false);
-    await Future.wait(
-      [
-        getQuestionById(id: id),
-        getAllQuestions,
-        upv.getMyDetails,
-      ],
-    );
-  }
-
-  Color isFavQuestion(QuestionModel model, BuildContext context) {
-    final upv = Provider.of<UserViewModel>(context, listen: false);
-    if (model.fav != null) {
-      for (var e in model.fav!) {
-        if (upv.user.sId == e.sId)
-          return colors.redAccent;
-        else
-          return colors.grey;
-      }
-    } else
-      return colors.grey;
-    return colors.grey;
-  }
-
-  Future<void> questionFavOperation({
-    required QuestionModel model,
-    required String id,
-  }) async {
-    final Color color = isFavQuestion(model, _api.currentContext);
-    if (color == colors.redAccent) {
-      await favUnFavQuestion(
-        id: id,
-        isFav: false,
-      );
-    } else {
-      await favUnFavQuestion(id: id);
-    }
   }
 
   Future<int> updateQuestion({
@@ -211,6 +151,66 @@ class QuestionViewModel extends ChangeNotifier with BaseSingleton {
     });
 
     return result?.statusCode ?? 500;
+  }
+
+  Future<void> favUnFavQuestion({
+    required String id,
+    bool isFav = true,
+  }) async {
+    final BuildContext context = _api.currentContext;
+    String url =
+        isFav ? "$baseUrl/favQuestion/$id" : "$baseUrl/unFavQuestion/$id";
+    final result = await _api.dioGet(url: url);
+
+    globals.getSnackBar(
+      result: result,
+      successContent: isFav
+          ? AppLocalizations.of(context)!.questionFavSuccess
+          : AppLocalizations.of(context)!.questionUnfavSuccess,
+      error404Content: isFav
+          ? AppLocalizations.of(context)!.questionFavUnsuccess
+          : AppLocalizations.of(context)!.questionUnfavUnsuccess,
+      error500Content: AppLocalizations.of(context)!.unsuccessMessage,
+      context: context,
+    );
+
+    final upv = Provider.of<UserViewModel>(context, listen: false);
+    await Future.wait(
+      [
+        getQuestionById(id: id),
+        getAllQuestions,
+        upv.getMyDetails,
+      ],
+    );
+  }
+
+  Color isFavQuestion(QuestionModel model, BuildContext context) {
+    final upv = Provider.of<UserViewModel>(context, listen: false);
+    if (model.fav != null) {
+      for (var e in model.fav!) {
+        if (upv.user.sId == e.sId)
+          return colors.redAccent;
+        else
+          return colors.grey;
+      }
+    } else
+      return colors.grey;
+    return colors.grey;
+  }
+
+  Future<void> questionFavOperation({
+    required QuestionModel model,
+    required String id,
+  }) async {
+    final Color color = isFavQuestion(model, _api.currentContext);
+    if (color == colors.redAccent) {
+      await favUnFavQuestion(
+        id: id,
+        isFav: false,
+      );
+    } else {
+      await favUnFavQuestion(id: id);
+    }
   }
 
   void searchQuestion(String query) {

@@ -35,7 +35,7 @@ class RegisterViewModel extends ChangeNotifier with BaseSingleton {
       successTitle: AppLocalizations.of(context)!.registerSuccess,
       fail400Title: AppLocalizations.of(context)!.registerFail,
       fail500Title: AppLocalizations.of(context)!.registerFail,
-      successOnTap: () => Navigator.pushAndRemoveUntil(
+      onTap: (btnStateController) => Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (_) => LoginView(),

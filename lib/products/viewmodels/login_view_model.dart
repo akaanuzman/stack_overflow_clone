@@ -36,7 +36,7 @@ class LoginViewModel extends ChangeNotifier with BaseSingleton {
       successTitle: AppLocalizations.of(context)!.loginSuccess,
       fail400Title: AppLocalizations.of(context)!.loginFail,
       fail500Title: AppLocalizations.of(context)!.loginFail,
-      successOnTap: () {
+      onTap: (btnStateController) async {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(

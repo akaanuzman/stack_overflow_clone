@@ -5,15 +5,18 @@ import 'package:provider/provider.dart';
 import 'package:stack_overflow_clone/core/base/base_singleton.dart';
 import 'package:stack_overflow_clone/core/extensions/ui_extensions.dart';
 import 'package:stack_overflow_clone/products/models/user_model.dart';
+import 'package:stack_overflow_clone/products/viewmodels/answer_view_model.dart';
+import '../../../../core/enums/alert_enum.dart';
 import '../../../../uikit/decoration/special_container_decoration.dart';
 import '../../../components/textformfield/default_text_form_field.dart';
 import '../../../viewmodels/user_view_model.dart';
+import 'edit_answer_view.dart';
 import 'question_detail_view.dart';
 
 class MyAnswersView extends StatelessWidget with BaseSingleton {
   final _answerController = TextEditingController();
 
-   MyAnswersView({super.key});
+  MyAnswersView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,7 @@ class MyAnswersView extends StatelessWidget with BaseSingleton {
           child: Text(AppLocalizations.of(context)!.myAnswers),
         ),
       ),
-      body:      Consumer<UserViewModel>(
+      body: Consumer<UserViewModel>(
         builder: (context, pv, _) {
           var answerLength = pv.user.answer?.length ?? 0;
           return FadeInUp(
@@ -59,7 +62,7 @@ class MyAnswersView extends StatelessWidget with BaseSingleton {
                               onChanged: pv.searchQuestion,
                             ),
                           ),
-                          _questionsList(context, pv, answerLength),
+                          _answerList(context, pv, answerLength),
                         ],
                       ),
               ],
@@ -70,8 +73,7 @@ class MyAnswersView extends StatelessWidget with BaseSingleton {
     );
   }
 
-    Widget _questionsList(
-      BuildContext context, UserViewModel pv, int answerLength) {
+  Widget _answerList(BuildContext context, UserViewModel pv, int answerLength) {
     if (_answerController.text.isNotEmpty) {
       answerLength = pv.answerSearchList.length;
     }
@@ -83,13 +85,13 @@ class MyAnswersView extends StatelessWidget with BaseSingleton {
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           var item = Answer();
-          if (pv.user.question != null) {
+          if (pv.user.answer != null) {
             item = pv.user.answer![index];
           }
           if (_answerController.text.isNotEmpty) {
             item = pv.answerSearchList[index];
           }
-          return _question(context, item);
+          return _answer(context, item);
         },
         separatorBuilder: (context, index) {
           return uiGlobals.divider;
@@ -99,20 +101,20 @@ class MyAnswersView extends StatelessWidget with BaseSingleton {
     );
   }
 
-  Widget _question(BuildContext context, Answer item) {
+  Widget _answer(BuildContext context, Answer item) {
     return FadeInUp(
       child: GestureDetector(
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => QuestionDetailView(
-              id: "${item.sId}",
+              id: "${item.question}",
             ),
           ),
         ),
         child: Column(
           children: [
-            _questionPropertiesAndTitle(context, item),
+            _answerPropertiesAndTitle(context, item),
             context.emptySizedHeightBox1x,
           ],
         ),
@@ -120,15 +122,15 @@ class MyAnswersView extends StatelessWidget with BaseSingleton {
     );
   }
 
-  Widget _questionPropertiesAndTitle(BuildContext context, Answer item) {
+  Widget _answerPropertiesAndTitle(BuildContext context, Answer item) {
     return ListTile(
-      title: _questionProperties(context, item),
-      subtitle: _questionTitle(context, item),
+      title: _answerProperties(context, item),
+      subtitle: _answerTitle(context, item),
       trailing: _editAndRemoveButtons(context, item),
     );
   }
 
-  Text _questionProperties(BuildContext context, Answer item) {
+  Text _answerProperties(BuildContext context, Answer item) {
     String like = "${item.fav?.length}";
     String createdAt = "${globals.formatDate(item.createdAt)}";
     return Text(
@@ -137,7 +139,7 @@ class MyAnswersView extends StatelessWidget with BaseSingleton {
     );
   }
 
-  Widget _questionTitle(BuildContext context, Answer item) {
+  Widget _answerTitle(BuildContext context, Answer item) {
     return Text(
       item.content ?? "",
       style: context.textTheme.subtitle1!.copyWith(
@@ -152,7 +154,15 @@ class MyAnswersView extends StatelessWidget with BaseSingleton {
       children: [
         IconButton(
           onPressed: () {
-            
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EditAnswerView(
+                  answer: item,
+                  qId: "${item.question}",
+                ),
+              ),
+            );
           },
           icon: Icon(
             Icons.edit,
@@ -161,7 +171,26 @@ class MyAnswersView extends StatelessWidget with BaseSingleton {
         ),
         IconButton(
           onPressed: () {
-            
+            uiGlobals.showAlertDialog(
+              context: context,
+              alertEnum: AlertEnum.AREUSURE,
+              contentTitle: AppLocalizations.of(context)!.areYouSure,
+              contentSubtitle:
+                  AppLocalizations.of(context)!.deleteAnswerContent,
+              buttonLabel: AppLocalizations.of(context)!.okButton,
+              onTap: (btnStateController) async {
+                final pv = Provider.of<AnswerViewModel>(context, listen: false);
+                await pv
+                    .deleteAnswer(
+                  qId: "${item.question}",
+                  aId: "${item.sId}",
+                )
+                    .then((value) {
+                  Navigator.pop(context);
+                });
+              },
+              secondButtonLabel: AppLocalizations.of(context)!.cancelButton,
+            );
           },
           icon: Icon(
             Icons.delete,
