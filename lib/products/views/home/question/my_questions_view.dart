@@ -210,7 +210,6 @@ class MyQuestionsView extends StatelessWidget with BaseSingleton {
                   Navigator.pop(context);
                   return 200;
                 });
-
                 statusCode == 200
                     ? btnStateController.update(ButtonState.success)
                     : btnStateController.update(ButtonState.failure);

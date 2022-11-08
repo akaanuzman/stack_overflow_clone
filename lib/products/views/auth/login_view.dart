@@ -11,6 +11,7 @@ import '../../../core/extensions/ui_extensions.dart';
 import '../../../uikit/decoration/special_container_decoration.dart';
 import '../../components/textformfield/default_text_form_field.dart';
 import '../../viewmodels/login_view_model.dart';
+import 'forgot_password_view.dart';
 import 'register_view.dart';
 
 class LoginView extends StatelessWidget with BaseSingleton {
@@ -121,7 +122,14 @@ class LoginView extends StatelessWidget with BaseSingleton {
     return Align(
       alignment: Alignment.centerRight,
       child: TextButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ForgotPasswordView(),
+            ),
+          );
+        },
         child: Text(
           AppLocalizations.of(context)!.forgotPassword,
           style: context.textTheme.caption!.copyWith(

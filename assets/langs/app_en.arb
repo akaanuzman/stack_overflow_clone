@@ -77,5 +77,9 @@
     "editAnswer": "Edit Answer",
     "editYourAnswer": "Edit your answer",
     "deleteAnswerContent": "Your answer will be deleted this question.\nAre you sure?",
-    "deleteQuestionSuccess": "This answer was successfully deleted!"
+    "deleteQuestionSuccess": "This answer was successfully deleted!",
+    "forgotPassword": "Forgot Password",
+    "forgotPasswordDesc": "Forgot your account’s password or having trouble logging into your Team? Enter your email address and we’ll send you a recovery link.",
+    "sendRecoveryMail": "Send Recovery Mail",
+    "sendMailSuccess": "Password reset successful."
 }

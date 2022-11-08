@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:stack_overflow_clone/products/viewmodels/password_view_model.dart';
 
 import 'core/base/base_singleton.dart';
 import 'core/utils/navigation_service.dart';
@@ -40,6 +41,9 @@ void main() => runApp(
           ),
           ChangeNotifierProvider(
             create: (_) => UserViewModel(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => PasswordViewModel(),
           ),
         ],
         child: const MyApp(),
