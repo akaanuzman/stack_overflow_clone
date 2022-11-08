@@ -70,5 +70,8 @@
     "delete": "Delete",
     "editQuestion": "Edit Question",
     "editYourQuestion": "Edit your question",
-    "saveEdit": "Save edit your question"
+    "saveEdit": "Save edit your question",
+    "deleteQuestionContent": "Your question and the answers given to the question will be deleted.\nAre you sure?",
+    "deleteQuestionSuccess": "This question and answers were successfully deleted!",
+    "myAnswers": "My Answers"
 }

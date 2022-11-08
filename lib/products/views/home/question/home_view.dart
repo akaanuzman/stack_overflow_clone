@@ -190,7 +190,6 @@ class HomeView extends StatelessWidget with BaseSingleton {
   Row _questionInformation(BuildContext context, QuestionModel item) {
     String username = "${item.user?.name} ${item.user?.lastname}";
     String time = globals.formatDate("${item.createdAt}");
-    String asked = "${item.user?.question?.length}";
     return Row(
       mainAxisAlignment: context.mainAxisAEnd,
       children: [
@@ -201,13 +200,6 @@ class HomeView extends StatelessWidget with BaseSingleton {
                 text: "$username ",
                 style:
                     context.textTheme.subtitle2!.copyWith(color: colors.blue6),
-              ),
-              TextSpan(
-                text: "$asked asked ",
-                style: context.textTheme.subtitle2!.copyWith(
-                  color: colors.black54,
-                  fontWeight: context.fw700,
-                ),
               ),
               TextSpan(
                 text: " $time created ",

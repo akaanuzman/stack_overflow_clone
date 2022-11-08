@@ -185,6 +185,34 @@ class QuestionViewModel extends ChangeNotifier with BaseSingleton {
     return result?.statusCode ?? 500;
   }
 
+  Future<int> deleteQuestion({required String id}) async {
+    final BuildContext context = _api.currentContext;
+    String url = "$baseUrl/deleteQuestion/$id";
+    final result = await _api.dioGet(
+      url: url,
+      get: false,
+    );
+
+    final upv = Provider.of<UserViewModel>(context, listen: false);
+
+    await Future.wait(
+      [
+        upv.getMyDetails,
+        getAllQuestions,
+      ],
+    ).then((value) {
+      globals.getSnackBar(
+        result: result,
+        successContent: AppLocalizations.of(context)!.deleteQuestionSuccess,
+        error404Content: result?.data["message"],
+        error500Content: AppLocalizations.of(context)!.unsuccessMessage,
+        context: context,
+      );
+    });
+
+    return result?.statusCode ?? 500;
+  }
+
   void searchQuestion(String query) {
     if (query.isNotEmpty) {
       final suggestions = questions.where((question) {

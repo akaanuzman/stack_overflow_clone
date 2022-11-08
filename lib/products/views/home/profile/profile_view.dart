@@ -13,6 +13,7 @@ import '../../../../core/enums/alert_enum.dart';
 import '../../../../core/helpers/token.dart';
 import '../../../viewmodels/user_view_model.dart';
 import '../../auth/login_view.dart';
+import '../answer/my_answers_view.dart';
 import '../question/my_questions_view.dart';
 import 'edit_profile_view.dart';
 
@@ -167,7 +168,9 @@ class ProfileView extends StatelessWidget with BaseSingleton {
                                       (route) => false,
                                     );
                                   },
-                                  secondButtonLabel: AppLocalizations.of(context)!.cancelButton,
+                                  secondButtonLabel:
+                                      AppLocalizations.of(context)!
+                                          .cancelButton,
                                 );
                               },
                               child: Text(
@@ -198,7 +201,14 @@ class ProfileView extends StatelessWidget with BaseSingleton {
                     style: context.textTheme.headline6,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MyAnswersView(),
+                        ),
+                      );
+                    },
                     child: Text(
                       AppLocalizations.of(context)!.seeAll,
                       style: context.textTheme.headline6!
