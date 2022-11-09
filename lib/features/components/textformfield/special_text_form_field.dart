@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../core/extensions/ui_extensions.dart';
-import '../../core/theme/color/my_colors.dart';
+import '../../../core/extensions/ui_extensions.dart';
+import '../../../core/theme/color/my_colors.dart';
 
 class SpecialTextFormField extends Theme {
   SpecialTextFormField({
@@ -17,6 +17,7 @@ class SpecialTextFormField extends Theme {
     TextEditingController? controller,
     String? Function(String?)? validator,
     Function(String)? onChanged,
+    TextStyle? style,
     TextStyle? labelStyle,
     TextStyle? hintStyle,
     String? initialValue,
@@ -70,7 +71,7 @@ class SpecialTextFormField extends Theme {
               filled: filled,
               fillColor: fillColor,
             ),
-            style: context.textTheme.subtitle1!.copyWith(
+            style: style ?? context.textTheme.subtitle1!.copyWith(
               fontWeight: FontWeight.w800,
             ),
             keyboardType: keyboardType,

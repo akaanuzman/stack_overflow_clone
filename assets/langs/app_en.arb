@@ -81,5 +81,15 @@
     "forgotPassword": "Forgot Password",
     "forgotPasswordDesc": "Forgot your account’s password or having trouble logging into your Team? Enter your email address and we’ll send you a recovery link.",
     "sendRecoveryMail": "Send Recovery Mail",
-    "sendMailSuccess": "Password reset successful."
+    "sendMailSuccess": "Password reset successful.",
+    "resendNewCode": "Resend New Code",
+    "verification": "Verification",
+    "otpDesc": "Enter your OTP code number.",
+    "receiveCode": "Didn't you receive any code?",
+    "invalidResetPassToken": "Invalid OTP code.\nPlease check email and try again.",
+    "validResetPassToken": "You have entered the correct code and you will be redirected to the password change page.",
+    "resetPassword": "Reset Password",
+    "youCanChangePasswordThisPage" : "You can change password this page.",
+    "changePassword": "Change password",
+    "resetPasswordSuccess": "Your password has been successfully changed.\nYou are taken to the login screen."
 }

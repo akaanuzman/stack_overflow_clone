@@ -54,7 +54,7 @@ class AnswerViewModel extends ChangeNotifier with BaseSingleton {
       successTitle: AppLocalizations.of(context)!.success,
       fail400Title: AppLocalizations.of(context)!.fail,
       fail500Title: AppLocalizations.of(context)!.fail,
-      onTap: (btnStateController) async {
+      onTap: () {
         Navigator.pop(context);
         Navigator.pop(context);
       },

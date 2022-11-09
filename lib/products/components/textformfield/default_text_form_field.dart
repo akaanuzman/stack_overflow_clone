@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/color/my_colors.dart';
-import '../../../uikit/textformfield/special_text_form_field.dart';
+import '../../../features/components/textformfield/special_text_form_field.dart';
 
 class DefaultTextFormField extends SpecialTextFormField {
   DefaultTextFormField({
@@ -17,6 +17,7 @@ class DefaultTextFormField extends SpecialTextFormField {
     TextEditingController? controller,
     String? Function(String?)? validator,
     Function(String)? onChanged,
+    TextStyle? style,
     TextStyle? labelStyle,
     TextStyle? hintStyle,
     String? initialValue,
@@ -56,5 +57,6 @@ class DefaultTextFormField extends SpecialTextFormField {
           minLines: minLines,
           maxLines: maxLines,
           readOnly: readOnly,
+          style: style,
         );
 }

@@ -9,6 +9,7 @@ class SpecialAsyncButton extends StatelessWidget with BaseSingleton {
   final Color? bgColor;
   final double? elevation;
   final BorderRadiusGeometry borderRadius;
+  final Color? buttonLabelColor;
   SpecialAsyncButton({
     super.key,
     required this.onTap,
@@ -17,6 +18,7 @@ class SpecialAsyncButton extends StatelessWidget with BaseSingleton {
     this.bgColor,
     this.elevation,
     this.borderRadius = BorderRadius.zero,
+    this.buttonLabelColor,
   });
 
   @override
@@ -29,7 +31,6 @@ class SpecialAsyncButton extends StatelessWidget with BaseSingleton {
         elevation: elevation,
         shape: RoundedRectangleBorder(borderRadius: borderRadius),
       ),
-
       loadingStyle: AsyncButtonStateStyle(
         style: ElevatedButton.styleFrom(
           backgroundColor: colors.amber,
@@ -69,7 +70,10 @@ class SpecialAsyncButton extends StatelessWidget with BaseSingleton {
           ],
         ),
       ),
-      child: Text(buttonLabel),
+      child: Text(
+        buttonLabel,
+        style: TextStyle(color: buttonLabelColor),
+      ),
     );
   }
 }

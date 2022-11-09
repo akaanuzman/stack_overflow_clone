@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:async_button/async_button.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -48,7 +47,7 @@ class Globals with BaseSingleton {
     required String successTitle,
     required String fail400Title,
     required String fail500Title,
-    Future<void> Function(AsyncButtonStateController)? onTap,
+    Function()? onTap,
   }) {
     if (result?.statusCode == HttpStatus.ok) {
       uiGlobals.showAlertDialog(

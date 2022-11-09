@@ -1,11 +1,10 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:async_button/async_button.dart';
 import 'package:flutter/material.dart';
-import 'package:stack_overflow_clone/uikit/button/special_async_button.dart';
 
 import '../../core/base/base_singleton.dart';
 import '../../core/extensions/ui_extensions.dart';
 import '../../core/theme/color/my_colors.dart';
+import '../button/special_button.dart';
 
 class SpecialAlert extends StatelessWidget with BaseSingleton {
   final Color? titleBgColor;
@@ -14,7 +13,7 @@ class SpecialAlert extends StatelessWidget with BaseSingleton {
   final String contentTitle;
   final String contentSubtitle;
   final String buttonLabel;
-  final Future<void> Function(AsyncButtonStateController)? onTap;
+  final Function()? onTap;
   final bool isHasActions;
   final String? secondButtonLabel;
   final Function()? secondActionOnTap;
@@ -59,9 +58,9 @@ class SpecialAlert extends StatelessWidget with BaseSingleton {
             ),
           ),
           FadeInUp(
-            child: SpecialAsyncButton(
+            child: SpecialButton(
               onTap: onTap ??
-                  (btnStateController) async {
+                  () {
                     Navigator.pop(context);
                   },
               buttonLabel: buttonLabel,
@@ -141,9 +140,9 @@ class SpecialAlert extends StatelessWidget with BaseSingleton {
 
   Widget _onlyOneAction(BuildContext context) {
     return FadeInUp(
-      child: SpecialAsyncButton(
+      child: SpecialButton(
         onTap: onTap ??
-            (btnStateController) async {
+            () {
               Navigator.pop(context);
             },
         borderRadius: context.borderRadius10x,

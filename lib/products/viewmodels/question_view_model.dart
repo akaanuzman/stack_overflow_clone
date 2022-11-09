@@ -77,7 +77,7 @@ class QuestionViewModel extends ChangeNotifier with BaseSingleton {
       successTitle: AppLocalizations.of(context)!.success,
       fail400Title: AppLocalizations.of(context)!.fail,
       fail500Title: AppLocalizations.of(context)!.fail,
-      onTap: (btnStateController) async {
+      onTap: () {
         Navigator.pop(context);
         Navigator.pop(context);
       },
@@ -125,7 +125,7 @@ class QuestionViewModel extends ChangeNotifier with BaseSingleton {
     return result?.statusCode ?? 500;
   }
 
-  Future<int> deleteQuestion({required String id}) async {
+  Future<void> deleteQuestion({required String id}) async {
     final BuildContext context = _api.currentContext;
     String url = "$baseUrl/deleteQuestion/$id";
     final result = await _api.dioGet(
@@ -150,7 +150,6 @@ class QuestionViewModel extends ChangeNotifier with BaseSingleton {
       );
     });
 
-    return result?.statusCode ?? 500;
   }
 
   Future<void> favUnFavQuestion({

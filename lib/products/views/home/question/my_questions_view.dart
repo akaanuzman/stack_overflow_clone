@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:animate_do/animate_do.dart';
-import 'package:async_button/async_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -201,18 +200,13 @@ class MyQuestionsView extends StatelessWidget with BaseSingleton {
               contentSubtitle:
                   AppLocalizations.of(context)!.deleteQuestionContent,
               buttonLabel: AppLocalizations.of(context)!.okButton,
-              onTap: (btnStateController) async {
-                btnStateController.update(ButtonState.loading);
+              onTap: () async {
                 final pv =
                     Provider.of<QuestionViewModel>(context, listen: false);
-                int statusCode =
-                    await pv.deleteQuestion(id: "${item.sId}").then((value) {
+
+                await pv.deleteQuestion(id: "${item.sId}").then((value) {
                   Navigator.pop(context);
-                  return 200;
                 });
-                statusCode == 200
-                    ? btnStateController.update(ButtonState.success)
-                    : btnStateController.update(ButtonState.failure);
               },
               secondButtonLabel: AppLocalizations.of(context)!.cancelButton,
             );

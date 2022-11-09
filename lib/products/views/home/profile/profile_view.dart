@@ -162,7 +162,7 @@ class ProfileView extends StatelessWidget with BaseSingleton {
                                       .logoutContent,
                                   buttonLabel:
                                       AppLocalizations.of(context)!.okButton,
-                                  onTap: (btnStateController) async {
+                                  onTap: () {
                                     Token.deleteAll();
                                     Navigator.pushAndRemoveUntil(
                                       context,

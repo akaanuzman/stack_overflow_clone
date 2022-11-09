@@ -178,7 +178,7 @@ class MyAnswersView extends StatelessWidget with BaseSingleton {
               contentSubtitle:
                   AppLocalizations.of(context)!.deleteAnswerContent,
               buttonLabel: AppLocalizations.of(context)!.okButton,
-              onTap: (btnStateController) async {
+              onTap: () async {
                 final pv = Provider.of<AnswerViewModel>(context, listen: false);
                 await pv
                     .deleteAnswer(
