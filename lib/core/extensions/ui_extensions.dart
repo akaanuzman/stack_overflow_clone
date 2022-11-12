@@ -17,7 +17,7 @@ extension ContextExtension on BuildContext {
 extension MediaQueryExtension on BuildContext {
   double get height => mediaQuery.size.height;
   double get width => mediaQuery.size.width;
-
+  double get maxFinite=> double.maxFinite;
   // Dynamic values
   double get val1x => height * 0.01;
   double get val2x => height * 0.02;
@@ -267,6 +267,20 @@ extension AlignmentExtension on BuildContext {
   WrapCrossAlignment get wrapCrossAStart => WrapCrossAlignment.start;
   WrapCrossAlignment get wrapCrossACenter => WrapCrossAlignment.center;
   WrapCrossAlignment get wrapCrossAEnd => WrapCrossAlignment.end;
+}
+
+extension TextInputTypeExtension on BuildContext {
+  TextInputType get keyboardDatetime => TextInputType.datetime;
+  TextInputType get keyboardEmailAddress => TextInputType.emailAddress;
+  TextInputType get keyboardMultiline => TextInputType.multiline;
+  TextInputType get keyboardName => TextInputType.name;
+  TextInputType get keyboardNone => TextInputType.none;
+  TextInputType get keyboardNumber => TextInputType.number;
+  TextInputType get keyboardPhone => TextInputType.phone;
+  TextInputType get keyboardStreetAddress => TextInputType.streetAddress;
+  TextInputType get keyboardText => TextInputType.text;
+  TextInputType get keyboardUrl => TextInputType.url;
+  TextInputType get keyboardVisiblePassword => TextInputType.visiblePassword;
 }
 
 // Sized Boxes

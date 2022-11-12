@@ -16,7 +16,7 @@ class SplashView extends StatelessWidget {
     final pv = Provider.of<SplashViewModel>(context, listen: false);
     return Scaffold(
       body: FutureBuilder(
-        future: pv.getToken(),
+        future: pv.getToken,
         builder: (_, snapShot) {
           switch (snapShot.connectionState) {
             case ConnectionState.waiting:

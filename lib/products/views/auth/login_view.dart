@@ -29,6 +29,28 @@ class LoginView extends StatelessWidget with BaseSingleton {
     );
   }
 
+  void _forgotPassword(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ForgotPasswordView(),
+      ),
+    );
+  }
+
+  Future<void> _login(BuildContext context,
+      AsyncButtonStateController btnStateController) async {
+    final pv = Provider.of<LoginViewModel>(context, listen: false);
+    btnStateController.update(ButtonState.loading);
+    int statusCode = await pv.login(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+    statusCode == 200
+        ? btnStateController.update(ButtonState.success)
+        : btnStateController.update(ButtonState.failure);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,9 +59,10 @@ class LoginView extends StatelessWidget with BaseSingleton {
   }
 
   Center _body(BuildContext context) {
+    bool shrinkWrap = true;
     return Center(
       child: ListView(
-        shrinkWrap: true,
+        shrinkWrap: shrinkWrap,
         padding: context.padding6x,
         children: [
           _logoSection(context),
@@ -81,37 +104,28 @@ class LoginView extends StatelessWidget with BaseSingleton {
     return DefaultTextFormField(
       context: context,
       labelText: AppLocalizations.of(context)!.emailLabel,
-      prefixIcon: const Icon(Icons.email),
-      keyboardType: TextInputType.emailAddress,
+      prefixIcon: icons.email,
+      keyboardType: context.keyboardEmailAddress,
       controller: _emailController,
     );
   }
 
   DefaultTextFormField _passwordField(BuildContext context) {
+    bool obscureText = true;
     return DefaultTextFormField(
       context: context,
       labelText: AppLocalizations.of(context)!.passwordLabel,
-      prefixIcon: const Icon(Icons.lock),
-      obscureText: true,
+      prefixIcon: icons.lock,
+      obscureText: obscureText,
       controller: _passwordController,
     );
   }
 
   Widget _loginButton(BuildContext context) {
-    final pv = Provider.of<LoginViewModel>(context, listen: false);
     return SizedBox(
-      width: double.maxFinite,
+      width: context.maxFinite,
       child: SpecialAsyncButton(
-        onTap: (btnStateController) async {
-          btnStateController.update(ButtonState.loading);
-          int statusCode = await pv.login(
-            email: _emailController.text,
-            password: _passwordController.text,
-          );
-          statusCode == 200
-              ? btnStateController.update(ButtonState.success)
-              : btnStateController.update(ButtonState.failure);
-        },
+        onTap: (btnStateController) async => _login(context, btnStateController),
         buttonLabel: AppLocalizations.of(context)!.loginButton,
         borderRadius: context.borderRadius2x,
       ),
@@ -120,16 +134,9 @@ class LoginView extends StatelessWidget with BaseSingleton {
 
   Align _forgotPasswordButton(BuildContext context) {
     return Align(
-      alignment: Alignment.centerRight,
+      alignment: context.alignmentCenterRight,
       child: TextButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ForgotPasswordView(),
-            ),
-          );
-        },
+        onPressed: () => _forgotPassword(context),
         child: Text(
           AppLocalizations.of(context)!.forgotPassword,
           style: context.textTheme.caption!.copyWith(

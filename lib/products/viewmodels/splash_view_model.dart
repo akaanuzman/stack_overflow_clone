@@ -10,7 +10,7 @@ class SplashViewModel extends ChangeNotifier {
 
   final _api = Api();
 
-  Future<bool> getToken() async {
+  Future<bool> get getToken async {
     final result = await Token.readToken('login');
     if (result != null) {
       _status = true;

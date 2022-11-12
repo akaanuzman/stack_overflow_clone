@@ -1,4 +1,7 @@
 
+import 'package:stack_overflow_clone/core/constants/app_constants.dart';
+import 'package:stack_overflow_clone/core/constants/icon_constants.dart';
+
 import '../helpers/globals.dart';
 import '../helpers/ui_globals.dart';
 import '../theme/color/my_colors.dart';
@@ -13,4 +16,6 @@ abstract class BaseSingleton {
   Globals get globals => Globals.instance;
   UIGlobals get uiGlobals => UIGlobals.instance;
   AppValidators get validators => AppValidators.instance;
+  AppConstants get constants => AppConstants.instance;
+  IconConstants get icons => IconConstants.instance;
 }

@@ -56,4 +56,6 @@ class LoginViewModel extends ChangeNotifier with BaseSingleton {
 
     return result?.statusCode ?? 500;
   }
+
+  
 }
