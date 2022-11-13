@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:stack_overflow_clone/core/base/base_singleton.dart';
-import 'package:stack_overflow_clone/core/extensions/ui_extensions.dart';
-import 'package:stack_overflow_clone/features/components/textformfield/otp_text_form_field.dart';
-import 'package:stack_overflow_clone/products/views/auth/reset_password_with_token_view.dart';
-import 'package:stack_overflow_clone/uikit/button/special_button.dart';
-import 'package:stack_overflow_clone/uikit/decoration/special_container_decoration.dart';
+import '../../../core/base/base_singleton.dart';
+import '../../../core/extensions/ui_extensions.dart';
+import '../../../features/components/textformfield/otp_text_form_field.dart';
+import 'reset_password_with_token_view.dart';
+import '../../../uikit/button/special_button.dart';
+import '../../../uikit/decoration/special_container_decoration.dart';
 
 import '../../../core/enums/alert_enum.dart';
 import '../../../uikit/button/special_async_button.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stack_overflow_clone/core/constants/app_constants.dart';
+import 'core/constants/app_constants.dart';
 import 'core/base/base_singleton.dart';
 import 'products/views/common/splash_view.dart';
 

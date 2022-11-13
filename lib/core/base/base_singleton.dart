@@ -1,6 +1,6 @@
 
-import 'package:stack_overflow_clone/core/constants/app_constants.dart';
-import 'package:stack_overflow_clone/core/constants/icon_constants.dart';
+import '../constants/app_constants.dart';
+import '../constants/icon_constants.dart';
 
 import '../helpers/globals.dart';
 import '../helpers/ui_globals.dart';

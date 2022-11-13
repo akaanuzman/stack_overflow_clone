@@ -3,9 +3,9 @@ import 'package:async_button/async_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:stack_overflow_clone/core/base/base_singleton.dart';
-import 'package:stack_overflow_clone/core/extensions/ui_extensions.dart';
-import 'package:stack_overflow_clone/products/models/user_model.dart';
+import '../../../../core/base/base_singleton.dart';
+import '../../../../core/extensions/ui_extensions.dart';
+import '../../../models/user_model.dart';
 
 import '../../../../uikit/button/special_async_button.dart';
 import '../../../../uikit/decoration/special_container_decoration.dart';
