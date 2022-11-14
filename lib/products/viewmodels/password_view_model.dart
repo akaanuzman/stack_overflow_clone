@@ -15,12 +15,14 @@ class PasswordViewModel extends ChangeNotifier with BaseSingleton {
   PasswordModel _token = PasswordModel();
   PasswordModel get token => _token;
   final _api = Api();
+  final String baseUrl = "/auth";
 
-  Future<int> forgotPassword({required String email}) async {
+  Future<int> forgotPassword(
+      {required String email, bool isAgain = false}) async {
     final BuildContext context = _api.currentContext;
-    String url = "/auth/forgotPassword";
+    String url = "/forgotPassword";
     final result = await _api.dioPost(
-      url: url,
+      url: "$baseUrl$url",
       obj: {"email": email},
     );
 
@@ -43,12 +45,14 @@ class PasswordViewModel extends ChangeNotifier with BaseSingleton {
       fail500Title: AppLocalizations.of(context)!.unsuccessMessage,
       onTap: () async {
         Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ConfrimTokenView(email: email),
-          ),
-        ).then((value) => null);
+        if (!isAgain) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ConfrimTokenView(email: email),
+            ),
+          ).then((value) => null);
+        }
       },
     );
 
@@ -58,9 +62,9 @@ class PasswordViewModel extends ChangeNotifier with BaseSingleton {
   Future<int> resetPasswordWithToken(
       {required String id, required String password}) async {
     final BuildContext context = _api.currentContext;
-    String url = "/auth/resetPassword?resetPasswordToken=$id";
+    String url = "/resetPassword?resetPasswordToken=$id";
     final result = await _api.dioPost(
-      url: url,
+      url: "$baseUrl$url",
       obj: {"password": password},
       post: false,
     );

@@ -7,7 +7,8 @@ import '../../../core/extensions/ui_extensions.dart';
 import '../../../products/viewmodels/password_view_model.dart';
 
 class OtpTextFormField extends StatelessWidget with BaseSingleton {
-  OtpTextFormField({super.key});
+  final TextEditingController controller;
+  OtpTextFormField({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +16,12 @@ class OtpTextFormField extends StatelessWidget with BaseSingleton {
 
     return TextFormField(
       onChanged: (value) {
-        pv.token.userTokenDTO += value;
+        // pv.token.userTokenDTO += value;
         if (value.length == 1) {
           FocusScope.of(context).nextFocus();
         } else if (value.isEmpty) {
-          pv.token.userTokenDTO = pv.token.userTokenDTO
-              .substring(0, pv.token.userTokenDTO.length - 1);
+          // pv.token.userTokenDTO = pv.token.userTokenDTO
+          //     .substring(0, pv.token.userTokenDTO.length - 1);
           FocusScope.of(context).previousFocus();
         }
       },
@@ -47,6 +48,7 @@ class OtpTextFormField extends StatelessWidget with BaseSingleton {
         ),
         hintText: "X",
       ),
+      controller: controller,
     );
   }
 }

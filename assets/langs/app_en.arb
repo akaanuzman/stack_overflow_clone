@@ -91,5 +91,6 @@
     "resetPassword": "Reset Password",
     "youCanChangePasswordThisPage" : "You can change password this page.",
     "changePassword": "Change password",
-    "resetPasswordSuccess": "Your password has been successfully changed.\nYou are taken to the login screen."
+    "resetPasswordSuccess": "Your password has been successfully changed.\nYou are taken to the login screen.",
+    "verifyYourToken": "Verify Your Token"
 }

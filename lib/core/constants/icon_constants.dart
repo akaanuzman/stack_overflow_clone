@@ -15,5 +15,7 @@ class IconConstants {
 
   Icon get email => const Icon(Icons.email);
   Icon get lock => const Icon(Icons.lock);
+  Icon get person => const Icon(Icons.person);
+
 
 }

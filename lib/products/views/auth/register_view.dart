@@ -21,6 +21,27 @@ class RegisterView extends StatelessWidget with BaseSingleton {
 
   RegisterView({super.key});
 
+  Future<void> _signUp(AsyncButtonStateController btnStateController,
+      BuildContext context) async {
+    btnStateController.update(ButtonState.loading);
+    _formKey.currentState!.save();
+    if (_formKey.currentState!.validate()) {
+      final pv = Provider.of<RegisterViewModel>(context, listen: false);
+      int statusCode = await pv.register(
+        name: _nameController.text,
+        lastname: _lastnameController.text,
+        email: _emailController.text,
+        password: _passwordController.text,
+        context: context,
+      );
+      statusCode == 200
+          ? btnStateController.update(ButtonState.success)
+          : btnStateController.update(ButtonState.failure);
+    } else {
+      btnStateController.update(ButtonState.failure);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -91,7 +112,7 @@ class RegisterView extends StatelessWidget with BaseSingleton {
     return DefaultTextFormField(
       context: context,
       labelText: AppLocalizations.of(context)!.nameLabel,
-      prefixIcon: const Icon(Icons.person),
+      prefixIcon: icons.person,
       controller: _nameController,
       validator: (name) => validators.nameCheck(name),
     );
@@ -101,7 +122,7 @@ class RegisterView extends StatelessWidget with BaseSingleton {
     return DefaultTextFormField(
       context: context,
       labelText: AppLocalizations.of(context)!.lastnameLabel,
-      prefixIcon: const Icon(Icons.person),
+      prefixIcon: icons.person,
       controller: _lastnameController,
       validator: (lastname) => validators.lastnameCheck(lastname),
     );
@@ -111,7 +132,7 @@ class RegisterView extends StatelessWidget with BaseSingleton {
     return DefaultTextFormField(
       context: context,
       labelText: AppLocalizations.of(context)!.emailLabel,
-      prefixIcon: const Icon(Icons.mail),
+      prefixIcon: icons.email,
       keyboardType: TextInputType.emailAddress,
       controller: _emailController,
       validator: (email) => validators.emailCheck(email),
@@ -119,12 +140,13 @@ class RegisterView extends StatelessWidget with BaseSingleton {
   }
 
   DefaultTextFormField _passwordField(BuildContext context) {
+    bool obscureText = true;
     return DefaultTextFormField(
       context: context,
       labelText: AppLocalizations.of(context)!.passwordLabel,
-      prefixIcon: const Icon(Icons.lock),
+      prefixIcon: icons.lock,
       controller: _passwordController,
-      obscureText: true,
+      obscureText: obscureText,
       validator: (password) => validators.twoPasswordCheck(
         password,
         _passwordV2Controller.text,
@@ -133,12 +155,13 @@ class RegisterView extends StatelessWidget with BaseSingleton {
   }
 
   DefaultTextFormField _againPasswordField(BuildContext context) {
+    bool obscureText = true;
     return DefaultTextFormField(
       context: context,
       labelText: AppLocalizations.of(context)!.passwordLabelV2,
-      prefixIcon: const Icon(Icons.lock),
+      prefixIcon: icons.lock,
       controller: _passwordV2Controller,
-      obscureText: true,
+      obscureText: obscureText,
       validator: (passwordV2) => validators.twoPasswordCheck(
         passwordV2,
         _passwordController.text,
@@ -152,25 +175,8 @@ class RegisterView extends StatelessWidget with BaseSingleton {
       child: SpecialAsyncButton(
         borderRadius: context.borderRadius2x,
         buttonLabel: AppLocalizations.of(context)!.signUp,
-        onTap: (btnStateController) async {
-          btnStateController.update(ButtonState.loading);
-          _formKey.currentState!.save();
-          if (_formKey.currentState!.validate()) {
-            final pv = Provider.of<RegisterViewModel>(context, listen: false);
-            int statusCode = await pv.register(
-              name: _nameController.text,
-              lastname: _lastnameController.text,
-              email: _emailController.text,
-              password: _passwordController.text,
-              context: context,
-            );
-            statusCode == 200
-                ? btnStateController.update(ButtonState.success)
-                : btnStateController.update(ButtonState.failure);
-          } else {
-            btnStateController.update(ButtonState.failure);
-          }
-        },
+        onTap: (btnStateController) async =>
+            await _signUp(btnStateController, context),
       ),
     );
   }
