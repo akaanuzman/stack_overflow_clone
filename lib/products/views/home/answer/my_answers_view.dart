@@ -18,62 +18,130 @@ class MyAnswersView extends StatelessWidget with BaseSingleton {
 
   MyAnswersView({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: FadeInDown(
-          child: Text(AppLocalizations.of(context)!.myAnswers),
-        ),
-      ),
-      body: Consumer<UserViewModel>(
-        builder: (context, pv, _) {
-          var answerLength = pv.user.answer?.length ?? 0;
-          return FadeInUp(
-            child: ListView(
-              children: [
-                answerLength == 0
-                    ? Center(
-                        child: Container(
-                          margin: context.padding2x,
-                          padding: context.padding4x,
-                          decoration:
-                              SpecialContainerDecoration(context: context),
-                          alignment: context.alignmentCenter,
-                          child: Text(
-                            AppLocalizations.of(context)!.emptyQuestion,
-                            style: context.textTheme.headline6,
-                            textAlign: context.taCenter,
-                          ),
-                        ),
-                      )
-                    : Column(
-                        children: [
-                          Padding(
-                            padding: context.padding2x,
-                            child: DefaultTextFormField(
-                              context: context,
-                              labelText:
-                                  AppLocalizations.of(context)!.searchLabel,
-                              prefixIcon: const Icon(Icons.search),
-                              filled: true,
-                              fillColor: colors.white,
-                              controller: _answerController,
-                              onChanged: pv.searchQuestion,
-                            ),
-                          ),
-                          _answerList(context, pv, answerLength),
-                        ],
-                      ),
-              ],
-            ),
+  void _goToQuestionDetail(BuildContext context, Answer item) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          String id = "${item.question}";
+          return QuestionDetailView(
+            id: id,
           );
         },
       ),
     );
   }
 
+  void _goToEditAnswer(BuildContext context, Answer item) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          String qId = "${item.question}";
+          return EditAnswerView(
+            answer: item,
+            qId: qId,
+          );
+        },
+      ),
+    );
+  }
+
+  Future<void> _deleteAnswer(BuildContext context, Answer item) async {
+    uiGlobals.showAlertDialog(
+      context: context,
+      alertEnum: AlertEnum.AREUSURE,
+      contentTitle: AppLocalizations.of(context)!.areYouSure,
+      contentSubtitle: AppLocalizations.of(context)!.deleteAnswerContent,
+      buttonLabel: AppLocalizations.of(context)!.okButton,
+      onTap: () async {
+        final pv = Provider.of<AnswerViewModel>(context, listen: false);
+        await pv
+            .deleteAnswer(
+          qId: "${item.question}",
+          aId: "${item.sId}",
+        )
+            .then((value) {
+          Navigator.pop(context);
+        });
+      },
+      secondButtonLabel: AppLocalizations.of(context)!.cancelButton,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: _appBar(context),
+      body: _body,
+    );
+  }
+
+  AppBar _appBar(BuildContext context) {
+    return AppBar(
+      title: FadeInDown(
+        child: Text(AppLocalizations.of(context)!.myAnswers),
+      ),
+    );
+  }
+
+  Consumer<UserViewModel> get _body {
+    return Consumer<UserViewModel>(
+      builder: (context, pv, _) {
+        var answerLength = pv.user.answer?.length ?? 0;
+        List<Widget> children = [
+          answerLength == 0
+              ? _noAnswer(context)
+              : Column(
+                  children: [
+                    _searchField(context, pv),
+                    _answerList(context, pv, answerLength),
+                  ],
+                ),
+        ];
+        return FadeInUp(
+          child: ListView(
+            children: children,
+          ),
+        );
+      },
+    );
+  }
+
+  Center _noAnswer(BuildContext context) {
+    return Center(
+      child: Container(
+        margin: context.padding2x,
+        padding: context.padding4x,
+        decoration: SpecialContainerDecoration(context: context),
+        alignment: context.alignmentCenter,
+        child: Text(
+          AppLocalizations.of(context)!.emptyQuestion,
+          style: context.textTheme.headline6,
+          textAlign: context.taCenter,
+        ),
+      ),
+    );
+  }
+
+  Padding _searchField(BuildContext context, UserViewModel pv) {
+    bool filled = true;
+    return Padding(
+      padding: context.padding2x,
+      child: DefaultTextFormField(
+        context: context,
+        labelText: AppLocalizations.of(context)!.searchLabel,
+        prefixIcon: icons.search,
+        filled: filled,
+        fillColor: colors.white,
+        controller: _answerController,
+        onChanged: pv.searchQuestion,
+      ),
+    );
+  }
+
   Widget _answerList(BuildContext context, UserViewModel pv, int answerLength) {
+    bool shrinkWrap = true;
     if (_answerController.text.isNotEmpty) {
       answerLength = pv.answerSearchList.length;
     }
@@ -81,7 +149,7 @@ class MyAnswersView extends StatelessWidget with BaseSingleton {
       padding: context.padding1x,
       color: colors.yellow1.withOpacity(0.65),
       child: ListView.separated(
-        shrinkWrap: true,
+        shrinkWrap: shrinkWrap,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           var item = Answer();
@@ -104,14 +172,7 @@ class MyAnswersView extends StatelessWidget with BaseSingleton {
   Widget _answer(BuildContext context, Answer item) {
     return FadeInUp(
       child: GestureDetector(
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => QuestionDetailView(
-              id: "${item.question}",
-            ),
-          ),
-        ),
+        onTap: () => _goToQuestionDetail(context, item),
         child: Column(
           children: [
             _answerPropertiesAndTitle(context, item),
@@ -133,15 +194,17 @@ class MyAnswersView extends StatelessWidget with BaseSingleton {
   Text _answerProperties(BuildContext context, Answer item) {
     String like = "${item.fav?.length}";
     String createdAt = "${globals.formatDate(item.createdAt)}";
+    String title = "$like likes $createdAt created at";
     return Text(
-      "$like likes $createdAt created at",
+      title,
       style: context.textTheme.subtitle2,
     );
   }
 
   Widget _answerTitle(BuildContext context, Answer item) {
+    String answerTitle = item.content ?? "";
     return Text(
-      item.content ?? "",
+      answerTitle,
       style: context.textTheme.subtitle1!.copyWith(
         fontWeight: context.fw600,
         color: colors.blue6,
@@ -153,45 +216,14 @@ class MyAnswersView extends StatelessWidget with BaseSingleton {
     return Wrap(
       children: [
         IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => EditAnswerView(
-                  answer: item,
-                  qId: "${item.question}",
-                ),
-              ),
-            );
-          },
+          onPressed: () => _goToEditAnswer(context, item),
           icon: Icon(
             Icons.edit,
             color: colors.blueAccent,
           ),
         ),
         IconButton(
-          onPressed: () {
-            uiGlobals.showAlertDialog(
-              context: context,
-              alertEnum: AlertEnum.AREUSURE,
-              contentTitle: AppLocalizations.of(context)!.areYouSure,
-              contentSubtitle:
-                  AppLocalizations.of(context)!.deleteAnswerContent,
-              buttonLabel: AppLocalizations.of(context)!.okButton,
-              onTap: () async {
-                final pv = Provider.of<AnswerViewModel>(context, listen: false);
-                await pv
-                    .deleteAnswer(
-                  qId: "${item.question}",
-                  aId: "${item.sId}",
-                )
-                    .then((value) {
-                  Navigator.pop(context);
-                });
-              },
-              secondButtonLabel: AppLocalizations.of(context)!.cancelButton,
-            );
-          },
+          onPressed: () async => _deleteAnswer(context, item),
           icon: Icon(
             Icons.delete,
             color: colors.redAccent,

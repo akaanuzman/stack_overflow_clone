@@ -20,6 +20,15 @@ import 'edit_profile_view.dart';
 class ProfileView extends StatelessWidget with BaseSingleton {
   const ProfileView({super.key});
 
+  void _goToProfileEdit(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditProfileView(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,14 +41,7 @@ class ProfileView extends StatelessWidget with BaseSingleton {
               SpecialButton(
                 borderRadius: context.borderRadius2x,
                 buttonLabel: AppLocalizations.of(context)!.editProfile,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditProfileView(),
-                    ),
-                  );
-                },
+                onTap: () => _goToProfileEdit(context),
               )
             ],
           ),

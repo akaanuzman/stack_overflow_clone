@@ -16,6 +16,15 @@ class HomeView extends StatelessWidget with BaseSingleton {
   final _questionController = TextEditingController();
   HomeView({super.key});
 
+  void _goToaskQuestionView(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AskQuestionView(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,33 +39,26 @@ class HomeView extends StatelessWidget with BaseSingleton {
         child: Row(
           mainAxisAlignment: context.mainAxisASpaceBetween,
           children: [
-            _title(context),
-            _askQuestionButton(context),
+            _appBartitle(context),
+            _appBarAction(context),
           ],
         ),
       ),
     );
   }
 
-  Text _title(BuildContext context) {
+  Text _appBartitle(BuildContext context) {
     return Text(
       AppLocalizations.of(context)!.questionsTitle,
       style: context.textTheme.headline6,
     );
   }
 
-  Widget _askQuestionButton(BuildContext context) {
+  Widget _appBarAction(BuildContext context) {
     return SpecialButton(
       buttonLabel: AppLocalizations.of(context)!.askQuestion,
       borderRadius: context.borderRadius2x,
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AskQuestionView(),
-          ),
-        );
-      },
+      onTap: () => _goToaskQuestionView(context),
     );
   }
 
@@ -65,50 +67,23 @@ class HomeView extends StatelessWidget with BaseSingleton {
       child: Consumer<QuestionViewModel>(
         builder: (BuildContext context, QuestionViewModel pv, _) {
           int questionLength = pv.questions.length;
+          bool shrinkWrap = questionLength == 0 ? true : false;
+          List<Widget> children = [
+            questionLength == 0
+                ? Center(
+                    child: _noQuestionSection(context),
+                  )
+                : Column(
+                    children: [
+                      _searchField(context, pv),
+                      _questionListContainer(context, pv),
+                    ],
+                  ),
+          ];
           return Center(
             child: ListView(
-              shrinkWrap: questionLength == 0 ? true : false,
-              children: [
-                questionLength == 0
-                    ? Center(
-                        child: Container(
-                          margin: context.padding2x,
-                          padding: context.padding4x,
-                          decoration:
-                              SpecialContainerDecoration(context: context),
-                          alignment: context.alignmentCenter,
-                          child: Text(
-                            AppLocalizations.of(context)!.emptyQuestion,
-                            style: context.textTheme.headline6,
-                            textAlign: context.taCenter,
-                          ),
-                        ),
-                      )
-                    : Column(
-                        children: [
-                          Padding(
-                            padding: context.padding2x,
-                            child: DefaultTextFormField(
-                              context: context,
-                              labelText:
-                                  AppLocalizations.of(context)!.searchLabel,
-                              prefixIcon: const Icon(Icons.search),
-                              filled: true,
-                              fillColor: colors.white,
-                              controller: _questionController,
-                              onChanged: pv.searchQuestion,
-                            ),
-                          ),
-                          FadeInUp(
-                            child: Container(
-                              padding: context.padding1x,
-                              color: colors.yellow1.withOpacity(0.65),
-                              child: _questionList(pv),
-                            ),
-                          ),
-                        ],
-                      ),
-              ],
+              shrinkWrap: shrinkWrap,
+              children: children,
             ),
           );
         },
@@ -116,13 +91,54 @@ class HomeView extends StatelessWidget with BaseSingleton {
     );
   }
 
+  Container _noQuestionSection(BuildContext context) {
+    return Container(
+      margin: context.padding2x,
+      padding: context.padding4x,
+      decoration: SpecialContainerDecoration(context: context),
+      alignment: context.alignmentCenter,
+      child: Text(
+        AppLocalizations.of(context)!.emptyQuestion,
+        style: context.textTheme.headline6,
+        textAlign: context.taCenter,
+      ),
+    );
+  }
+
+  Padding _searchField(BuildContext context, QuestionViewModel pv) {
+    bool filled = true;
+    return Padding(
+      padding: context.padding2x,
+      child: DefaultTextFormField(
+        context: context,
+        labelText: AppLocalizations.of(context)!.searchLabel,
+        prefixIcon: icons.search,
+        filled: filled,
+        fillColor: colors.white,
+        controller: _questionController,
+        onChanged: pv.searchQuestion,
+      ),
+    );
+  }
+
+  FadeInUp _questionListContainer(BuildContext context, QuestionViewModel pv) {
+    return FadeInUp(
+      child: Container(
+        padding: context.padding1x,
+        color: colors.yellow1.withOpacity(0.65),
+        child: _questionList(pv),
+      ),
+    );
+  }
+
   Widget _questionList(QuestionViewModel pv) {
+    bool shrinkWrap = true;
     int count = pv.questions.length;
     if (_questionController.text.isNotEmpty) {
       count = pv.searchList.length;
     }
     return ListView.separated(
-      shrinkWrap: true,
+      shrinkWrap: shrinkWrap,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: count,
       separatorBuilder: (BuildContext context, int index) {
@@ -171,15 +187,17 @@ class HomeView extends StatelessWidget with BaseSingleton {
   Text _questionProperties(BuildContext context, QuestionModel item) {
     String like = "${item.fav?.length}";
     String answers = "${item.answer?.length}";
+    String title = "$like likes $answers answers";
     return Text(
-      "$like likes $answers answers",
+      title,
       style: context.textTheme.subtitle2,
     );
   }
 
   Text _questionTitle(BuildContext context, QuestionModel item) {
+    String questionTitle = item.title ?? "";
     return Text(
-      item.title ?? "",
+      questionTitle,
       style: context.textTheme.subtitle1!.copyWith(
         fontWeight: context.fw600,
         color: colors.blue6,
@@ -190,6 +208,8 @@ class HomeView extends StatelessWidget with BaseSingleton {
   Row _questionInformation(BuildContext context, QuestionModel item) {
     String username = "${item.user?.name} ${item.user?.lastname}";
     String time = globals.formatDate("${item.createdAt}");
+    String usernameText = "$username ";
+    String createdTime = " $time created ";
     return Row(
       mainAxisAlignment: context.mainAxisAEnd,
       children: [
@@ -197,12 +217,12 @@ class HomeView extends StatelessWidget with BaseSingleton {
           text: TextSpan(
             children: [
               TextSpan(
-                text: "$username ",
+                text: usernameText,
                 style:
                     context.textTheme.subtitle2!.copyWith(color: colors.blue6),
               ),
               TextSpan(
-                text: " $time created ",
+                text: createdTime,
                 style: context.textTheme.subtitle2!.copyWith(
                   color: colors.black45,
                   fontWeight: context.fw500,

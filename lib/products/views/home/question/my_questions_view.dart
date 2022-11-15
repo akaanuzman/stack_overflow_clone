@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -23,80 +24,148 @@ class MyQuestionsView extends StatelessWidget with BaseSingleton {
 
   MyQuestionsView({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: FadeInDown(
-          child: Row(
-            mainAxisAlignment: context.mainAxisASpaceBetween,
-            children: [
-              Text(AppLocalizations.of(context)!.myQuestions),
-              SpecialButton(
-                buttonLabel: AppLocalizations.of(context)!.askQuestion,
-                borderRadius: context.borderRadius2x,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AskQuestionView(),
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
+  void _goToAskQuestion(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AskQuestionView(),
       ),
-      body: Consumer<UserViewModel>(
-        builder: (context, pv, _) {
-          var questionLength = pv.user.question?.length ?? 0;
-          return FadeInUp(
-            child: ListView(
-              children: [
-                questionLength == 0
-                    ? Center(
-                        child: Container(
-                          margin: context.padding2x,
-                          padding: context.padding4x,
-                          decoration:
-                              SpecialContainerDecoration(context: context),
-                          alignment: context.alignmentCenter,
-                          child: Text(
-                            AppLocalizations.of(context)!.emptyQuestion,
-                            style: context.textTheme.headline6,
-                            textAlign: context.taCenter,
-                          ),
-                        ),
-                      )
-                    : Column(
-                        children: [
-                          Padding(
-                            padding: context.padding2x,
-                            child: DefaultTextFormField(
-                              context: context,
-                              labelText:
-                                  AppLocalizations.of(context)!.searchLabel,
-                              prefixIcon: const Icon(Icons.search),
-                              filled: true,
-                              fillColor: colors.white,
-                              controller: _questionController,
-                              onChanged: pv.searchQuestion,
-                            ),
-                          ),
-                          _questionsList(context, pv, questionLength),
-                        ],
-                      ),
-              ],
-            ),
+    );
+  }
+
+  void _goToQuestionDetailView(BuildContext context, Question item) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          String id = "${item.sId}";
+          return QuestionDetailView(
+            id: id,
           );
         },
       ),
     );
   }
 
+  void _goToQuestionEdit(BuildContext context, Question item) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditQuestionView(
+          question: item,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _deleteQuestion(BuildContext context, Question item) async {
+    uiGlobals.showAlertDialog(
+      context: context,
+      alertEnum: AlertEnum.AREUSURE,
+      contentTitle: AppLocalizations.of(context)!.areYouSure,
+      contentSubtitle: AppLocalizations.of(context)!.deleteQuestionContent,
+      buttonLabel: AppLocalizations.of(context)!.okButton,
+      onTap: () async {
+        final pv = Provider.of<QuestionViewModel>(context, listen: false);
+        await pv.deleteQuestion(id: "${item.sId}").then((value) {
+          Navigator.pop(context);
+        });
+      },
+      secondButtonLabel: AppLocalizations.of(context)!.cancelButton,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: _appBar(context),
+      body: _body,
+    );
+  }
+
+  AppBar _appBar(BuildContext context) {
+    return AppBar(
+      title: FadeInDown(
+        child: Row(
+          mainAxisAlignment: context.mainAxisASpaceBetween,
+          children: [
+            _appBarTitle(context),
+            _appBarAction(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Text _appBarTitle(BuildContext context) =>
+      Text(AppLocalizations.of(context)!.myQuestions);
+
+  SpecialButton _appBarAction(BuildContext context) {
+    return SpecialButton(
+      buttonLabel: AppLocalizations.of(context)!.askQuestion,
+      borderRadius: context.borderRadius2x,
+      onTap: () => _goToAskQuestion(context),
+    );
+  }
+
+  Consumer<UserViewModel> get _body {
+    return Consumer<UserViewModel>(
+      builder: (context, pv, _) {
+        int questionLength = pv.user.question?.length ?? 0;
+        List<Widget> children = [
+          questionLength == 0
+              ? _noQuestion(context)
+              : Column(
+                  children: [
+                    _searchField(context, pv),
+                    _questionsList(context, pv, questionLength),
+                  ],
+                ),
+        ];
+        return FadeInUp(
+          child: ListView(
+            children: children,
+          ),
+        );
+      },
+    );
+  }
+
+  Center _noQuestion(BuildContext context) {
+    return Center(
+      child: Container(
+        margin: context.padding2x,
+        padding: context.padding4x,
+        decoration: SpecialContainerDecoration(context: context),
+        alignment: context.alignmentCenter,
+        child: Text(
+          AppLocalizations.of(context)!.emptyQuestion,
+          style: context.textTheme.headline6,
+          textAlign: context.taCenter,
+        ),
+      ),
+    );
+  }
+
+  Padding _searchField(BuildContext context, UserViewModel pv) {
+    bool filled = true;
+    return Padding(
+      padding: context.padding2x,
+      child: DefaultTextFormField(
+        context: context,
+        labelText: AppLocalizations.of(context)!.searchLabel,
+        prefixIcon: icons.search,
+        filled: filled,
+        fillColor: colors.white,
+        controller: _questionController,
+        onChanged: pv.searchQuestion,
+      ),
+    );
+  }
+
   Widget _questionsList(
       BuildContext context, UserViewModel pv, int questionLength) {
+    bool shrinkWrap = true;
     if (_questionController.text.isNotEmpty) {
       questionLength = pv.questionSearchList.length;
     }
@@ -104,7 +173,7 @@ class MyQuestionsView extends StatelessWidget with BaseSingleton {
       padding: context.padding1x,
       color: colors.yellow1.withOpacity(0.65),
       child: ListView.separated(
-        shrinkWrap: true,
+        shrinkWrap: shrinkWrap,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           var item = Question();
@@ -127,14 +196,7 @@ class MyQuestionsView extends StatelessWidget with BaseSingleton {
   Widget _question(BuildContext context, Question item) {
     return FadeInUp(
       child: GestureDetector(
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => QuestionDetailView(
-              id: "${item.sId}",
-            ),
-          ),
-        ),
+        onTap: () => _goToQuestionDetailView(context, item),
         child: Column(
           children: [
             _questionPropertiesAndTitle(context, item),
@@ -156,15 +218,17 @@ class MyQuestionsView extends StatelessWidget with BaseSingleton {
   Text _questionProperties(BuildContext context, Question item) {
     String like = "${item.fav?.length}";
     String answers = "${item.answer?.length}";
+    String title = "$like likes $answers answers";
     return Text(
-      "$like likes $answers answers",
+      title,
       style: context.textTheme.subtitle2,
     );
   }
 
   Widget _questionTitle(BuildContext context, Question item) {
+    String questionTitle = item.title ?? "";
     return Text(
-      item.title ?? "",
+      questionTitle,
       style: context.textTheme.subtitle1!.copyWith(
         fontWeight: context.fw600,
         color: colors.blue6,
@@ -176,41 +240,14 @@ class MyQuestionsView extends StatelessWidget with BaseSingleton {
     return Wrap(
       children: [
         IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => EditQuestionView(
-                  question: item,
-                ),
-              ),
-            );
-          },
+          onPressed: () => _goToQuestionEdit(context, item),
           icon: Icon(
             Icons.edit,
             color: colors.blueAccent,
           ),
         ),
         IconButton(
-          onPressed: () {
-            uiGlobals.showAlertDialog(
-              context: context,
-              alertEnum: AlertEnum.AREUSURE,
-              contentTitle: AppLocalizations.of(context)!.areYouSure,
-              contentSubtitle:
-                  AppLocalizations.of(context)!.deleteQuestionContent,
-              buttonLabel: AppLocalizations.of(context)!.okButton,
-              onTap: () async {
-                final pv =
-                    Provider.of<QuestionViewModel>(context, listen: false);
-
-                await pv.deleteQuestion(id: "${item.sId}").then((value) {
-                  Navigator.pop(context);
-                });
-              },
-              secondButtonLabel: AppLocalizations.of(context)!.cancelButton,
-            );
-          },
+          onPressed: () async => await _deleteQuestion(context, item),
           icon: Icon(
             Icons.delete,
             color: colors.redAccent,

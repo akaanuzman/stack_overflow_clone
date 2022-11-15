@@ -23,87 +23,122 @@ class EditAnswerView extends StatelessWidget with BaseSingleton {
     required this.qId,
   });
 
+  Future<void> _editAnswer(AsyncButtonStateController btnStateController,
+      BuildContext context) async {
+    btnStateController.update(ButtonState.loading);
+    _formKey.currentState!.save();
+    if (_formKey.currentState!.validate()) {
+      final pv = Provider.of<AnswerViewModel>(context, listen: false);
+      int statusCode = await pv.editAnswer(
+        qId: qId,
+        aId: "${answer.sId}",
+        content: "${answer.content}",
+      );
+      statusCode == 200
+          ? btnStateController.update(ButtonState.success)
+          : btnStateController.update(ButtonState.failure);
+    } else {
+      btnStateController.update(ButtonState.failure);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: FadeInDown(
-          child: Text(AppLocalizations.of(context)!.editAnswer),
+      appBar: _appBar(context),
+      body: _body(context),
+    );
+  }
+
+  AppBar _appBar(BuildContext context) {
+    return AppBar(
+      title: FadeInDown(
+        child: Text(AppLocalizations.of(context)!.editAnswer),
+      ),
+    );
+  }
+
+  FadeInUp _body(BuildContext context) {
+    return FadeInUp(
+      child: Form(
+        key: _formKey,
+        child: ListView(
+          padding: context.padding2x,
+          children: [
+            _title(context),
+            context.emptySizedHeightBox3x,
+            _answerDescription(context),
+            context.emptySizedHeightBox3x,
+            _answerSection(context),
+            context.emptySizedHeightBox3x,
+            _editAnswerButton(context),
+          ],
         ),
       ),
-      body: FadeInUp(
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            padding: context.padding2x,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.yourAnswer,
-                style: context.textTheme.headline6,
-              ),
-              context.emptySizedHeightBox3x,
-              Container(
-                decoration: SpecialContainerDecoration(
-                  context: context,
-                  color: colors.orange1,
-                ),
-                padding: context.padding2x,
-                child: Text(AppLocalizations.of(context)!.addAnswerInfo),
-              ),
-              context.emptySizedHeightBox3x,
-              Container(
-                padding: context.padding2x,
-                decoration: SpecialContainerDecoration(context: context),
-                child: Column(
-                  crossAxisAlignment: context.crossAxisAStart,
-                  children: [
-                    context.emptySizedHeightBox1x,
-                    Text(
-                      AppLocalizations.of(context)!.contentTitle,
-                      style: context.textTheme.subtitle1!.copyWith(
-                        fontWeight: context.fw700,
-                      ),
-                    ),
-                    context.emptySizedHeightBox3x,
-                    DefaultTextFormField(
-                      context: context,
-                      labelText: AppLocalizations.of(context)!.answerLabel,
-                      initialValue: answer.content,
-                      onChanged: (content) {
-                        answer.content = content;
-                      },
-                      validator: (content) => validators.contentCheck(content),
-                    ),
-                  ],
-                ),
-              ),
-              context.emptySizedHeightBox3x,
-              SpecialAsyncButton(
-                onTap: (btnStateController) async {
-                  btnStateController.update(ButtonState.loading);
-                  _formKey.currentState!.save();
-                  if (_formKey.currentState!.validate()) {
-                    final pv =
-                        Provider.of<AnswerViewModel>(context, listen: false);
-                    int statusCode = await pv.editAnswer(
-                      qId: qId,
-                      aId: "${answer.sId}",
-                      content: "${answer.content}",
-                    );
-                    statusCode == 200
-                        ? btnStateController.update(ButtonState.success)
-                        : btnStateController.update(ButtonState.failure);
-                  } else {
-                    btnStateController.update(ButtonState.failure);
-                  }
-                },
-                buttonLabel: AppLocalizations.of(context)!.editYourAnswer,
-                borderRadius: context.borderRadius2x,
-              ),
-            ],
-          ),
-        ),
+    );
+  }
+
+  Text _title(BuildContext context) {
+    return Text(
+      AppLocalizations.of(context)!.yourAnswer,
+      style: context.textTheme.headline6,
+    );
+  }
+
+  Container _answerDescription(BuildContext context) {
+    return Container(
+      decoration: SpecialContainerDecoration(
+        context: context,
+        color: colors.orange1,
       ),
+      padding: context.padding2x,
+      child: Text(AppLocalizations.of(context)!.addAnswerInfo),
+    );
+  }
+
+  Container _answerSection(BuildContext context) {
+    return Container(
+      padding: context.padding2x,
+      decoration: SpecialContainerDecoration(context: context),
+      child: Column(
+        crossAxisAlignment: context.crossAxisAStart,
+        children: [
+          context.emptySizedHeightBox1x,
+          _answerTitle(context),
+          context.emptySizedHeightBox3x,
+          _answerField(context),
+        ],
+      ),
+    );
+  }
+
+  Text _answerTitle(BuildContext context) {
+    return Text(
+      AppLocalizations.of(context)!.contentTitle,
+      style: context.textTheme.subtitle1!.copyWith(
+        fontWeight: context.fw700,
+      ),
+    );
+  }
+
+  DefaultTextFormField _answerField(BuildContext context) {
+    return DefaultTextFormField(
+      context: context,
+      labelText: AppLocalizations.of(context)!.answerLabel,
+      initialValue: answer.content,
+      onChanged: (content) {
+        answer.content = content;
+      },
+      validator: (content) => validators.contentCheck(content),
+    );
+  }
+
+  SpecialAsyncButton _editAnswerButton(BuildContext context) {
+    return SpecialAsyncButton(
+      onTap: (btnStateController) async =>
+          await _editAnswer(btnStateController, context),
+      buttonLabel: AppLocalizations.of(context)!.editYourAnswer,
+      borderRadius: context.borderRadius2x,
     );
   }
 }

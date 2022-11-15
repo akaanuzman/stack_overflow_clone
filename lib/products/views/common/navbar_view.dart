@@ -31,24 +31,27 @@ class NavbarView extends StatelessWidget with BaseSingleton {
         child: _navBarItems(context, provider),
       );
 
-  FadeInUp _navBarItems(BuildContext context, NavbarViewModel provider) =>
-      FadeInUp(
-        child: BottomNavigationBar(
-          selectedIconTheme: IconThemeData(
-            color: colors.orange,
-            size: 28,
-          ),
-          selectedItemColor: colors.orange,
-          unselectedIconTheme: IconThemeData(
-            color: colors.grey,
-            size: 24,
-          ),
-          selectedLabelStyle:
-              context.textTheme.subtitle1!.copyWith(fontWeight: context.fw700),
-          unselectedLabelStyle: context.textTheme.subtitle2,
-          items: provider.items,
-          currentIndex: provider.currentIndex,
-          onTap: (index) => provider.onItemTapped(index),
+  FadeInUp _navBarItems(BuildContext context, NavbarViewModel provider) {
+    double selectedIconSize = 28;
+    double unselectedIconSize = 24;
+    return FadeInUp(
+      child: BottomNavigationBar(
+        selectedIconTheme: IconThemeData(
+          color: colors.orange,
+          size: selectedIconSize,
         ),
-      );
+        selectedItemColor: colors.orange,
+        unselectedIconTheme: IconThemeData(
+          color: colors.grey,
+          size: unselectedIconSize,
+        ),
+        selectedLabelStyle:
+            context.textTheme.subtitle1!.copyWith(fontWeight: context.fw700),
+        unselectedLabelStyle: context.textTheme.subtitle2,
+        items: provider.items,
+        currentIndex: provider.currentIndex,
+        onTap: (index) => provider.onItemTapped(index),
+      ),
+    );
+  }
 }

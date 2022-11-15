@@ -1,33 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import '../../../core/base/base_singleton.dart';
 import '../../../core/extensions/ui_extensions.dart';
 
-import '../../../products/viewmodels/password_view_model.dart';
-
 class OtpTextFormField extends StatelessWidget with BaseSingleton {
   final TextEditingController controller;
-  OtpTextFormField({super.key, required this.controller});
+  OtpTextFormField({
+    super.key,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final pv = Provider.of<PasswordViewModel>(context, listen: false);
-
     return TextFormField(
       onChanged: (value) {
-        // pv.token.userTokenDTO += value;
         if (value.length == 1) {
           FocusScope.of(context).nextFocus();
         } else if (value.isEmpty) {
-          // pv.token.userTokenDTO = pv.token.userTokenDTO
-          //     .substring(0, pv.token.userTokenDTO.length - 1);
           FocusScope.of(context).previousFocus();
         }
       },
       style: context.textTheme.subtitle1!.copyWith(fontWeight: context.fw700),
-      keyboardType: TextInputType.number,
-      textAlign: TextAlign.center,
+      keyboardType: context.keyboardNumber,
+      textAlign: context.taCenter,
       inputFormatters: [
         LengthLimitingTextInputFormatter(1),
         FilteringTextInputFormatter.digitsOnly,
