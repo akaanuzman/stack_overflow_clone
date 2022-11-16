@@ -8,41 +8,29 @@ environment:
   sdk: '>=2.18.2 <3.0.0'
 
 dependencies:
+  animate_do: ^2.1.0
+  async_button: ^1.0.0-beta.1+1
+  cupertino_icons: ^1.0.2
+  dio: ^4.0.6
   flutter:
     sdk: flutter
-
-  # Visual Elements
-  cupertino_icons: ^1.0.2
-  animate_do: ^2.1.0
-  shimmer_animation: ^2.1.0+1
-  flutter_svg: ^1.1.5
-  async_button: ^1.0.0-beta.1+1
-  flutter_slidable: ^2.0.0
-
-  # State Management
-  provider: ^6.0.3
-
-  # Local Operations
-  flutter_secure_storage: ^6.0.0
-
-  # Network
-  dio: ^4.0.6
-
-  # Link
-  url_launcher: ^6.1.6
-
-  # Localizations
   flutter_localizations:
     sdk: flutter
-
-  # Format
+  flutter_secure_storage: ^6.0.0
+  flutter_slidable: ^2.0.0
+  flutter_svg: ^1.1.5
   intl: ^0.17.0
+  json_annotation: ^4.7.0
+  json_serializable: ^6.5.4
+  provider: ^6.0.3
+  shimmer_animation: ^2.1.0+1
+  url_launcher: ^6.1.6
 
 dev_dependencies:
+  build_runner: any
+  flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
-
-  flutter_lints: ^2.0.0
 
 flutter:
   generate: true

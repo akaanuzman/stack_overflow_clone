@@ -22,7 +22,7 @@ class SplashViewModel extends ChangeNotifier {
   }
 
   Future<void> get getAllApi async {
-    final pv = Provider.of<ApiViewModel>(_api.currentContext, listen: false);
+    final pv = _api.currentContext.read<ApiViewModel>();
     await pv.getAllApi;
   }
 }
