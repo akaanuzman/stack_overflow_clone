@@ -1,8 +1,10 @@
 ## 📱 Basic Shopping App
 
+### 🔎 Preview
+Coming soon!
+
 ### 📁 Description
 This is my first full-stack project. I developed stack overflow clone mobile application in Flutter. With this application, you can ask questions and answer other users questions. You may like questions and answers and you may change your profile,change your password, edit questions and delete questions, and edit answers and delete answers.
-
 
 ### 📶 API
 I developed the back-end part myself with node.js and mongodb and this project was developed with my back-end API. You can read and reach back-end part [here.](https://github.com/akaanuzman/learn_node/tree/master/question-answer-api)
