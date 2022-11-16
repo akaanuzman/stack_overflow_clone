@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:stack_overflow_clone/features/components/row/profile_items.dart';
 import '../../../../core/base/base_singleton.dart';
 import '../../../../core/extensions/ui_extensions.dart';
 import '../../../../uikit/button/special_button.dart';
 import '../../../../uikit/decoration/special_container_decoration.dart';
+import 'package:stack_overflow_clone/products/models/user_model.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../../core/enums/alert_enum.dart';
@@ -29,26 +31,91 @@ class ProfileView extends StatelessWidget with BaseSingleton {
     );
   }
 
+  void _goToWebsite(UserModel user) {
+    String baseUrl = "https://";
+    String website = "";
+    if (user.website!.contains(baseUrl)) {
+      website = "${user.website}";
+      launchUrlString(website);
+    } else {
+      website = "https://${user.website}";
+      launchUrlString(website);
+    }
+  }
+
+  void _logout(BuildContext context) {
+    uiGlobals.showAlertDialog(
+      context: context,
+      alertEnum: AlertEnum.AREUSURE,
+      contentTitle: AppLocalizations.of(context)!.areYouSure,
+      contentSubtitle: AppLocalizations.of(context)!.logoutContent,
+      buttonLabel: AppLocalizations.of(context)!.okButton,
+      onTap: () {
+        Token.deleteAll();
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginView(),
+          ),
+          (route) => false,
+        );
+      },
+      secondButtonLabel: AppLocalizations.of(context)!.cancelButton,
+    );
+  }
+
+  void _goToMyAnswers(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MyAnswersView(),
+      ),
+    );
+  }
+
+  void _goToMyQuestions(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MyQuestionsView(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: FadeInDown(
-          child: Row(
-            mainAxisAlignment: context.mainAxisASpaceBetween,
-            children: [
-              Text(AppLocalizations.of(context)!.profileAppBarTitle),
-              SpecialButton(
-                borderRadius: context.borderRadius2x,
-                buttonLabel: AppLocalizations.of(context)!.editProfile,
-                onTap: () => _goToProfileEdit(context),
-              )
-            ],
-          ),
+      appBar: _appBar(context),
+      body: _body,
+    );
+  }
+
+  AppBar _appBar(BuildContext context) {
+    return AppBar(
+      title: FadeInDown(
+        child: Row(
+          mainAxisAlignment: context.mainAxisASpaceBetween,
+          children: [_appBarTitle(context), _appBarAction(context)],
         ),
       ),
-      body: FadeInUp(
-        child: Consumer<UserViewModel>(builder: (context, pv, _) {
+    );
+  }
+
+  Text _appBarTitle(BuildContext context) =>
+      Text(AppLocalizations.of(context)!.profileAppBarTitle);
+
+  SpecialButton _appBarAction(BuildContext context) {
+    return SpecialButton(
+      borderRadius: context.borderRadius2x,
+      buttonLabel: AppLocalizations.of(context)!.editProfile,
+      onTap: () => _goToProfileEdit(context),
+    );
+  }
+
+  FadeInUp get _body {
+    return FadeInUp(
+      child: Consumer<UserViewModel>(
+        builder: (context, pv, _) {
           var user = pv.user;
           String memberDate = globals.formatDate(user.createdAt);
           String place = user.place ?? "null";
@@ -61,219 +128,152 @@ class ProfileView extends StatelessWidget with BaseSingleton {
             children: [
               Row(
                 children: [
-                  Expanded(
-                    child: Container(
-                      height: context.dynamicHeight(0.1),
-                      padding: context.padding2x,
-                      decoration: SpecialContainerDecoration(context: context),
-                      child: SvgPicture.asset(
-                          AppLocalizations.of(context)!.iconSvg),
-                    ),
-                  ),
+                  _image(context),
                   context.emptySizedWidthBox3x,
-                  Expanded(
-                    flex: 3,
-                    child: Column(
-                      crossAxisAlignment: context.crossAxisAStart,
-                      children: [
-                        Text(
-                          "${user.name} ${user.lastname}",
-                          style: context.textTheme.headline6,
-                        ),
-                        context.emptySizedHeightBox1x,
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.date_range,
-                              color: colors.grey,
-                              size: 16,
-                            ),
-                            context.emptySizedWidthBox2x,
-                            Text("Member since $memberDate")
-                          ],
-                        ),
-                        context.emptySizedHeightBox1x,
-                        Row(
-                          children: [
-                            place != "null"
-                                ? Row(
-                                    children: [
-                                      Icon(
-                                        Icons.place,
-                                        color: colors.grey,
-                                        size: 16,
-                                      ),
-                                      context.emptySizedWidthBox2x,
-                                      Text(place),
-                                      context.emptySizedWidthBox2x,
-                                    ],
-                                  )
-                                : context.emptySizedHeightBox2x,
-                            user.website != null
-                                ? GestureDetector(
-                                    onTap: () {
-                                      if (user.website!.contains("https://")) {
-                                        launchUrlString("${user.website}");
-                                      } else {
-                                        launchUrlString(
-                                            "https://${user.website}");
-                                      }
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.language,
-                                          color: colors.grey,
-                                          size: 16,
-                                        ),
-                                        context.emptySizedWidthBox2x,
-                                        Text(AppLocalizations.of(context)!
-                                            .website),
-                                      ],
-                                    ),
-                                  )
-                                : context.emptySizedHeightBox1x,
-                          ],
-                        ),
-                        context.emptySizedHeightBox1x,
-                      ],
-                    ),
-                  )
+                  _userInfoSection(context, user, memberDate, place)
                 ],
               ),
               context.emptySizedHeightBox3x,
-              title != "null"
-                  ? Column(
-                      crossAxisAlignment: context.crossAxisAStart,
-                      children: [
-                        Row(
-                          mainAxisAlignment: context.mainAxisASpaceBetween,
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)!.about,
-                              style: context.textTheme.headline6,
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                uiGlobals.showAlertDialog(
-                                  context: context,
-                                  alertEnum: AlertEnum.AREUSURE,
-                                  contentTitle:
-                                      AppLocalizations.of(context)!.areYouSure,
-                                  contentSubtitle: AppLocalizations.of(context)!
-                                      .logoutContent,
-                                  buttonLabel:
-                                      AppLocalizations.of(context)!.okButton,
-                                  onTap: () {
-                                    Token.deleteAll();
-                                    Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => LoginView(),
-                                      ),
-                                      (route) => false,
-                                    );
-                                  },
-                                  secondButtonLabel:
-                                      AppLocalizations.of(context)!
-                                          .cancelButton,
-                                );
-                              },
-                              child: Text(
-                                AppLocalizations.of(context)!.logout,
-                                style: context.textTheme.headline6!
-                                    .copyWith(color: colors.blue),
-                              ),
-                            )
-                          ],
-                        ),
-                        context.emptySizedHeightBox2x,
-                        Container(
-                          padding: context.padding4x,
-                          decoration:
-                              SpecialContainerDecoration(context: context),
-                          alignment: context.alignmentCenter,
-                          child: Text(title),
-                        ),
-                      ],
-                    )
-                  : context.emptySizedHeightBox1x,
+              _aboutAndLogoutSection(context, title),
               context.emptySizedHeightBox3x,
-              Row(
-                mainAxisAlignment: context.mainAxisASpaceBetween,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.answers,
-                    style: context.textTheme.headline6,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MyAnswersView(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      AppLocalizations.of(context)!.seeAll,
-                      style: context.textTheme.headline6!
-                          .copyWith(color: colors.blue),
-                    ),
-                  )
-                ],
-              ),
-              context.emptySizedHeightBox2x,
-              Container(
-                padding: context.padding4x,
-                decoration: SpecialContainerDecoration(context: context),
-                alignment: context.alignmentCenter,
-                child: Text(
-                  answerLength != 0
-                      ? "You have answered $answerLength question."
-                      : AppLocalizations.of(context)!.noAnswered,
-                ),
-              ),
+              _answerSection(context, answerLength),
               context.emptySizedHeightBox3x,
-              Row(
-                mainAxisAlignment: context.mainAxisASpaceBetween,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.questionsTitle,
-                    style: context.textTheme.headline6,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MyQuestionsView(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      AppLocalizations.of(context)!.seeAll,
-                      style: context.textTheme.headline6!
-                          .copyWith(color: colors.blue),
-                    ),
-                  )
-                ],
-              ),
-              context.emptySizedHeightBox2x,
-              Container(
-                padding: context.padding4x,
-                decoration: SpecialContainerDecoration(context: context),
-                alignment: context.alignmentCenter,
-                child: Text(
-                  questionLength != 0
-                      ? "You have asked $questionLength question."
-                      : AppLocalizations.of(context)!.noAsked,
-                ),
-              ),
+              _questionsSection(context, questionLength),
             ],
           );
-        }),
+        },
       ),
+    );
+  }
+
+  Expanded _image(BuildContext context) {
+    return Expanded(
+      child: Container(
+        height: context.dynamicHeight(0.1),
+        padding: context.padding2x,
+        decoration: SpecialContainerDecoration(context: context),
+        child: SvgPicture.asset(AppLocalizations.of(context)!.iconSvg),
+      ),
+    );
+  }
+
+  Expanded _userInfoSection(
+      BuildContext context, UserModel user, String memberDate, String place) {
+    return Expanded(
+      flex: 3,
+      child: Column(
+        crossAxisAlignment: context.crossAxisAStart,
+        children: [
+          _usernameSection(user, context),
+          context.emptySizedHeightBox1x,
+          _memberDate(context, memberDate),
+          context.emptySizedHeightBox1x,
+          _placeAndWebsiteSection(place, context, user),
+          context.emptySizedHeightBox1x,
+        ],
+      ),
+    );
+  }
+
+  Text _usernameSection(UserModel user, BuildContext context) {
+    String fullname = "${user.name} ${user.lastname}";
+    return Text(
+      fullname,
+      style: context.textTheme.headline6,
+    );
+  }
+
+  Row _memberDate(BuildContext context, String memberDate) {
+    String date = "Member since $memberDate";
+    return Row(
+      children: [
+        Icon(
+          Icons.date_range,
+          color: colors.grey,
+          size: 16,
+        ),
+        context.emptySizedWidthBox2x,
+        Text(date)
+      ],
+    );
+  }
+
+  Row _placeAndWebsiteSection(
+      String place, BuildContext context, UserModel user) {
+    return Row(
+      children: [
+        place != "null"
+            ? _placeField(context, place)
+            : context.emptySizedHeightBox2x,
+        user.website != null
+            ? _websiteField(user, context)
+            : context.emptySizedHeightBox1x,
+      ],
+    );
+  }
+
+  Row _placeField(BuildContext context, String place) {
+    return Row(
+      children: [
+        Icon(
+          Icons.place,
+          color: colors.grey,
+          size: 16,
+        ),
+        context.emptySizedWidthBox2x,
+        Text(place),
+        context.emptySizedWidthBox2x,
+      ],
+    );
+  }
+
+  GestureDetector _websiteField(UserModel user, BuildContext context) {
+    return GestureDetector(
+      onTap: () => _goToWebsite(user),
+      child: Row(
+        children: [
+          Icon(
+            Icons.language,
+            color: colors.grey,
+            size: 16,
+          ),
+          context.emptySizedWidthBox2x,
+          Text(AppLocalizations.of(context)!.website),
+        ],
+      ),
+    );
+  }
+
+  ProfileItems _aboutAndLogoutSection(BuildContext context, String title) {
+    return ProfileItems(
+      title: AppLocalizations.of(context)!.about,
+      action: AppLocalizations.of(context)!.logout,
+      acitonOnTap: () => _logout(context),
+      description: title,
+    );
+  }
+
+  ProfileItems _answerSection(BuildContext context, int answerLength) {
+    String description = answerLength != 0
+        ? "You have answered $answerLength question."
+        : AppLocalizations.of(context)!.noAnswered;
+    return ProfileItems(
+      title: AppLocalizations.of(context)!.answers,
+      action: AppLocalizations.of(context)!.seeAll,
+      acitonOnTap: () => _goToMyAnswers(context),
+      description: description,
+    );
+  }
+
+  ProfileItems _questionsSection(BuildContext context, int questionLength) {
+    String description = questionLength != 0
+        ? "You have asked $questionLength question."
+        : AppLocalizations.of(context)!.noAsked;
+    return ProfileItems(
+      title: AppLocalizations.of(context)!.questionsTitle,
+      action: AppLocalizations.of(context)!.seeAll,
+      acitonOnTap: () => _goToMyQuestions(context),
+      description: description,
     );
   }
 }

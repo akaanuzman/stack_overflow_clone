@@ -9,7 +9,7 @@ import '../../../models/user_model.dart';
 
 import '../../../../uikit/button/special_async_button.dart';
 import '../../../../uikit/decoration/special_container_decoration.dart';
-import '../../../components/textformfield/default_text_form_field.dart';
+import '../../../../features/components/textformfield/default_text_form_field.dart';
 import '../../../viewmodels/answer_view_model.dart';
 
 class EditAnswerView extends StatelessWidget with BaseSingleton {

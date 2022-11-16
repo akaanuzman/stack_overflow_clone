@@ -14,7 +14,7 @@ class UserViewModel extends ChangeNotifier with BaseSingleton {
   UserModel get user => _user;
   List<Question> _questionSearchList = [];
   List<Question> get questionSearchList => _questionSearchList;
-    List<Answer> _answerSearchList = [];
+  List<Answer> _answerSearchList = [];
   List<Answer> get answerSearchList => _answerSearchList;
 
   final _api = Api();
@@ -39,13 +39,13 @@ class UserViewModel extends ChangeNotifier with BaseSingleton {
     }
   }
 
-  Future<void> get updateUser async {
+  Future<void> updateUser({required Map<String, dynamic> obj}) async {
     String url = "/users/edit";
     final BuildContext context = _api.currentContext;
     final result = await _api.dioPost(
       url: url,
       post: false,
-      obj: user.toJson(),
+      obj: obj,
     );
     globals.getSnackBar(
       result: result,
@@ -71,7 +71,7 @@ class UserViewModel extends ChangeNotifier with BaseSingleton {
     notifyListeners();
   }
 
-    void searchAnswer(String query) {
+  void searchAnswer(String query) {
     if (user.answer!.isNotEmpty && user.answer != null) {
       if (query.isNotEmpty) {
         final suggestions = user.answer!.where((question) {

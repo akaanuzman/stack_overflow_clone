@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/color/my_colors.dart';
-import '../../../features/components/textformfield/special_text_form_field.dart';
+import 'special_text_form_field.dart';
 
 class DefaultTextFormField extends SpecialTextFormField {
   DefaultTextFormField({

@@ -3,6 +3,7 @@ class QuestionModel {
   String? title;
   String? subtitle;
   String? createdAt;
+  String? modifiedAt;
   bool? isActive;
   User? user;
   List<Fav>? fav;
@@ -15,6 +16,7 @@ class QuestionModel {
       this.title,
       this.subtitle,
       this.createdAt,
+      this.modifiedAt,
       this.isActive,
       this.user,
       this.fav,
@@ -27,6 +29,7 @@ class QuestionModel {
     title = json['title'];
     subtitle = json['subtitle'];
     createdAt = json['createdAt'];
+    modifiedAt = json['modifiedAt'];
     isActive = json['isActive'];
     user = json['user'] != null ? User.fromJson(json['user']) : null;
     if (json['fav'] != null) {
@@ -51,6 +54,7 @@ class QuestionModel {
     data['title'] = title;
     data['subtitle'] = subtitle;
     data['createdAt'] = createdAt;
+    data['modifiedAt'] = modifiedAt;
     data['isActive'] = isActive;
     if (user != null) {
       data['user'] = user!.toJson();

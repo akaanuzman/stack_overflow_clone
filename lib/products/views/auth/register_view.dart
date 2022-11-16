@@ -8,7 +8,7 @@ import '../../../core/base/base_singleton.dart';
 import '../../../core/extensions/ui_extensions.dart';
 import '../../../uikit/decoration/special_container_decoration.dart';
 
-import '../../components/textformfield/default_text_form_field.dart';
+import '../../../features/components/textformfield/default_text_form_field.dart';
 import '../../viewmodels/register_view_model.dart';
 
 class RegisterView extends StatelessWidget with BaseSingleton {
