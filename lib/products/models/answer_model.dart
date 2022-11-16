@@ -1,11 +1,19 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'answer_model.g.dart';
+
+@JsonSerializable()
 class AnswerModel {
+  @JsonKey(name: "_id")
   String? sId;
+
   String? content;
   String? createdAt;
   List<Fav>? fav;
   Fav? user;
   Question? question;
   bool? isActive;
+  @JsonKey(name: "__v")
   int? iV;
 
   AnswerModel(
@@ -18,44 +26,16 @@ class AnswerModel {
       this.isActive,
       this.iV});
 
-  AnswerModel.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    content = json['content'];
-    createdAt = json['createdAt'];
-    if (json['fav'] != null) {
-      fav = <Fav>[];
-      json['fav'].forEach((v) {
-        fav!.add(Fav.fromJson(v));
-      });
-    }
-    user = json['user'] != null ? Fav.fromJson(json['user']) : null;
-    question =
-        json['question'] != null ? Question.fromJson(json['question']) : null;
-    isActive = json['isActive'];
-    iV = json['__v'];
-  }
+  factory AnswerModel.fromJson(Map<String, dynamic> json) =>
+      _$AnswerModelFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['content'] = content;
-    data['createdAt'] = createdAt;
-    if (fav != null) {
-      data['fav'] = fav!.map((v) => v.toJson()).toList();
-    }
-    if (user != null) {
-      data['user'] = user!.toJson();
-    }
-    if (question != null) {
-      data['question'] = question!.toJson();
-    }
-    data['isActive'] = isActive;
-    data['__v'] = iV;
-    return data;
-  }
+  Map<String, dynamic> answerModelToJson(AnswerModel model) =>
+      _$AnswerModelToJson(model);
 }
 
+@JsonSerializable()
 class Fav {
+  @JsonKey(name: "_id")
   String? sId;
   String? name;
   String? lastname;
@@ -65,6 +45,7 @@ class Fav {
   bool? isBlocked;
   bool? isActive;
   String? createdAt;
+  @JsonKey(name: "__v")
   int? iV;
   String? about;
   String? place;
@@ -89,46 +70,13 @@ class Fav {
       this.website,
       this.question});
 
-  Fav.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    name = json['name'];
-    lastname = json['lastname'];
-    email = json['email'];
-    role = json['role'];
-    img = json['img'];
-    isBlocked = json['isBlocked'];
-    isActive = json['isActive'];
-    createdAt = json['createdAt'];
-    iV = json['__v'];
-    about = json['about'];
-    place = json['place'];
-    title = json['title'];
-    website = json['website'];
-    question = json['question'].cast<String>();
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['name'] = name;
-    data['lastname'] = lastname;
-    data['email'] = email;
-    data['role'] = role;
-    data['img'] = img;
-    data['isBlocked'] = isBlocked;
-    data['isActive'] = isActive;
-    data['createdAt'] = createdAt;
-    data['__v'] = iV;
-    data['about'] = about;
-    data['place'] = place;
-    data['title'] = title;
-    data['website'] = website;
-    data['question'] = question;
-    return data;
-  }
+  factory Fav.fromJson(Map<String, dynamic> json) => _$FavFromJson(json);
+  Map<String, dynamic> favToJson(Fav model) => _$FavToJson(model);
 }
 
+@JsonSerializable()
 class Question {
+  @JsonKey(name: "_id")
   String? sId;
   String? title;
   String? subtitle;
@@ -138,6 +86,7 @@ class Question {
   List<String>? fav;
   List<String>? answer;
   String? slug;
+  @JsonKey(name: "__v")
   int? iV;
 
   Question(
@@ -152,31 +101,9 @@ class Question {
       this.slug,
       this.iV});
 
-  Question.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    title = json['title'];
-    subtitle = json['subtitle'];
-    createdAt = json['createdAt'];
-    isActive = json['isActive'];
-    user = json['user'];
-    fav = json['fav'].cast<String>();
-    answer = json['answer'].cast<String>();
-    slug = json['slug'];
-    iV = json['__v'];
-  }
+  factory Question.fromJson(Map<String, dynamic> json) =>
+      _$QuestionFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['title'] = title;
-    data['subtitle'] = subtitle;
-    data['createdAt'] = createdAt;
-    data['isActive'] = isActive;
-    data['user'] = user;
-    data['fav'] = fav;
-    data['answer'] = answer;
-    data['slug'] = slug;
-    data['__v'] = iV;
-    return data;
-  }
+  Map<String, dynamic> questionToJson(Question model) =>
+      _$QuestionToJson(model);
 }
