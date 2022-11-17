@@ -1,8 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
-
-part 'password_model.g.dart';
-
-@JsonSerializable()
 class PasswordModel {
   bool? success;
   String? message;
@@ -16,9 +11,17 @@ class PasswordModel {
     this.userTokenDTO = "",
   });
 
-  factory PasswordModel.fromJson(Map<String, dynamic> json) =>
-      _$PasswordModelFromJson(json);
+  PasswordModel.fromJson(Map<String, dynamic> json) {
+    success = json['success'];
+    message = json['message'];
+    token = json['token'];
+  }
 
-  Map<String, dynamic> passwordModelToJson(PasswordModel model) =>
-      _$PasswordModelToJson(model);
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
+    data['message'] = message;
+    data['token'] = token;
+    return data;
+  }
 }

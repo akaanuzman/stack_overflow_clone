@@ -10,8 +10,8 @@ class ApiViewModel extends ChangeNotifier {
 
   Future<void> get getAllApi async {
     final BuildContext context = _api.currentContext;
-    final qpv = context.read<QuestionViewModel>();
-    final upv = context.read<UserViewModel>();
+    final qpv = Provider.of<QuestionViewModel>(context, listen: false);
+    final upv = Provider.of<UserViewModel>(context, listen:false);
     await Future.wait(
       [
         qpv.getAllQuestions,
