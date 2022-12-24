@@ -1,4 +1,4 @@
-## 📱 Basic Shopping App
+## 📱 Stack Overflow Clone
 
 ### 🔎 Preview
 Coming soon!
