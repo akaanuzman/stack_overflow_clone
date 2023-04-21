@@ -10,16 +10,18 @@ class OtpTextFormField extends StatelessWidget with BaseSingleton {
     required this.controller,
   });
 
+  void goForwordAndBackwardInFields(BuildContext context, String value) {
+    if (value.length == 1) {
+      FocusScope.of(context).nextFocus();
+    } else if (value.isEmpty) {
+      FocusScope.of(context).previousFocus();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      onChanged: (value) {
-        if (value.length == 1) {
-          FocusScope.of(context).nextFocus();
-        } else if (value.isEmpty) {
-          FocusScope.of(context).previousFocus();
-        }
-      },
+      onChanged: (value) => goForwordAndBackwardInFields(context, value),
       style: context.textTheme.subtitle1!.copyWith(fontWeight: context.fw700),
       keyboardType: context.keyboardNumber,
       textAlign: context.taCenter,
