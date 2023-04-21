@@ -23,7 +23,7 @@ class SplashView extends StatelessWidget {
               return _body(context);
             default:
               if (snapShot.hasData && snapShot.data != null) {
-                return !snapShot.data! ? LoginView() : const NavbarView();
+                return !snapShot.data! ? LoginView() : NavbarView();
               }
               return _body(context);
           }

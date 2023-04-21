@@ -5,17 +5,35 @@ import 'package:provider/provider.dart';
 import '../../../core/base/base_singleton.dart';
 import '../../../core/extensions/ui_extensions.dart';
 import '../../../uikit/decoration/special_container_decoration.dart';
+import '../../models/navbar_model.dart';
 import '../../viewmodels/navbar_view_model.dart';
+import '../home/profile/profile_view.dart';
+import '../home/question/home_view.dart';
 
 class NavbarView extends StatelessWidget with BaseSingleton {
-  const NavbarView({super.key});
+  final List<NavbarModel> _items = [
+    NavbarModel(
+      icon: Icons.home,
+      label: "Home",
+    ),
+    NavbarModel(
+      icon: Icons.person,
+      label: "Profile",
+    ),
+  ];
+
+  final List<Widget> _views = [
+    HomeView(),
+    const ProfileView(),
+  ];
+  NavbarView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<NavbarViewModel>(
       builder: (BuildContext context, NavbarViewModel provider, Widget? child) {
         return Scaffold(
-          body: provider.views.elementAt(provider.currentIndex),
+          body: _views.elementAt(provider.currentIndex),
           bottomNavigationBar: _navbar(context, provider),
         );
       },
@@ -48,7 +66,7 @@ class NavbarView extends StatelessWidget with BaseSingleton {
         selectedLabelStyle:
             context.textTheme.subtitle1!.copyWith(fontWeight: context.fw700),
         unselectedLabelStyle: context.textTheme.subtitle2,
-        items: provider.items,
+        items: _items,
         currentIndex: provider.currentIndex,
         onTap: (index) => provider.onItemTapped(index),
       ),

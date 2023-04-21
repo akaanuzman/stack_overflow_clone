@@ -40,7 +40,7 @@ class LoginViewModel extends ChangeNotifier with BaseSingleton {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => const NavbarView(),
+            builder: (context) => NavbarView(),
           ),
           (route) => false,
         );
@@ -56,6 +56,4 @@ class LoginViewModel extends ChangeNotifier with BaseSingleton {
 
     return result?.statusCode ?? 500;
   }
-
-  
 }
