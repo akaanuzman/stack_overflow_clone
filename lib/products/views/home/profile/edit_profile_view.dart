@@ -11,7 +11,7 @@ import '../../../../uikit/button/special_async_button.dart';
 import '../../../../uikit/decoration/special_container_decoration.dart';
 
 import '../../../viewmodels/user_view_model.dart';
-import 'package:stack_overflow_clone/products/models/user_model.dart';
+import '../../../models/user_model.dart';
 
 class EditProfileView extends StatelessWidget with BaseSingleton {
   final _formKey = GlobalKey<FormState>();

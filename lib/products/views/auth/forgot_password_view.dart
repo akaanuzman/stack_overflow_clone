@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:stack_overflow_clone/core/base/base_singleton.dart';
+import '../../../core/base/base_singleton.dart';
 import '../../../core/extensions/ui_extensions.dart';
 import '../../../features/components/textformfield/default_text_form_field.dart';
 import '../../../uikit/button/special_async_button.dart';

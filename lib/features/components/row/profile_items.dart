@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:stack_overflow_clone/core/base/base_singleton.dart';
-import 'package:stack_overflow_clone/core/extensions/ui_extensions.dart';
+import '../../../core/base/base_singleton.dart';
+import '../../../core/extensions/ui_extensions.dart';
 import '../../../uikit/decoration/special_container_decoration.dart';
 
 class ProfileItems extends StatelessWidget with BaseSingleton {
